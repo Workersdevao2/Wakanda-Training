@@ -1,0 +1,221 @@
+// Wakanda Training — Main JS + Client-side Cart
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------- Hamburger ----------
+  const hamburger = document.querySelector('.hamburger');
+  const navMobile = document.querySelector('.nav-mobile');
+
+  if (hamburger && navMobile) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navMobile.classList.toggle('open');
+      document.body.style.overflow = navMobile.classList.contains('open') ? 'hidden' : '';
+    });
+
+    navMobile.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMobile.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  // Active nav link
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-desktop a, .nav-mobile a').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+      link.classList.add('active');
+    }
+  });
+
+  // ---------- Cart ----------
+  initCart();
+});
+
+// WhatsApp helper
+function openWhatsApp(message = '') {
+  const phone = '244940668530';
+  const text = encodeURIComponent(message);
+  window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+}
+
+/* =====================================================
+   CLIENT-SIDE CART (localStorage)
+   ===================================================== */
+
+const CART_KEY = 'wakanda_cart';
+
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartBadge();
+  renderCart();
+}
+
+function addToCart(id, name, price, image = '') {
+  const cart = getCart();
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ id, name, price, image, qty: 1 });
+  }
+
+  saveCart(cart);
+  openCart();
+}
+
+function updateQty(id, delta) {
+  const cart = getCart();
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+
+  item.qty += delta;
+  if (item.qty <= 0) {
+    const idx = cart.findIndex(i => i.id === id);
+    cart.splice(idx, 1);
+  }
+
+  saveCart(cart);
+}
+
+function removeFromCart(id) {
+  const cart = getCart().filter(i => i.id !== id);
+  saveCart(cart);
+}
+
+function clearCart() {
+  localStorage.removeItem(CART_KEY);
+  updateCartBadge();
+  renderCart();
+}
+
+function getCartTotal() {
+  return getCart().reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getCartCount() {
+  return getCart().reduce((sum, item) => sum + item.qty, 0);
+}
+
+function formatPrice(n) {
+  return n.toLocaleString('pt-AO') + ' KZ';
+}
+
+function updateCartBadge() {
+  const count = getCartCount();
+  document.querySelectorAll('.cart-badge').forEach(badge => {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  });
+}
+
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total');
+  const emptyEl = document.getElementById('cart-empty');
+  const footerEl = document.getElementById('cart-footer');
+
+  if (!container) return;
+
+  const cart = getCart();
+
+  if (cart.length === 0) {
+    container.innerHTML = '';
+    if (emptyEl) emptyEl.style.display = 'block';
+    if (footerEl) footerEl.style.display = 'none';
+    return;
+  }
+
+  if (emptyEl) emptyEl.style.display = 'none';
+  if (footerEl) footerEl.style.display = 'block';
+
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item" data-id="${item.id}">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${formatPrice(item.price)} × ${item.qty}</div>
+      </div>
+      <div class="cart-item-actions">
+        <button class="qty-btn" onclick="updateQty('${item.id}', -1)" aria-label="Diminuir">−</button>
+        <span class="qty-value">${item.qty}</span>
+        <button class="qty-btn" onclick="updateQty('${item.id}', 1)" aria-label="Aumentar">+</button>
+        <button class="remove-btn" onclick="removeFromCart('${item.id}')" aria-label="Remover">×</button>
+      </div>
+    </div>
+  `).join('');
+
+  if (totalEl) {
+    totalEl.textContent = formatPrice(getCartTotal());
+  }
+}
+
+function openCart() {
+  const drawer = document.getElementById('cart-drawer');
+  const overlay = document.getElementById('cart-overlay');
+  if (drawer) drawer.classList.add('open');
+  if (overlay) overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderCart();
+}
+
+function closeCart() {
+  const drawer = document.getElementById('cart-drawer');
+  const overlay = document.getElementById('cart-overlay');
+  if (drawer) drawer.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function checkoutWhatsApp() {
+  const cart = getCart();
+  if (cart.length === 0) return;
+
+  const name = document.getElementById('checkout-name')?.value.trim() || '';
+  const phone = document.getElementById('checkout-phone')?.value.trim() || '';
+  const note = document.getElementById('checkout-note')?.value.trim() || '';
+
+  let message = 'Olá! Quero encomendar:\n\n';
+
+  cart.forEach(item => {
+    message += `• ${item.name} × ${item.qty} — ${formatPrice(item.price * item.qty)}\n`;
+  });
+
+  message += `\n*Total: ${formatPrice(getCartTotal())}*`;
+
+  if (name) message += `\n\nNome: ${name}`;
+  if (phone) message += `\nTelefone: ${phone}`;
+  if (note) message += `\nNota: ${note}`;
+
+  openWhatsApp(message);
+}
+
+function initCart() {
+  updateCartBadge();
+  renderCart();
+
+  // Close on overlay click
+  const overlay = document.getElementById('cart-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', closeCart);
+  }
+}
+
+function addTshirt(colorKey, baseName, price) {
+  const select = document.getElementById('size-' + colorKey);
+  const size = select ? select.value : 'M';
+  const id = 'tshirt-' + colorKey + '-' + size;
+  const name = baseName + ' — Tamanho ' + size;
+  addToCart(id, name, price);
+}
+
