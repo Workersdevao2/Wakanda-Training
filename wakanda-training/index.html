@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wakanda Training | High Performance — Luanda</title>
+  <meta name="description" content="Mais que treino, um estilo de vida. CrossFit, Hyrox, Musculação, Kickboxing, Zumba e o Gordus Project em Luanda. Disciplina, comunidade e resultados reais." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="images/favicon.jpg" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.jpg" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo-sm.jpg" alt="Wakanda Training" class="logo-img" />
+        WAKANDA <span>TRAINING</span>
+      </a>
+
+            <nav class="nav-desktop">
+        <a href="index.html">Início</a>
+        <a href="pages/sobre.html">Sobre Nós</a>
+        <a href="pages/modalidades.html">Modalidades</a>
+        <a href="pages/projetos.html">Projetos</a>
+        <a href="pages/horarios.html">Horários</a>
+        <a href="pages/loja.html">Loja</a>
+        <a href="pages/eventos.html">Eventos</a>
+        <a href="pages/resultados.html">Resultados</a>
+        <a href="pages/contacto.html">Contacto</a>
+      </nav>
+
+      <button class="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+    <nav class="nav-mobile">
+    <a href="index.html">Início</a>
+    <a href="pages/sobre.html">Sobre Nós</a>
+    <a href="pages/modalidades.html">Modalidades</a>
+    <a href="pages/projetos.html">Projetos</a>
+    <a href="pages/horarios.html">Horários</a>
+    <a href="pages/loja.html">Loja</a>
+    <a href="pages/eventos.html">Eventos</a>
+    <a href="pages/resultados.html">Resultados</a>
+    <a href="pages/contacto.html">Contacto</a>
+  </nav>
+
+  <!-- Hero with alternating photos / videos -->
+  <section class="hero">
+    <div class="hero-media" id="hero-media">
+      <!-- 1 video -->
+      <div class="hero-slide active" data-type="video">
+        <video muted playsinline preload="metadata" poster="">
+          <source src="images/hero-1.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 2 photo -->
+      <div class="hero-slide" data-type="photo">
+        <img src="images/hero-2.jpg" alt="Wakanda Training — Focus" loading="lazy" decoding="async" />
+      </div>
+      <!-- 3 video -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-3.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 4 photo -->
+      <div class="hero-slide" data-type="photo">
+        <img src="images/hero-4.jpg" alt="Wakanda Games 2026" loading="lazy" decoding="async" />
+      </div>
+      <!-- 5 video — upload hero-5.mp4 to images/ on GitHub -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-5.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 6 photo -->
+      <div class="hero-slide" data-type="photo">
+        <img src="images/hero-6.jpg" alt="Acredite — Wakanda Training" loading="lazy" decoding="async" />
+      </div>
+      <!-- 7 video -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-7.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 8 video -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-8.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 9 photo -->
+      <div class="hero-slide" data-type="photo">
+        <img src="images/hero-9.jpg" alt="Atualização do Programa" loading="lazy" decoding="async" />
+      </div>
+      <!-- 10 video -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-10.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- 11 photo -->
+      <div class="hero-slide" data-type="photo">
+        <img src="images/hero-11.jpg" alt="Sexta Festa Zumba" loading="lazy" decoding="async" />
+      </div>
+      <!-- 12 video -->
+      <div class="hero-slide" data-type="video">
+        <video muted playsinline preload="metadata">
+          <source src="images/hero-12.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <span class="hero-tag">High Performance • Luanda</span>
+        <h1>Mais que treino.<br>Um estilo de vida.</h1>
+        <p class="lead">
+          CrossFit, Hyrox, Musculação, Kickboxing, Zumba e programas de transformação.
+          Disciplina, comunidade e resultados reais na Wakanda Training.
+        </p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-solid" onclick="openWhatsApp('Olá! Quero agendar uma aula experimental gratuita.'); return false;">
+            Aula Experimental Grátis
+          </a>
+          <a href="pages/projetos.html" class="btn btn-ghost">
+            Ver Gordus Project
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-dots" id="hero-dots" aria-hidden="true"></div>
+  </section>
+
+  <!-- Flagship Project -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Gordus Project</h2>
+        <p>A tua transformação começa agora. 6 meses, 4 grupos, uma missão.</p>
+      </div>
+
+      <div class="grid-2" style="align-items: center;">
+        <div>
+          <p class="mb-md">
+            O Gordus Project nasce da experiência de 15 anos no mundo fitness e da celebração de 6 anos da Wakanda Training.
+            Liderado pelo Coach Wilson Benjamim, este projeto é um marco de esperança e superação para todos que lutam contra o excesso de peso.
+          </p>
+          <p class="mb-md">
+            Treinos presenciais, online e outdoor • Acompanhamento nutricional • Apoio psicológico • Eventos e workshops.
+          </p>
+          <a href="pages/projetos.html" class="btn">Conhecer o Projeto</a>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Operação Dezembro — 90 Plus</h3>
+            <p class="mb-sm">21 Set → 21 Dez 2026</p>
+            <p class="mb-md">90 dias para chegares às festas em forma. Treino + Nutrição + Mentalidade.</p>
+            <p class="product-price mb-md">120.000 KZ</p>
+            <a href="#" class="btn btn-sm btn-solid" onclick="openWhatsApp('Olá! Quero entrar no Gordus Project 90 Plus.'); return false;">
+              Inscreve-te agora
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modalities preview -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-header">
+        <h2>Modalidades</h2>
+        <p>Escolhe o teu caminho. Nós acompanhamos a evolução.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">CrossFit & Hyrox</h3>
+            <p>Força, resistência e performance. Programação pensada para todos os níveis.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Musculação</h3>
+            <p>Estrutura completa, acompanhamento profissional e plano estruturado.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Kickboxing</h3>
+            <p>Técnica, controlo e disciplina. Terças, quintas e sábados.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Zumba</h3>
+            <p>Energia, música e movimento. Sextas-feiras com a energia da Wakanda.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Functional Kids</h3>
+            <p>Coordenação, força, equilíbrio e espírito de equipa para os mais novos.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="mb-sm">Beach Padel & Jiu Jitsu</h3>
+            <p>Novas modalidades para completar a tua jornada.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-lg">
+        <a href="pages/modalidades.html" class="btn">Ver todas as modalidades</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Community -->
+  <section class="section">
+    <div class="container text-center">
+      <h2 class="mb-md">Mais que treino. É comunidade.</h2>
+      <p class="mb-lg" style="margin-left: auto; margin-right: auto;">
+        Pessoas reais, objetivos reais e uma energia que te faz evoluir.
+        Ambiente acolhedor para todos os níveis.
+      </p>
+      <a href="#" class="btn btn-solid" onclick="openWhatsApp('Olá! Quero fazer parte da comunidade Wakanda Training.'); return false;">
+        Junta-te a nós
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo mb-md">WAKANDA <span>TRAINING</span></div>
+          <p style="font-size: 0.9rem;">
+            Rua do BFA, defronte ao Condomínio Ville Vermont<br>
+            Luanda, Angola
+          </p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <a href="pages/modalidades.html">Modalidades</a>
+          <a href="pages/projetos.html">Projetos</a>
+          <a href="pages/horarios.html">Horários</a>
+          <a href="pages/loja.html">Loja</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="https://wa.me/244940668530" target="_blank">+244 940 668 530</a>
+          <a href="mailto:teamwakandacf@gmail.com">teamwakandacf@gmail.com</a>
+          <a href="https://instagram.com/wakandatraining" target="_blank">@wakandatraining</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wakanda Training. Todos os direitos reservados.</span>
+        <span>Mais que treino, um estilo de vida.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/244940668530" class="wa-float" target="_blank" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
