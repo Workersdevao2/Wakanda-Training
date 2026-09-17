@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos | Wakanda Training</title>
+  <meta name="description" content="Eventos, desafios e atividades especiais da Wakanda Training. Zumba, workshops, desafios internos e mais." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="../images/favicon.jpg" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.jpg" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><img src="../images/logo-sm.jpg" alt="Wakanda Training" class="logo-img" />WAKANDA <span>TRAINING</span></a>
+            <nav class="nav-desktop">
+        <a href="../index.html">Início</a>
+        <a href="sobre.html">Sobre Nós</a>
+        <a href="modalidades.html">Modalidades</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="horarios.html">Horários</a>
+        <a href="precario.html">Preçário</a>
+        <a href="loja.html">Loja</a>
+        <a href="eventos.html">Eventos</a>
+        <a href="resultados.html">Resultados</a>
+        <a href="inscricao.html">Inscrição</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+    <nav class="nav-mobile">
+    <a href="../index.html">Início</a>
+    <a href="sobre.html">Sobre Nós</a>
+    <a href="modalidades.html">Modalidades</a>
+    <a href="projetos.html">Projetos</a>
+    <a href="horarios.html">Horários</a>
+    <a href="precario.html">Preçário</a>
+    <a href="loja.html">Loja</a>
+    <a href="eventos.html">Eventos</a>
+    <a href="resultados.html">Resultados</a>
+    <a href="inscricao.html">Inscrição</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Eventos</h1>
+      <p class="lead">A comunidade não para. Desafios, festas e momentos especiais.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <img
+        src="../images/eventos-hero.jpg"
+        alt="Comunidade Wakanda Training em ação"
+        class="eventos-hero-img"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Próximos e recentes</h2>
+        <p>Atualizamos constantemente. Segue o Instagram ou pergunta no WhatsApp para a agenda mais recente.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <img src="../images/gordus-campaign.jpg" alt="Gordus Project 90 Plus" class="card-img card-img--square" loading="lazy" decoding="async" />
+          <div class="card-body">
+            <span class="hero-tag" style="display: inline-block; margin-bottom: 0.75rem;">Em destaque</span>
+            <h3 class="mb-sm">Gordus Project 90 Plus</h3>
+            <p style="font-size: 0.9rem; color: var(--gold); margin-bottom: 0.5rem;">21 Set → 21 Dez 2026</p>
+            <p class="mb-md">Operação Dezembro. 90 dias de transformação com acompanhamento completo + bónus gratuito nas quadras festivas.</p>
+            <a href="projetos.html" class="btn btn-sm">Ver detalhes</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="../images/hero-11.jpg" alt="Sexta Festa — Zumba" class="card-img" loading="lazy" decoding="async" />
+          <div class="card-body">
+            <h3 class="mb-sm">Sexta Festa — Zumba</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Sextas-feiras • 18h–19h</p>
+            <p class="mb-md">Vem zumbar com a energia da Wakanda. Música, convívio e movimento. Vagas limitadas — reserva no WhatsApp.</p>
+            <a href="#" class="btn btn-sm" onclick="openWhatsApp('Olá! Quero reservar vaga na Zumba de sexta.'); return false;">Reservar vaga</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="../images/evento-competicao.jpg" alt="Competição surpresa — desafios internos" class="card-img card-img--poster" loading="lazy" decoding="async" />
+          <div class="card-body">
+            <h3 class="mb-sm">Desafios internos</h3>
+            <p class="mb-md">Workouts “For Time”, desafios de consistência e competições amigáveis dentro da box. Mantém a evolução e a motivação em alta.</p>
+            <a href="#" class="btn btn-sm" onclick="openWhatsApp('Olá! Quero saber dos próximos desafios internos.'); return false;">Saber mais</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="../images/coach-01.jpg" alt="Workshops com os coaches Wakanda" class="card-img" loading="lazy" decoding="async" />
+          <div class="card-body">
+            <h3 class="mb-sm">Workshops & eventos especiais</h3>
+            <p class="mb-md">Dias temáticos, workshops de técnica, celebrações da comunidade e momentos de superação. Fica atento às redes e ao WhatsApp.</p>
+            <a href="#" class="btn btn-sm" onclick="openWhatsApp('Olá! Quero ser avisado dos próximos eventos.'); return false;">Quero ser avisado</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="perguntas">
+    <div class="container">
+      <div class="form-shell">
+        <div class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
+          <h2>Pergunta sobre um evento</h2>
+          <p>Datas, vagas, o que levar — envia no WhatsApp com o contexto certo.</p>
+        </div>
+        <form id="form-eventos" class="wa-form" data-form-type="pergunta-evento" novalidate>
+          <div class="form-row">
+            <label for="ev-nome">Nome *</label>
+            <input type="text" id="ev-nome" name="nome" required placeholder="O teu nome" autocomplete="name" />
+          </div>
+          <div class="form-row">
+            <label for="ev-telefone">Telefone / WhatsApp *</label>
+            <input type="tel" id="ev-telefone" name="telefone" required placeholder="+244 ..." autocomplete="tel" />
+          </div>
+          <div class="form-row">
+            <label for="ev-evento">Evento *</label>
+            <select id="ev-evento" name="evento" required>
+              <option value="">Selecciona...</option>
+              <option value="Gordus Project 90 Plus">Gordus Project 90 Plus</option>
+              <option value="Sexta Festa — Zumba">Sexta Festa — Zumba</option>
+              <option value="Desafios internos">Desafios internos</option>
+              <option value="Workshop / evento especial">Workshop / evento especial</option>
+              <option value="Outro / ainda não sei">Outro / ainda não sei</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ev-assunto">O que queres saber? *</label>
+            <select id="ev-assunto" name="assunto" required>
+              <option value="">Selecciona...</option>
+              <option value="Datas e horários">Datas e horários</option>
+              <option value="Preço / inscrição">Preço / inscrição</option>
+              <option value="Vagas">Vagas</option>
+              <option value="O que levar / regras">O que levar / regras</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="ev-mensagem">Mensagem (opcional)</label>
+            <textarea id="ev-mensagem" name="mensagem" rows="3" placeholder="A tua dúvida..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid" style="width: 100%;">Enviar pergunta no WhatsApp</button>
+          <p class="form-note">Para te inscreveres, usa a página <a href="inscricao.html">Inscrição</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--surface);">
+    <div class="container text-center">
+      <h2 class="mb-md">Não percas nada</h2>
+      <p class="mb-lg" style="margin: 0 auto;">
+        Segue o Instagram ou formaliza a inscrição quando estiveres pronto.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+        <a href="inscricao.html" class="btn btn-solid">Quero inscrever-me</a>
+        <a href="https://instagram.com/wakandatraining" target="_blank" class="btn btn-ghost">Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo mb-md">WAKANDA <span>TRAINING</span></div>
+          <p style="font-size: 0.9rem;">Benfica, Rua Direita do BFA<br>Defronte ao Condomínio Ville Vermont<br>Luanda, Angola</p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <a href="modalidades.html">Modalidades</a>
+          <a href="projetos.html">Projetos</a>
+          <a href="horarios.html">Horários</a>
+          <a href="precario.html">Preçário</a>
+          <a href="loja.html">Loja</a>
+          <a href="inscricao.html">Inscrição</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="https://wa.me/244940668530" target="_blank">+244 940 668 530</a>
+          <a href="mailto:teamwakandacf@gmail.com">teamwakandacf@gmail.com</a>
+          <a href="https://instagram.com/wakandatraining" target="_blank">@wakandatraining</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wakanda Training</span>
+        <span>Mais que treino, um estilo de vida.</span>
+      </div>
+    </div>
+  </footer>
+<script src="../js/main.js"></script>
+</body>
+</html>

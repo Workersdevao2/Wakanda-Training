@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscrição | Wakanda Training</title>
+  <meta name="description" content="Inscreve-te numa modalidade ou evento da Wakanda Training. Envia o teu pedido directamente no WhatsApp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="../images/favicon.jpg" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.jpg" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><img src="../images/logo-sm.jpg" alt="Wakanda Training" class="logo-img" />WAKANDA <span>TRAINING</span></a>
+      <nav class="nav-desktop">
+        <a href="../index.html">Início</a>
+        <a href="sobre.html">Sobre Nós</a>
+        <a href="modalidades.html">Modalidades</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="horarios.html">Horários</a>
+        <a href="precario.html">Preçário</a>
+        <a href="loja.html">Loja</a>
+        <a href="eventos.html">Eventos</a>
+        <a href="resultados.html">Resultados</a>
+        <a href="inscricao.html">Inscrição</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <nav class="nav-mobile">
+    <a href="../index.html">Início</a>
+    <a href="sobre.html">Sobre Nós</a>
+    <a href="modalidades.html">Modalidades</a>
+    <a href="projetos.html">Projetos</a>
+    <a href="horarios.html">Horários</a>
+    <a href="precario.html">Preçário</a>
+    <a href="loja.html">Loja</a>
+    <a href="eventos.html">Eventos</a>
+    <a href="resultados.html">Resultados</a>
+    <a href="inscricao.html">Inscrição</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Inscrição</h1>
+      <p class="lead">Queremos treinar contigo. Preenche e envia no WhatsApp.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <img
+        src="../images/experiencia-grupo.jpg"
+        alt="Comunidade Wakanda Training — junta-te à tribo"
+        class="inscricao-hero-img"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="inscricao-layout">
+        <div class="form-shell">
+          <div class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
+            <h2>Pedido de inscrição</h2>
+            <p>Preenche os dados. No WhatsApp envias a mensagem e, em seguida, anexas o bilhete e a foto.</p>
+          </div>
+
+          <form id="form-inscricao" class="wa-form" data-form-type="inscricao" novalidate>
+            <div class="form-row">
+              <label for="ins-nome">Nome completo *</label>
+              <input type="text" id="ins-nome" name="nome" required placeholder="Nome por extenso" autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="ins-telefone">Telefone / WhatsApp *</label>
+              <input type="tel" id="ins-telefone" name="telefone" required placeholder="+244 ..." autocomplete="tel" />
+            </div>
+            <div class="form-row">
+              <label for="ins-email">Email (opcional)</label>
+              <input type="email" id="ins-email" name="email" placeholder="teu@email.com" autocomplete="email" />
+            </div>
+            <div class="form-row form-row-2">
+              <div>
+                <label for="ins-idade">Idade</label>
+                <input type="number" id="ins-idade" name="idade" min="5" max="99" placeholder="Ex: 28" />
+              </div>
+              <div>
+                <label for="ins-altura-peso">Altura e peso</label>
+                <input type="text" id="ins-altura-peso" name="altura_peso" placeholder="Ex: 1,75 m · 82 kg" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="ins-tipo">Quero inscrever-me em *</label>
+              <select id="ins-tipo" name="tipo" required>
+                <option value="">Selecciona...</option>
+                <option value="Modalidade">Modalidade</option>
+                <option value="Evento">Evento</option>
+                <option value="Gordus Project">Gordus Project</option>
+                <option value="Aula experimental">Aula experimental</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="ins-detalhe">Modalidade / evento *</label>
+              <select id="ins-detalhe" name="detalhe" required>
+                <option value="">Selecciona...</option>
+                <option value="CrossFit &amp; Hyrox">CrossFit &amp; Hyrox</option>
+                <option value="Musculação">Musculação</option>
+                <option value="Kickboxing">Kickboxing</option>
+                <option value="Judô">Judô</option>
+                <option value="Jiu Jitsu Brasileiro">Jiu Jitsu Brasileiro</option>
+                <option value="Zumba">Zumba</option>
+                <option value="Functional Kids">Functional Kids</option>
+                <option value="Gordus Project 90 Plus">Gordus Project 90 Plus</option>
+                <option value="Sexta Festa — Zumba">Sexta Festa — Zumba</option>
+                <option value="Desafios internos">Desafios internos</option>
+                <option value="Workshop / evento especial">Workshop / evento especial</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="ins-horario">Horário preferido (opcional)</label>
+              <input type="text" id="ins-horario" name="horario" placeholder="Ex: terças 18h30, sábados de manhã..." />
+            </div>
+            <div class="form-row">
+              <label for="ins-mensagem">Objectivos / mensagem (opcional)</label>
+              <textarea id="ins-mensagem" name="mensagem" rows="3" placeholder="Metas fitness, experiência prévia, dúvidas..."></textarea>
+            </div>
+
+            <!-- Merged: documents checklist -->
+            <div class="inscricao-docs">
+              <p class="inscricao-docs-title">Para concluir no WhatsApp, anexa também:</p>
+              <ul class="inscricao-docs-list">
+                <li>Bilhete de identidade <span>(PDF ou foto legível)</span></li>
+                <li>Foto meio corpo <span>(tipo passe ou selfie)</span></li>
+                <li>Localização da morada actual</li>
+                <li>WhatsApp de um parente</li>
+                <li>Instagram e TikTok <span>(se tiveres)</span></li>
+                <li class="docs-bonus">Bónus: 3 amigos dos arredores</li>
+              </ul>
+            </div>
+
+            <button type="submit" class="btn btn-solid" style="width: 100%;">Enviar inscrição no WhatsApp</button>
+            <p class="form-note">
+              Abre o WhatsApp com a mensagem pronta. Envia o texto e, na mesma conversa, anexa o bilhete e a foto.
+            </p>
+          </form>
+        </div>
+
+        <aside class="inscricao-aside">
+          <img src="../images/horario-treino.jpg" alt="Treino na Wakanda" class="inscricao-aside-img" loading="lazy" decoding="async" />
+          <img src="../images/coach-01.jpg" alt="Coaching Wakanda Training" class="inscricao-aside-img" loading="lazy" decoding="async" />
+          <p class="inscricao-aside-text">Treino com acompanhamento real. Escolhe a modalidade e confirma a vaga no WhatsApp.</p>
+          <p class="inscricao-aside-text" style="margin-top: 0.75rem;">
+            Preçário: <a href="precario.html" style="color: var(--gold);">ver packs</a>
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--surface);">
+    <div class="container text-center">
+      <h2 class="mb-md">Só queres informação?</h2>
+      <p class="mb-lg" style="margin: 0 auto; max-width: 50ch;">
+        Para preços, horários ou dúvidas sobre uma modalidade ou evento, usa os formulários nas páginas Modalidades e Eventos.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+        <a href="modalidades.html#perguntas" class="btn btn-ghost">Perguntar sobre modalidades</a>
+        <a href="eventos.html#perguntas" class="btn btn-ghost">Perguntar sobre eventos</a>
+        <a href="precario.html" class="btn btn-ghost">Ver preçário</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo mb-md">WAKANDA <span>TRAINING</span></div>
+          <p style="font-size: 0.9rem;">Benfica, Rua Direita do BFA<br>Defronte ao Condomínio Ville Vermont<br>Luanda, Angola</p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <a href="modalidades.html">Modalidades</a>
+          <a href="projetos.html">Projetos</a>
+          <a href="horarios.html">Horários</a>
+          <a href="precario.html">Preçário</a>
+          <a href="loja.html">Loja</a>
+          <a href="inscricao.html">Inscrição</a>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <a href="https://wa.me/244940668530" target="_blank">+244 940 668 530</a>
+          <a href="mailto:teamwakandacf@gmail.com">teamwakandacf@gmail.com</a>
+          <a href="https://instagram.com/wakandatraining" target="_blank">@wakandatraining</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wakanda Training</span>
+        <span>Mais que treino, um estilo de vida.</span>
+      </div>
+    </div>
+  </footer>
+<script src="../js/main.js"></script>
+</body>
+</html>
