@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscrição | Wakanda Training</title>
+  <meta name="description" content="Inscreve-te numa modalidade ou evento da Wakanda Training. Envia o teu pedido directamente no WhatsApp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="../images/favicon.jpg" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.jpg" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><img src="../images/logo-sm.jpg" alt="Wakanda Training" class="logo-img" />WAKANDA <span>TRAINING</span></a>
+      <nav class="nav-desktop">
+        <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
+        <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
+        <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+        <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+        <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+        <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+        <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+        <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
+        <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
+        <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+        <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+        <button class="hamburger" aria-label="Menu" data-i18n-aria="aria.menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-mobile">
+    <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
+    <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
+    <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+    <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+    <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+    <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+    <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+    <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
+    <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
+    <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+    <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1 data-i18n="enroll.h1">Inscrição</h1>
+      <p class="lead"><span data-i18n="enroll.lead">Queremos treinar contigo. Preenche e envia no WhatsApp.</span></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <img
+        src="../images/experiencia-grupo.jpg"
+        alt="Comunidade Wakanda Training — junta-te à tribo"
+        class="inscricao-hero-img"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="inscricao-layout">
+        <div class="form-shell">
+          <div class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
+            <h2 data-i18n="enroll.form.h2">Pedido de inscrição</h2>
+            <p data-i18n="enroll.form.lead">Preenche os dados. No WhatsApp envias a mensagem e, em seguida, anexas o bilhete e a foto.</p>
+          </div>
+
+          <form id="form-inscricao" class="wa-form" data-form-type="inscricao" novalidate>
+            <div class="form-row">
+              <label for="ins-nome" data-i18n="enroll.name">Nome completo *</label>
+              <input type="text" id="ins-nome" name="nome" required placeholder="Nome por extenso" autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="ins-telefone" data-i18n="enroll.phone">Telefone / WhatsApp *</label>
+              <input type="tel" id="ins-telefone" name="telefone" required placeholder="+244 ..." autocomplete="tel" />
+            </div>
+            <div class="form-row">
+              <label for="ins-email" data-i18n="enroll.email">Email (opcional)</label>
+              <input type="email" id="ins-email" name="email" placeholder="teu@email.com" autocomplete="email" />
+            </div>
+            <div class="form-row form-row-2">
+              <div>
+                <label for="ins-idade" data-i18n="enroll.age">Idade</label>
+                <input type="number" id="ins-idade" name="idade" min="5" max="99" placeholder="Ex: 28" />
+              </div>
+              <div>
+                <label for="ins-altura-peso" data-i18n="enroll.height">Altura e peso</label>
+                <input type="text" id="ins-altura-peso" name="altura_peso" placeholder="Ex: 1,75 m · 82 kg" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="ins-tipo" data-i18n="enroll.type">Quero inscrever-me em *</label>
+              <select id="ins-tipo" name="tipo" required>
+                <option value="">Selecciona...</option>
+                <option value="Modalidade">Modalidade</option>
+                <option value="Evento">Evento</option>
+                <option value="Gordus Project">Gordus Project</option>
+                <option value="Aula experimental">Aula experimental</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="ins-detalhe" data-i18n="enroll.detail">Modalidade / evento *</label>
+              <select id="ins-detalhe" name="detalhe" required>
+                <option value="">Selecciona...</option>
+                <option value="CrossFit &amp; Hyrox">CrossFit &amp; Hyrox</option>
+                <option value="Musculação">Musculação</option>
+                <option value="Kickboxing">Kickboxing</option>
+                <option value="Judô">Judô</option>
+                <option value="Jiu Jitsu Brasileiro">Jiu Jitsu Brasileiro</option>
+                <option value="Zumba">Zumba</option>
+                <option value="Functional Kids">Functional Kids</option>
+                <option value="Gordus Project 90 Plus">Gordus Project 90 Plus</option>
+                <option value="Sexta Festa — Zumba">Sexta Festa — Zumba</option>
+                <option value="Desafios internos">Desafios internos</option>
+                <option value="Workshop / evento especial">Workshop / evento especial</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="ins-morada" data-i18n="enroll.address">Morada / zona (opcional)</label>
+              <input type="text" id="ins-morada" name="morada" placeholder="Ex: Benfica, perto do Ville Vermont" autocomplete="street-address" />
+            </div>
+            <div class="form-row">
+              <label for="ins-horario" data-i18n="enroll.time">Horário preferido (opcional)</label>
+              <input type="text" id="ins-horario" name="horario" placeholder="Ex: terças 18h30, sábados de manhã..." />
+            </div>
+            <div class="form-row">
+              <label for="ins-mensagem" data-i18n="enroll.msg">Objectivos / mensagem (opcional)</label>
+              <textarea id="ins-mensagem" name="mensagem" rows="3" placeholder="Metas fitness, experiência prévia, dúvidas..."></textarea>
+            </div>
+
+            <!-- Merged: documents checklist -->
+            <div class="inscricao-docs">
+              <p class="inscricao-docs-title" data-i18n="enroll.docs.title">Para concluir no WhatsApp, anexa também:</p>
+              <ul class="inscricao-docs-list">
+                <li>Bilhete de identidade <span>(PDF ou foto legível)</span></li>
+                <li>Foto meio corpo <span>(tipo passe ou selfie)</span></li>
+                <li>WhatsApp de um parente</li>
+                <li>Instagram e TikTok <span>(se tiveres)</span></li>
+                <li class="docs-bonus">Bónus: 3 amigos dos arredores</li>
+              </ul>
+            </div>
+
+            <button type="submit" class="btn btn-solid" style="width: 100%;"><span data-i18n="enroll.submit">Enviar inscrição no WhatsApp</span></button>
+            <p class="form-note" data-i18n="enroll.note">Abre o WhatsApp com a mensagem pronta. Envia o texto e, na mesma conversa, anexa o bilhete e a foto.</p>
+          </form>
+        </div>
+
+        <aside class="inscricao-aside">
+          <img src="../images/horario-treino.jpg" alt="Treino na Wakanda" class="inscricao-aside-img" loading="lazy" decoding="async" />
+          <img src="../images/coach-01.jpg" alt="Coaching Wakanda Training" class="inscricao-aside-img" loading="lazy" decoding="async" />
+          <p class="inscricao-aside-text"><span data-i18n="enroll.aside">Treino com acompanhamento real. Escolhe a modalidade e confirma a vaga no WhatsApp.</span></p>
+          <p class="inscricao-aside-text" style="margin-top: 0.75rem;">
+            Preçário: <a href="precario.html" style="color: var(--gold);">ver packs</a>
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--surface);">
+    <div class="container text-center">
+      <h2 class="mb-md" data-i18n="enroll.info.h2">Só queres informação?</h2>
+      <p class="mb-lg" style="margin: 0 auto; max-width: 50ch;">
+        Para preços, horários ou dúvidas sobre uma modalidade ou evento, usa os formulários nas páginas Modalidades e Eventos.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+        <a href="modalidades.html#perguntas" class="btn btn-ghost"><span data-i18n="enroll.info.mod">Perguntar sobre modalidades</span></a>
+        <a href="eventos.html#perguntas" class="btn btn-ghost"><span data-i18n="enroll.info.ev">Perguntar sobre eventos</span></a>
+        <a href="precario.html" class="btn btn-ghost">Ver preçário</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo mb-md">WAKANDA <span>TRAINING</span></div>
+          <p style="font-size: 0.9rem;">Benfica, Rua Direita do BFA<br>Defronte ao Condomínio Ville Vermont<br>Luanda, Angola</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.nav">Navegação</h4>
+          <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+          <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+          <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+          <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+          <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+          <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+        </div>
+        <div>
+          <h4 data-i18n="footer.contact">Contacto</h4>
+          <a href="https://wa.me/244940668530" target="_blank">+244 940 668 530</a>
+          <a href="mailto:teamwakandacf@gmail.com">teamwakandacf@gmail.com</a>
+          <a href="https://instagram.com/wakandatraining" target="_blank">@wakandatraining</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wakanda Training</span>
+        <span data-i18n="footer.tagline">Mais que treino, um estilo de vida.</span>
+      </div>
+    </div>
+  </footer>
+<script src="../js/i18n.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
