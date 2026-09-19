@@ -313,8 +313,8 @@
       en: 'Technique, control and discipline. Build fitness, confidence and speed.'
     },
     'mod.zumba.p': {
-      pt: 'Energia, música e movimento. Sextas-feiras com a energia da Wakanda. Vagas limitadas. Reserva no WhatsApp.',
-      en: 'Energy, music and movement. Fridays with Wakanda energy. Limited spots. Book on WhatsApp.'
+      pt: 'Energia, ritmo e bem-estar. Segundas, quartas e sextas às 19h00.',
+      en: 'Energy, rhythm and wellbeing. Mondays, Wednesdays and Fridays at 19:00.'
     },
     'mod.kids.p': {
       pt: 'Coordenação motora, força, equilíbrio, disciplina, confiança e espírito de equipa. Atividades dinâmicas e adaptadas à idade.',
