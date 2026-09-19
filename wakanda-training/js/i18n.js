@@ -435,7 +435,7 @@
     'proj.invest': { pt: 'Investimento', en: 'Investment' },
     'proj.payment': { pt: 'Pagamento único • Vagas limitadas', en: 'One-time payment • Limited spots' },
     'ev.upcoming': { pt: 'Próximos e recentes', en: 'Upcoming & recent' },
-    'ev.ask.h2': { pt: 'Pergunta sobre um evento', en: 'Ask about an event' },
+    'ev.ask.h2': { pt: 'Pergunta ou reserva', en: 'Ask or book' },
     'ev.miss.h2': { pt: 'Não percas nada', en: "Don't miss out" },
     'res.share.h2': { pt: 'Partilha a tua evolução', en: 'Share your progress' },
     'res.next.h2': { pt: 'A tua história pode ser a próxima', en: 'Your story could be next' },
@@ -464,11 +464,11 @@
     },
     'ev.notify': { pt: 'Quero ser avisado', en: 'Notify me' },
     'ev.form.lead': {
-      pt: 'Datas, vagas, o que levar: envia no WhatsApp com o contexto certo.',
-      en: 'Dates, spots, what to bring: send on WhatsApp with the right context.'
+      pt: 'Datas, vagas, reservas ou o que levar: envia no WhatsApp com o contexto certo.',
+      en: 'Dates, spots, bookings or what to bring: send on WhatsApp with the right context.'
     },
-    'ev.form.subject': { pt: 'O que queres saber? *', en: 'What do you want to know? *' },
-    'ev.form.send': { pt: 'Enviar pergunta no WhatsApp', en: 'Send question on WhatsApp' },
+    'ev.form.subject': { pt: 'O que queres fazer? *', en: 'What do you want to do? *' },
+    'ev.form.send': { pt: 'Enviar no WhatsApp', en: 'Send on WhatsApp' },
     'ev.miss.p': {
       pt: 'Segue o Instagram ou formaliza a inscrição quando estiveres pronto.',
       en: 'Follow Instagram or complete enrollment when you are ready.'
@@ -548,7 +548,7 @@
     'ev.form.event': { pt: 'Evento *', en: 'Event *' },
     'ev.form.note': { pt: 'Para te inscreveres, usa a página', en: 'To enroll, use the' },
     'ev.ph.name': { pt: 'O teu nome', en: 'Your name' },
-    'ev.ph.msg': { pt: 'A tua dúvida...', en: 'Your question...' },
+    'ev.ph.msg': { pt: 'A tua dúvida ou pedido de reserva...', en: 'Your question or booking request...' },
     'res.community.h2': { pt: 'O que a comunidade conquista', en: 'What the community achieves' },
     'res.real.lead': {
       pt: 'Antes e depois de membros da tribo. Disciplina, acompanhamento e comunidade.',
