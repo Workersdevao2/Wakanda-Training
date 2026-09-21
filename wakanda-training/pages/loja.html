@@ -12,24 +12,12 @@
   <link rel="apple-touch-icon" href="../images/apple-touch-icon.jpg" />
   <link rel="stylesheet" href="../css/styles.css" />
   <style>
+    /* fallbacks; main rules in styles.css */
     .product-img {
       width: 100%;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       background: #111;
-    }
-    .product-card .card-body {
-      padding: 1.25rem;
-    }
-    .product-card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.35rem;
-    }
-    .product-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
-      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -129,7 +117,7 @@
         <p>T-shirts oficiais Athlete, identidade e performance.</p>
       </div>
 
-      <div class="grid-2">
+      <div class="grid-2 product-grid product-grid--apparel">
         <div class="card product-card">
           <img src="../images/tshirt-amarela-athlete.jpg" alt="T-shirt Athlete Amarela" class="product-img"  loading="lazy" decoding="async" />
           <div class="card-body">
@@ -138,7 +126,7 @@
             <p class="product-price">18.000 KZ</p>
             <div style="margin: 0.75rem 0 0.5rem;">
               <label style="font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Tamanho</label>
-              <select id="size-amarela" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
+              <select id="size-amarela" class="product-size-select" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
                 <option value="S">S</option>
                 <option value="M" selected>M</option>
                 <option value="L">L</option>
@@ -162,7 +150,7 @@
             <p class="product-price">18.000 KZ</p>
             <div style="margin: 0.75rem 0 0.5rem;">
               <label style="font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Tamanho</label>
-              <select id="size-preta" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
+              <select id="size-preta" class="product-size-select" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
                 <option value="S">S</option>
                 <option value="M" selected>M</option>
                 <option value="L">L</option>
@@ -189,7 +177,7 @@
         <p><span data-i18n="shop.acc.lead">Bandas, gloves, ligaduras e cordas para elevar o teu treino.</span></p>
       </div>
 
-      <div class="grid-3">
+      <div class="grid-3 product-grid product-grid--accessories">
         <div class="card product-card">
           <img src="../images/banda-45mm-verde.jpg" alt="Banda Elástica 45mm verde" class="product-img"  loading="lazy" decoding="async" />
           <div class="card-body">
@@ -325,6 +313,19 @@
       </div>
     </div>
   </footer>
+
+  <div class="sticky-cart-bar" id="sticky-cart-bar" hidden>
+    <button type="button" class="sticky-cart-bar__btn" onclick="openCart()">
+      <span class="sticky-cart-bar__label" data-i18n="shop.cart.view">Ver carrinho</span>
+      <span class="sticky-cart-bar__meta">
+        <span class="sticky-cart-bar__count" id="sticky-cart-count">0</span>
+        <span class="sticky-cart-bar__dot">·</span>
+        <span class="sticky-cart-bar__total" id="sticky-cart-total">0 KZ</span>
+      </span>
+    </button>
+  </div>
+
+
 <script src="../js/i18n.js"></script>
 <script src="../js/main.js"></script>
 </body>
