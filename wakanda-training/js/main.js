@@ -131,6 +131,24 @@ function updateCartBadge() {
     badge.textContent = count;
     badge.style.display = count > 0 ? 'flex' : 'none';
   });
+  updateStickyCartBar();
+}
+
+function updateStickyCartBar() {
+  const bar = document.getElementById('sticky-cart-bar');
+  if (!bar) return;
+  const count = getCartCount();
+  const countEl = document.getElementById('sticky-cart-count');
+  const totalEl = document.getElementById('sticky-cart-total');
+  if (countEl) countEl.textContent = String(count);
+  if (totalEl) totalEl.textContent = formatPrice(getCartTotal());
+  if (count > 0) {
+    bar.hidden = false;
+    document.body.classList.add('has-sticky-cart');
+  } else {
+    bar.hidden = true;
+    document.body.classList.remove('has-sticky-cart');
+  }
 }
 
 function renderCart() {
@@ -147,6 +165,7 @@ function renderCart() {
     container.innerHTML = '';
     if (emptyEl) emptyEl.style.display = 'block';
     if (footerEl) footerEl.style.display = 'none';
+    updateStickyCartBar();
     return;
   }
 
@@ -171,6 +190,7 @@ function renderCart() {
   if (totalEl) {
     totalEl.textContent = formatPrice(getCartTotal());
   }
+  updateStickyCartBar();
 }
 
 function openCart() {

@@ -420,6 +420,7 @@
     'shop.apparel': { pt: 'Vestuário', en: 'Apparel' },
     'shop.accessories': { pt: 'Acessórios de Treino', en: 'Training accessories' },
     'shop.cart.title': { pt: 'O teu carrinho', en: 'Your cart' },
+    'shop.cart.view': { pt: 'Ver carrinho', en: 'View cart' },
     'shop.size': { pt: 'Tamanho', en: 'Size' },
     'shop.qty': { pt: 'Qtd', en: 'Qty' },
 
