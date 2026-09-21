@@ -912,6 +912,15 @@ a.card-overlay:hover .card-img {
   border: var(--line) solid var(--border);
 }
 
+.sobre-historia-img--logo {
+  max-width: 280px;
+  max-height: 280px;
+  margin: 0 auto 0.5rem;
+  object-fit: contain;
+  background: var(--surface);
+  padding: 1.25rem;
+}
+
 .espaco-img {
   width: 100%;
   aspect-ratio: 4 / 3;
