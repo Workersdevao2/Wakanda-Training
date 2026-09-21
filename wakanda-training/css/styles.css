@@ -1765,3 +1765,60 @@ a.card-overlay:hover .card-img {
 .bank-grid {
   gap: 1rem;
 }
+
+
+/* Full-bleed image hero (About and similar) */
+.page-hero--image {
+  position: relative;
+  min-height: clamp(280px, 48vw, 520px);
+  display: flex;
+  align-items: flex-end;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: var(--line) solid var(--border);
+}
+
+.page-hero--image .page-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-hero--image .page-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.35) 0%,
+    rgba(10, 10, 10, 0.55) 45%,
+    rgba(10, 10, 10, 0.92) 100%
+  );
+  pointer-events: none;
+}
+
+.page-hero--image .page-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 3.5rem 0 2.5rem;
+}
+
+.page-hero--image h1 {
+  color: var(--text);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+
+.page-hero--image .lead {
+  color: rgba(245, 245, 245, 0.88);
+  max-width: 36rem;
+}
+
+@media (min-width: 768px) {
+  .page-hero--image {
+    min-height: clamp(360px, 42vw, 560px);
+  }
+  .page-hero--image .page-hero-content {
+    padding: 4.5rem 0 3rem;
+  }
+}
