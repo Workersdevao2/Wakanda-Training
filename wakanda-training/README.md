@@ -58,12 +58,15 @@ Static multi-page website for **Wakanda Training** gym (Luanda, Angola).
 ## Safe GitHub updates (Angola / unstable power)
 **Do not** delete the whole repo folder to re-upload.
 
-1. Change only the files listed after each task
-2. In GitHub: open each file → Edit (pencil) **or** upload only those paths (Add file → Upload files into the same folders)
-3. Commit message e.g. `Update Face to Face event + hero-13`
-4. Cloudflare redeploys automatically from `main`
+After every change, the assistant will list **exactly which files changed** so you can download only those and push to GitHub.
 
-If you only touch 3–5 files, risk of a long outage is much lower than replacing the entire tree.
+1. Note the **Files changed** list in the chat
+2. Download only those paths from the project folder
+3. In GitHub: open each file → Edit (pencil) **or** Upload files into the **same folders** (e.g. `pages/`, `images/`)
+4. Commit message e.g. `Resultados: primary CTA transformation image`
+5. Cloudflare redeploys automatically from `main`
+
+If you only touch 2–5 files, risk of a long outage is much lower than replacing the entire tree.
 
 ## Features
 - WhatsApp CTAs (`+244 940 668 530`)
