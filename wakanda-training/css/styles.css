@@ -1157,6 +1157,74 @@ a.card-overlay:hover .card-img {
   border: var(--line) solid var(--border);
 }
 
+
+/* =====================================================
+   FULL-BLEED CTA BAND (edge-to-edge image + text on top)
+   ===================================================== */
+.cta-band {
+  position: relative;
+  min-height: clamp(280px, 40vw, 440px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  border-top: var(--line) solid var(--border);
+}
+.cta-band-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.cta-band-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.45) 0%,
+    rgba(10, 10, 10, 0.72) 55%,
+    rgba(10, 10, 10, 0.88) 100%
+  );
+  pointer-events: none;
+}
+.cta-band-content {
+  position: relative;
+  z-index: 1;
+  padding: 3rem max(var(--space-md), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-md), env(safe-area-inset-right, 0px));
+  width: 100%;
+}
+.cta-band-content h2 {
+  color: var(--text);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+}
+.cta-band-content p {
+  color: rgba(245, 245, 245, 0.92);
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-band .btn-ghost {
+  border-color: rgba(245, 245, 245, 0.55);
+  color: var(--text);
+  background: rgba(10, 10, 10, 0.25);
+}
+.cta-band .btn-ghost:hover {
+  border-color: var(--gold);
+  background: rgba(10, 10, 10, 0.4);
+}
+@media (min-width: 768px) {
+  .cta-band {
+    min-height: clamp(320px, 36vw, 480px);
+  }
+  .cta-band-content {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+}
+
 /* =====================================================
    CART DRAWER
    ===================================================== */
