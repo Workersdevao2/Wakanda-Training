@@ -175,7 +175,7 @@
     'enroll.height': { pt: 'Altura e peso', en: 'Height and weight' },
     'enroll.type': { pt: 'Quero inscrever-me em *', en: 'I want to join *' },
     'enroll.detail': { pt: 'Modalidade / evento *', en: 'Program / event *' },
-    'enroll.payment': { pt: 'Método de pagamento preferido *', en: 'Preferred payment method *' },
+    'enroll.payment': { pt: 'Método de pagamento preferido (opcional)', en: 'Preferred payment method (optional)' },
     'enroll.address': { pt: 'Morada / zona (opcional)', en: 'Address / area (optional)' },
     'enroll.time': { pt: 'Horário preferido (opcional)', en: 'Preferred time (optional)' },
     'enroll.msg': { pt: 'Objectivos / mensagem (opcional)', en: 'Goals / message (optional)' },
