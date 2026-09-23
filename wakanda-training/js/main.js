@@ -315,6 +315,11 @@ function initHeroSlider() {
     if (!v) return;
     forceMuteInline(v);
     v.loop = false;
+    // Only fetch media for the active slide
+    if (v.getAttribute('preload') !== 'auto') {
+      v.setAttribute('preload', 'auto');
+    }
+    try { v.load(); } catch (e) {}
     const tryPlay = () => {
       const p = v.play();
       if (p && typeof p.then === 'function') {
