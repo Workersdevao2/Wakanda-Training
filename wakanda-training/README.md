@@ -46,14 +46,17 @@ Static multi-page website for **Wakanda Training** gym (Luanda, Angola).
 ## Folder map (what to edit where)
 | Goal | Files |
 |------|--------|
-| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` |
+| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (hero-13 first = Face to Face) |
 | About text/images | `pages/sobre.html` + `images/sobre-*.jpg` |
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
-| Events | `pages/eventos.html` + `images/evento-*.jpg` |
+| Events | `pages/eventos.html` + `images/evento-*.jpg` / `hero-13.jpg` |
+| Resultados gallery / CTAs | `pages/resultados.html` + `images/resultado-*.jpg` + `transformacao-*.jpg` |
 | Store products | `pages/loja.html` + product images |
 | PT/EN text | `js/i18n.js` |
-| Styles | `css/styles.css` |
-| Nav / cart / WA | `js/main.js` |
+| Styles (incl. `.cta-band`) | `css/styles.css` |
+| Nav / cart / WA forms | `js/main.js` |
+| SEO sitemap / robots | `sitemap.xml`, `robots.txt` |
+| SEO meta (canonical, OG) | `<head>` on each HTML page |
 
 ## Safe GitHub updates (Angola / unstable power)
 **Do not** delete the whole repo folder to re-upload.
@@ -69,11 +72,12 @@ After every change, the assistant will list **exactly which files changed** so y
 If you only touch 2–5 files, risk of a long outage is much lower than replacing the entire tree.
 
 ## Features
-- WhatsApp CTAs (`+244 940 668 530`)
-- Floating WhatsApp button
+- WhatsApp CTAs (`+244 940 668 530`) — forms + buttons (no floating button)
+- Full-bleed CTA bands (`modalidades-hero.jpg` + text overlay) on most pages
 - Language toggle PT | EN
 - Client-side cart (Loja)
 - Responsive nav (hamburger → X)
+- SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
 
 ## Design system
 - Background `#0A0A0A` · Surface `#161616`
@@ -86,9 +90,18 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 npx serve .
 ```
 
+## SEO
+- Canonical + Open Graph + Twitter on every page
+- `robots.txt` → allows crawl, points to sitemap
+- `sitemap.xml` → all public URLs (`https://wakandatraining.com/...`)
+- JSON-LD `HealthClub` on Home + Contacto (address, phone, geo, Instagram)
+- After deploy: submit `https://wakandatraining.com/sitemap.xml` in Google Search Console
+- Local SEO: keep NAP consistent; Google Business Profile is the next step outside the repo
+
 ## Deploy
-Repo connected to Cloudflare project **wakanda-training**.  
-Domain: `wakandatraining.com`.
+Repo connected to Cloudflare Worker/Pages project **wakanda-training**.  
+Live: `https://wakandatraining.com` and `https://www.wakandatraining.com`  
+Preview: `https://wakanda-training.workersdevao.workers.dev`
 
 ## Contact
 - WhatsApp: +244 940 668 530
