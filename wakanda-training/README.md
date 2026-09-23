@@ -95,8 +95,10 @@ npx serve .
 - `robots.txt` → allows crawl, points to sitemap
 - `sitemap.xml` → all public URLs (`https://wakandatraining.com/...`)
 - JSON-LD `HealthClub` on Home + Contacto (address, phone, geo, Instagram)
-- After deploy: submit `https://wakandatraining.com/sitemap.xml` in Google Search Console
-- Local SEO: keep NAP consistent; Google Business Profile is the next step outside the repo
+- Google Search Console: property `https://wakandatraining.com/` **verified** (HTML file `googledc4e37b1da1d983c.html`)
+- Sitemap submitted → **Success** (11 pages discovered, 2026-09-23)
+- Keep verification file at site root; do not delete it
+- Local SEO next: Google Business Profile; keep NAP consistent on the site
 
 ## Deploy
 Repo connected to Cloudflare Worker/Pages project **wakanda-training**.  
