@@ -75,159 +75,321 @@
     </div>
   </section>
 
-  <section class="section">
+  <!-- Jump links -->
+  <nav class="price-jump" aria-label="Secções do preçário">
+    <div class="container price-jump-inner">
+      <a href="#aulas-grupo" class="price-jump-link">Aulas de grupo</a>
+      <a href="#treino-pt" class="price-jump-link">Treino personalizado</a>
+      <a href="#pagamento" class="price-jump-link">Pagamento</a>
+    </div>
+  </nav>
+
+  <!-- AULAS DE GRUPO -->
+  <section class="section" id="aulas-grupo">
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="price.group.h2">Aulas de grupo</h2>
-        <p data-i18n="price.group.lead">Packs mensais · frequência semanal · validade 30 dias · aulas não acumuláveis</p>
+        <p>Um pack mensal = quantas vezes por semana queres treinar. Validade 30 dias. As aulas não acumulam para o mês seguinte.</p>
       </div>
 
+      <h3 class="price-subh">Inscrição e aulas avulsas</h3>
       <div class="price-cards grid-2 mb-lg">
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.enroll">Inscrição</p>
+            <p class="price-label">Inscrição</p>
             <p class="product-price">20.000 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);" data-i18n="price.enroll.note">Renovável após 90 dias</p>
+            <p class="price-note">Uma vez · renovável após 90 dias de ausência</p>
           </div>
         </div>
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.reenroll">Reinscrição</p>
+            <p class="price-label">Reinscrição</p>
             <p class="product-price">10.000 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><span data-i18n="price.reenroll.note">Após período de inatividade</span></p>
+            <p class="price-note">Se estiveste inactivo e queres voltar</p>
           </div>
         </div>
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.drop.in">Aula avulsa (interno)</p>
+            <p class="price-label">Aula avulsa · interno</p>
             <p class="product-price">7.500 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><span data-i18n="price.drop.in.note">Atleta inscrito no ginásio</span></p>
+            <p class="price-note">Já és membro do ginásio · 1 aula / 1 dia</p>
           </div>
         </div>
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.drop.out">Aula avulsa (externo)</p>
+            <p class="price-label">Aula avulsa · externo</p>
             <p class="product-price">10.000 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><span data-i18n="price.drop.out.note">Atleta visitante</span></p>
+            <p class="price-note">Visitante · 1 aula / 1 dia</p>
           </div>
         </div>
       </div>
 
-      <div class="table-wrap mb-lg">
-        <table class="price-table">
-          <thead>
-            <tr>
-              <th data-i18n="price.freq">Frequência</th>
-              <th data-i18n="price.validity">Validade</th>
-              <th data-i18n="price.value">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1× / semana</td><td>30 dias</td><td>35.000 AKZ</td></tr>
-            <tr><td>2× / semana</td><td>30 dias</td><td>40.000 AKZ</td></tr>
-            <tr class="highlight"><td>3× / semana <span class="badge-popular" data-i18n="price.popular">Mais popular</span></td><td>30 dias</td><td>45.000 AKZ</td></tr>
-            <tr><td>4× / semana</td><td>30 dias</td><td>50.000 AKZ</td></tr>
-            <tr><td>5× / semana</td><td>30 dias</td><td>55.000 AKZ</td></tr>
-            <tr><td>7× / semana <span class="badge-popular" data-i18n="price.full">Acesso total</span></td><td>30 dias</td><td>60.000 AKZ</td></tr>
-          </tbody>
-        </table>
+      <h3 class="price-subh">Packs mensais — escolhe a frequência</h3>
+      <p class="price-hint mb-md">O preço é por 30 dias. Quanto mais vezes por semana, melhor o valor por aula.</p>
+
+      <div class="pack-grid">
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">1× / semana</span>
+            <span class="pack-meta">~4 aulas / mês</span>
+          </div>
+          <p class="pack-price">35.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 1× por semana (35.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">2× / semana</span>
+            <span class="pack-meta">~8 aulas / mês</span>
+          </div>
+          <p class="pack-price">40.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 2× por semana (40.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card pack-card--featured">
+          <span class="pack-badge">Mais popular</span>
+          <div class="pack-card-top">
+            <span class="pack-freq">3× / semana</span>
+            <span class="pack-meta">~12 aulas / mês</span>
+          </div>
+          <p class="pack-price">45.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias · escolha mais comum</p>
+          <a href="#" class="btn btn-sm btn-solid pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 3× por semana (45.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">4× / semana</span>
+            <span class="pack-meta">~16 aulas / mês</span>
+          </div>
+          <p class="pack-price">50.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 4× por semana (50.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">5× / semana</span>
+            <span class="pack-meta">~20 aulas / mês</span>
+          </div>
+          <p class="pack-price">55.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 5× por semana (55.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card pack-card--featured pack-card--best">
+          <span class="pack-badge">Acesso total</span>
+          <div class="pack-card-top">
+            <span class="pack-freq">7× / semana</span>
+            <span class="pack-meta">Treina todos os dias</span>
+          </div>
+          <p class="pack-price">60.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias · melhor valor por aula</p>
+          <a href="#" class="btn btn-sm btn-solid pack-wa" onclick="openWhatsApp('Olá! Quero o pack de aulas de grupo 7× por semana — acesso total (60.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
       </div>
 
-      <p class="mb-md" style="font-size: 0.9rem; color: var(--text-muted);">
-        <strong style="color: var(--text);"><span data-i18n="price.access">Acesso a todas as aulas:</span></strong>
-        CrossFit, Hyrox, Musculação, Step, Zumba, Jump, Running, Power Legs, Weightlifting, Gymnastics, Jiu Jitsu, Kickboxing.
-      </p>
-      <p style="font-size: 0.85rem; color: var(--text-muted);">
-        <span data-i18n="price.hours">Funcionamento: Seg–Sex 05h00–21h30 · Sáb–Dom 07h00–18h00 · Mensalidade até dia 5 de cada mês.</span>
-      </p>
+      <h3 class="price-subh mt-lg">O que está incluído</h3>
+      <p class="price-hint mb-sm">Com qualquer pack de grupo tens acesso a todas estas modalidades:</p>
+      <ul class="mod-chips" aria-label="Modalidades incluídas">
+        <li>CrossFit</li>
+        <li>Hyrox</li>
+        <li>Musculação</li>
+        <li>Step</li>
+        <li>Zumba</li>
+        <li>Jump</li>
+        <li>Running</li>
+        <li>Power Legs</li>
+        <li>Weightlifting</li>
+        <li>Gymnastics</li>
+        <li>Jiu Jitsu</li>
+        <li>Kickboxing</li>
+      </ul>
+
+      <div class="rules-box mt-lg">
+        <h3 class="price-subh" style="margin-top:0;">Regras importantes</h3>
+        <ul class="rules-list">
+          <li>O pack é pela <strong>frequência semanal</strong> (1× a 7×). Validade <strong>30 dias</strong>.</li>
+          <li>As aulas <strong>não acumulam</strong> — o que não usares na semana não passa para a seguinte.</li>
+          <li>Mensalidade até ao <strong>dia 5</strong> de cada mês. Depois do dia 5, o pagamento fecha no final do mês.</li>
+          <li>Actualizações de pagamento podem levar até <strong>48 horas</strong> — paga com antecedência.</li>
+          <li>Se estiveres <strong>90 dias</strong> ausente, precisas de renovar a inscrição.</li>
+          <li>Mensalidade expirada ou em dívida: <strong>não podes treinar</strong> até regularizar.</li>
+          <li>Envia o pagamento por WhatsApp com o <strong>comprovativo</strong>.</li>
+        </ul>
+        <p class="price-hours"><strong>Horário do ginásio:</strong> Seg–Sex 05h00–21h30 · Sáb–Dom 07h00–18h00</p>
+      </div>
     </div>
   </section>
 
-  <section class="section" style="background: var(--surface);">
+  <!-- TREINO PERSONALIZADO -->
+  <section class="section" id="treino-pt" style="background: var(--surface);">
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="price.pt.h2">Treino personalizado</h2>
-        <p data-i18n="price.pt.lead">Sessões individuais com treinador · validade 30 dias</p>
+        <p>Sessões de 1 hora só contigo e o treinador. Packs válidos 30 dias.</p>
       </div>
 
+      <h3 class="price-subh">Inscrição e sessão avulsa</h3>
       <div class="price-cards grid-2 mb-lg">
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.enroll">Inscrição</p>
+            <p class="price-label">Inscrição</p>
             <p class="product-price">20.000 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Renovável após 90 dias</p>
+            <p class="price-note">Renovável após 90 dias de ausência</p>
           </div>
         </div>
         <div class="card price-card">
           <div class="card-body">
-            <p class="price-label" data-i18n="price.pt.session">Sessão avulsa</p>
-            <p class="product-price">15.000 / 20.000 AKZ</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><span data-i18n="price.pt.session.note">Interno · Externo (1 hora)</span></p>
+            <p class="price-label">Sessão avulsa · interno</p>
+            <p class="product-price">15.000 AKZ</p>
+            <p class="price-note">Membro do ginásio · 1 hora</p>
+          </div>
+        </div>
+        <div class="card price-card">
+          <div class="card-body">
+            <p class="price-label">Sessão avulsa · externo</p>
+            <p class="product-price">20.000 AKZ</p>
+            <p class="price-note">Visitante · 1 hora</p>
           </div>
         </div>
       </div>
 
-      <div class="table-wrap mb-lg">
-        <table class="price-table">
-          <thead>
-            <tr>
-              <th data-i18n="price.freq">Frequência</th>
-              <th data-i18n="price.sessions">Sessões / mês</th>
-              <th data-i18n="price.value">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1× / semana</td><td>4</td><td>40.000 AKZ</td></tr>
-            <tr><td>2× / semana</td><td>8</td><td>80.000 AKZ</td></tr>
-            <tr class="highlight"><td>3× / semana <span class="badge-popular" data-i18n="price.popular">Mais popular</span></td><td>12</td><td>120.000 AKZ</td></tr>
-            <tr><td>4× / semana</td><td>16</td><td>160.000 AKZ</td></tr>
-            <tr><td>5× / semana</td><td>20</td><td>200.000 AKZ</td></tr>
-            <tr><td>6× / semana <span class="badge-popular" data-i18n="price.best">Melhor valor</span></td><td>24</td><td>240.000 AKZ</td></tr>
-          </tbody>
-        </table>
+      <h3 class="price-subh">Packs mensais de PT</h3>
+      <p class="price-hint mb-md">Mais sessões por semana = melhor preço por sessão.</p>
+
+      <div class="pack-grid">
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">1× / semana</span>
+            <span class="pack-meta">4 sessões / mês</span>
+          </div>
+          <p class="pack-price">40.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 1× por semana (40.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">2× / semana</span>
+            <span class="pack-meta">8 sessões / mês</span>
+          </div>
+          <p class="pack-price">80.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 2× por semana (80.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card pack-card--featured">
+          <span class="pack-badge">Mais popular</span>
+          <div class="pack-card-top">
+            <span class="pack-freq">3× / semana</span>
+            <span class="pack-meta">12 sessões / mês</span>
+          </div>
+          <p class="pack-price">120.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm btn-solid pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 3× por semana (120.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">4× / semana</span>
+            <span class="pack-meta">16 sessões / mês</span>
+          </div>
+          <p class="pack-price">160.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 4× por semana (160.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card">
+          <div class="pack-card-top">
+            <span class="pack-freq">5× / semana</span>
+            <span class="pack-meta">20 sessões / mês</span>
+          </div>
+          <p class="pack-price">200.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias</p>
+          <a href="#" class="btn btn-sm pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 5× por semana (200.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+
+        <article class="pack-card pack-card--featured pack-card--best">
+          <span class="pack-badge">Melhor valor</span>
+          <div class="pack-card-top">
+            <span class="pack-freq">6× / semana</span>
+            <span class="pack-meta">24 sessões / mês</span>
+          </div>
+          <p class="pack-price">240.000 <span>AKZ</span></p>
+          <p class="pack-valid">Validade 30 dias · melhor preço por sessão</p>
+          <a href="#" class="btn btn-sm btn-solid pack-wa" onclick="openWhatsApp('Olá! Quero o pack de treino personalizado 6× por semana (240.000 AKZ).'); return false;">Quero este pack</a>
+        </article>
+      </div>
+
+      <div class="rules-box mt-lg">
+        <h3 class="price-subh" style="margin-top:0;">Regras do PT</h3>
+        <ul class="rules-list">
+          <li>Os packs valem <strong>30 dias</strong>. Se a mensalidade for carregada a tempo, as sessões são creditadas.</li>
+          <li>Actualizações de pagamento até <strong>48 horas</strong>.</li>
+          <li>Após <strong>90 dias</strong> ausente, renova a inscrição.</li>
+          <li>Mensalidade expirada ou em dívida: <strong>sem sessão</strong> até regularizar.</li>
+          <li>Pagamento por WhatsApp com comprovativo.</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- PAGAMENTO -->
+  <section class="section" id="pagamento">
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="price.pay.h2">Pagamento</h2>
-        <p data-i18n="price.pay.lead">Transferência ou Multicaixa Express · envia o comprovativo no WhatsApp</p>
+        <p>Transfere e envia o comprovativo no WhatsApp. Sem comprovativo, o acesso não é actualizado.</p>
       </div>
+
       <div class="grid-2 bank-grid">
         <div class="card">
           <div class="card-body">
-            <h3 class="mb-sm">Banco BCI</h3>
-            <p style="font-size: 0.9rem;">Conta: <strong style="color: var(--text);">7487003310001</strong><br>
-            IBAN: <strong style="color: var(--text);">AO06 0005 0000 7487 0033 1019 7</strong></p>
+            <h3 class="mb-sm">Banco BAI</h3>
+            <p class="bank-line">IBAN</p>
+            <p class="bank-value" id="iban-bai">AO06 0040 0000 1128 0018 1011 3</p>
+            <button type="button" class="btn btn-sm mt-sm" onclick="copyText('AO06004000001128001810113', this)">Copiar IBAN</button>
+            <p class="price-note mt-sm">Titular: Corpos Malhados — Prestação de Serviços, Lda</p>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <h3 class="mb-sm">Banco BAI</h3>
-            <p style="font-size: 0.9rem;">Conta: <strong style="color: var(--text);">11128001810001</strong><br>
-            IBAN: <strong style="color: var(--text);">AO06 0040 0000 1128 0018 1011 3</strong></p>
+            <h3 class="mb-sm">Banco BCI</h3>
+            <p class="bank-line">IBAN</p>
+            <p class="bank-value" id="iban-bci">AO06 0005 0000 7487 0033 1019 7</p>
+            <button type="button" class="btn btn-sm mt-sm" onclick="copyText('AO06000500007487003310197', this)">Copiar IBAN</button>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
             <h3 class="mb-sm">Multicaixa Express</h3>
-            <p style="font-size: 0.9rem;">N.º Express / transferência rápida:<br>
-            <strong style="color: var(--gold); font-size: 1.25rem;">933 953 989</strong></p>
+            <p class="bank-line">Número</p>
+            <p class="bank-value bank-value--gold">933 953 989</p>
+            <button type="button" class="btn btn-sm mt-sm" onclick="copyText('933953989', this)">Copiar número</button>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <h3 class="mb-sm" data-i18n="price.holder">Titular</h3>
-            <p style="font-size: 0.9rem;">Corpos Malhados Prestação de Serviços, Lda<br>
-            WhatsApp: <a href="https://wa.me/244940668530">+244 940 668 530</a></p>
+            <h3 class="mb-sm">WhatsApp</h3>
+            <p class="price-note">Envia o comprovativo aqui:</p>
+            <p class="bank-value bank-value--gold">+244 940 668 530</p>
+            <a href="#" class="btn btn-sm btn-solid mt-sm" onclick="openWhatsApp('Olá! Segue o comprovativo de pagamento.'); return false;">Abrir WhatsApp</a>
           </div>
         </div>
       </div>
-      <p class="mt-md" style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">
-        <span data-i18n="price.pay.note">Actualizações de pagamento levam até 48h. Quem tiver a mensalidade expirada não poderá treinar até regularizar.</span>
-      </p>
+
+      <div class="rules-box mt-lg">
+        <h3 class="price-subh" style="margin-top:0;">Perguntas rápidas</h3>
+        <ul class="rules-list">
+          <li><strong>As aulas acumulam?</strong> Não. O que não usares na semana não passa para a seguinte.</li>
+          <li><strong>Até quando pago?</strong> Idealmente até ao dia 5. Depois, o pagamento fecha no final do mês.</li>
+          <li><strong>E se faltar?</strong> A aula não usada não é transferida. O pack continua válido 30 dias.</li>
+          <li><strong>Quanto tempo demora a activar?</strong> Até 48 horas após enviares o comprovativo.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -235,15 +397,14 @@
     <div class="cta-band-bg" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-hidden="true"></div>
     <div class="cta-band-scrim"></div>
     <div class="container cta-band-content text-center">
-      <h2 class="mb-md" data-i18n="price.ready.h2">Pronto para começar?</h2>
-      <p class="mb-lg" data-i18n="price.ready.p">Formaliza a inscrição ou fala connosco no WhatsApp.</p>
+      <h2 class="mb-md">Pronto para começar?</h2>
+      <p class="mb-lg">Escolhe o pack, paga e envia o comprovativo — ou fala connosco se tiveres dúvidas.</p>
       <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
-        <a href="inscricao.html" class="btn btn-solid"><span data-i18n="cta.enroll">Inscrever-me</span></a>
-        <a href="#" class="btn btn-ghost" onclick="openWhatsApp('Olá! Quero informações sobre o preçário.'); return false;">WhatsApp</a>
+        <a href="inscricao.html" class="btn btn-solid">Inscrever-me</a>
+        <a href="#" class="btn btn-ghost" onclick="openWhatsApp('Olá! Quero ajuda a escolher o pack certo.'); return false;">WhatsApp</a>
       </div>
     </div>
   </section>
-
 
   <footer class="footer">
     <div class="container">
@@ -275,7 +436,24 @@
     </div>
   </footer>
 
-  <script src="../js/i18n.js"></script>
+  <script>
+  function copyText(text, btn) {
+    var done = function () {
+      if (!btn) return;
+      var old = btn.textContent;
+      btn.textContent = 'Copiado';
+      setTimeout(function () { btn.textContent = old; }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(function () {
+        window.prompt('Copia este valor:', text);
+      });
+    } else {
+      window.prompt('Copia este valor:', text);
+    }
+  }
+</script>
+<script src="../js/i18n.js"></script>
 <script src="../js/main.js"></script>
 </body>
 </html>
