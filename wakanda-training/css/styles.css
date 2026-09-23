@@ -507,6 +507,13 @@ a.card-overlay:hover .card-img {
   display: block;
 }
 
+/* Full poster visible (events / graphics) — no crop */
+.hero-slide[data-type="photo"] img {
+  object-fit: contain;
+  object-position: center center;
+  background: #0a0a0a;
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
