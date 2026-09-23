@@ -37,8 +37,8 @@
     'home.tag': { pt: 'High Performance • Luanda', en: 'High Performance • Luanda' },
     'home.h1': { pt: 'Mais que treino.<br>Um estilo de vida.', en: 'More than training.<br>A lifestyle.' },
     'home.lead': {
-      pt: 'CrossFit, Hyrox, Musculação, Kickboxing, Zumba e programas de transformação. Disciplina, comunidade e resultados reais na Wakanda Training.',
-      en: 'CrossFit, Hyrox, Strength, Kickboxing, Zumba and transformation programs. Discipline, community and real results at Wakanda Training.'
+      pt: 'Ginásio high performance em Benfica, Luanda. CrossFit, Hyrox, Musculação, Kickboxing, Zumba e o Gordus Project. Disciplina, comunidade e resultados reais.',
+      en: 'High-performance gym in Benfica, Luanda. CrossFit, Hyrox, Strength, Kickboxing, Zumba and the Gordus Project. Discipline, community and real results.'
     },
     'home.cta.trial': { pt: 'Aula Experimental Grátis', en: 'Free Trial Class' },
     'home.cta.gordus': { pt: 'Ver Gordus Project', en: 'See Gordus Project' },
@@ -84,7 +84,7 @@
 
     /* ---------- Modalities ---------- */
     'mod.h1': { pt: 'Modalidades', en: 'Programs' },
-    'mod.lead': { pt: 'Escolhe o teu caminho. Nós acompanhamos a evolução.', en: 'Choose your path. We guide the progress.' },
+    'mod.lead': { pt: 'CrossFit, Hyrox, Kickboxing, Zumba e mais em Benfica, Luanda. Escolhe o teu caminho — nós acompanhamos a evolução.', en: 'CrossFit, Hyrox, Kickboxing, Zumba and more in Benfica, Luanda. Choose your path — we guide the progress.' },
     'mod.more': { pt: 'Saber mais', en: 'Learn more' },
     'mod.book': { pt: 'Reservar vaga', en: 'Book a spot' },
     'mod.q.h2': { pt: 'Tens uma pergunta?', en: 'Have a question?' },
@@ -107,8 +107,8 @@
     /* ---------- Schedule ---------- */
     'sch.h1': { pt: 'Horários', en: 'Schedule' },
     'sch.lead': {
-      pt: 'Escolhe o melhor horário para ti. Confirma sempre no WhatsApp.',
-      en: 'Pick the best time for you. Always confirm on WhatsApp.'
+      pt: 'Horários de aulas em Luanda (Benfica). Escolhe o melhor slot e confirma no WhatsApp.',
+      en: 'Class schedule in Luanda (Benfica). Pick the best slot and confirm on WhatsApp.'
     },
     'sch.note': {
       pt: 'Horários sujeitos a alteração. Confirma sempre no WhatsApp.',
@@ -208,8 +208,8 @@
     /* ---------- Contact ---------- */
     'contact.h1': { pt: 'Contacto', en: 'Contact' },
     'contact.lead': {
-      pt: 'Estamos prontos para te receber. Fala connosco.',
-      en: 'We’re ready for you. Get in touch.'
+      pt: 'Wakanda Training em Benfica, Rua Direita do BFA (defronte Ville Vermont), Luanda. Fala connosco no WhatsApp.',
+      en: 'Wakanda Training in Benfica, Rua Direita do BFA (opposite Ville Vermont), Luanda. Reach us on WhatsApp.'
     },
     'contact.talk': { pt: 'Fala connosco', en: 'Talk to us' },
     'contact.talk.lead': {
