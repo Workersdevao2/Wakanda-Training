@@ -467,10 +467,13 @@ function initWaForms() {
             (data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Preferred time:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Goals / message:* ' + data.mensagem + '\n' : '') +
-            '\n_I will also send in this chat:_\n' +
-            '• ID document (PDF or photo)\n' +
-            '• Half-body photo\n' +
-            '• A relative\'s contact';
+            (data.tipo === 'Aula experimental'
+              ? '\n_I want to book a trial class and confirm the time._'
+              : data.tipo === 'Evento'
+              ? '\n_Confirming interest in the event; I will send proof of payment if needed._'
+              : data.tipo === 'Gordus Project'
+              ? '\n_I will also send:_\n• ID document\n• Half-body photo (before)\n• A relative\'s contact'
+              : '\n_I will also send in this chat:_\n• ID document (PDF or photo)\n• Half-body photo\n• A relative\'s contact');
         } else {
           message =
             'Olá! Quero *inscrever-me* na Wakanda Training.\n\n' +
@@ -489,10 +492,13 @@ function initWaForms() {
             (data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Horário preferido:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Objectivos / mensagem:* ' + data.mensagem + '\n' : '') +
-            '\n_Vou enviar em seguida na conversa:_\n' +
-            '• Bilhete de identidade (PDF ou foto)\n' +
-            '• Foto meio corpo\n' +
-            '• Contacto de um parente';
+            (data.tipo === 'Aula experimental'
+              ? '\n_Quero marcar a aula experimental e confirmar horário._'
+              : data.tipo === 'Evento'
+              ? '\n_Confirmo interesse no evento; envio comprovativo se necessário._'
+              : data.tipo === 'Gordus Project'
+              ? '\n_Vou enviar em seguida:_\n• Bilhete de identidade\n• Foto meio corpo (antes)\n• Contacto de um parente'
+              : '\n_Vou enviar em seguida na conversa:_\n• Bilhete de identidade (PDF ou foto)\n• Foto meio corpo\n• Contacto de um parente');
         }
       } else if (type === 'pergunta-modalidade') {
         message =
@@ -606,6 +612,21 @@ function initWaForms() {
       }
       if (!isEvt && selEvt) selEvt.value = '';
       if (!isTrial && selTrial) selTrial.value = '';
+
+      // Documents checklist by type
+      const docsMap = {
+        'Modalidade': 'docs-membro',
+        'Gordus Project': 'docs-gordus',
+        'Evento': 'docs-evento',
+        'Aula experimental': 'docs-trial'
+      };
+      ['docs-membro', 'docs-gordus', 'docs-evento', 'docs-trial', 'docs-default'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.hidden = true;
+      });
+      const docsId = docsMap[v] || 'docs-default';
+      const docsEl = document.getElementById(docsId);
+      if (docsEl) docsEl.hidden = false;
 
       syncPacks();
     }
