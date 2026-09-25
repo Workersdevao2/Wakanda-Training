@@ -103,7 +103,7 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 - Responsive nav (hamburger → X)
 - SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
 - **Preçário:** pack cards with prices + “Quero este pack” → WhatsApp
-- **Inscrição:** plan type (grupo / PT / avulsa) + pack frequency with prices; WhatsApp message includes chosen pack
+- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack with prices; Gordus / Evento / Aula experimental → only relevant fields (no forced pack); WhatsApp includes chosen pack when applicable
 - **Horários:** poster-based schedule cards + sticky section nav (no per-slot WA buttons)
 
 ## Coaches (Sobre nós)
