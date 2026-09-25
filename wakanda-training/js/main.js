@@ -471,6 +471,8 @@ function initWaForms() {
               ? '\n_I want to book a trial class and confirm the time._'
               : data.tipo === 'Evento'
               ? '\n_Confirming interest in the event; I will send proof of payment if needed._'
+              : data.tipo === 'Reinscrição'
+              ? '\n_I want to *re-enroll* (fee 10.000 AKZ). I will send proof of payment next._'
               : data.tipo === 'Gordus Project'
               ? '\n_I will also send:_\n• ID document\n• Half-body photo (before)\n• A relative\'s contact'
               : '\n_I will also send in this chat:_\n• ID document (PDF or photo)\n• Half-body photo\n• A relative\'s contact');
@@ -496,6 +498,8 @@ function initWaForms() {
               ? '\n_Quero marcar a aula experimental e confirmar horário._'
               : data.tipo === 'Evento'
               ? '\n_Confirmo interesse no evento; envio comprovativo se necessário._'
+              : data.tipo === 'Reinscrição'
+              ? '\n_Quero *reinscrever-me* (taxa 10.000 AKZ). Envio comprovativo em seguida._'
               : data.tipo === 'Gordus Project'
               ? '\n_Vou enviar em seguida:_\n• Bilhete de identidade\n• Foto meio corpo (antes)\n• Contacto de um parente'
               : '\n_Vou enviar em seguida na conversa:_\n• Bilhete de identidade (PDF ou foto)\n• Foto meio corpo\n• Contacto de um parente');
@@ -616,11 +620,12 @@ function initWaForms() {
       // Documents checklist by type
       const docsMap = {
         'Modalidade': 'docs-membro',
+        'Reinscrição': 'docs-reinscricao',
         'Gordus Project': 'docs-gordus',
         'Evento': 'docs-evento',
         'Aula experimental': 'docs-trial'
       };
-      ['docs-membro', 'docs-gordus', 'docs-evento', 'docs-trial', 'docs-default'].forEach(id => {
+      ['docs-membro', 'docs-reinscricao', 'docs-gordus', 'docs-evento', 'docs-trial', 'docs-default'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.hidden = true;
       });
@@ -634,6 +639,83 @@ function initWaForms() {
     tipo.addEventListener('change', syncTipo);
     if (selPlano) selPlano.addEventListener('change', syncPacks);
     syncTipo();
+    // Prefill from Preçário links: ?tipo=&plano=&pack=
+    (function prefillFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const qTipo = params.get('tipo');
+      const qPlano = params.get('plano');
+      const qPack = params.get('pack');
+      if (!qTipo) return;
+
+      const tipoMap = {
+        'Modalidade': 'Modalidade',
+        'Reinscrição': 'Reinscrição',
+        'Reinscricao': 'Reinscrição',
+        'Gordus Project': 'Gordus Project',
+        'Gordus': 'Gordus Project',
+        'Evento': 'Evento',
+        'Aula experimental': 'Aula experimental'
+      };
+      const tipoVal = tipoMap[qTipo] || qTipo;
+      if ([...tipo.options].some(o => o.value === tipoVal)) {
+        tipo.value = tipoVal;
+      }
+      syncTipo();
+
+      const planoMap = {
+        'grupo': 'Aulas de grupo',
+        'Aulas de grupo': 'Aulas de grupo',
+        'pt': 'Treino personalizado',
+        'Treino personalizado': 'Treino personalizado',
+        'avulsa': 'Aula / sessão avulsa',
+        'Aula / sessão avulsa': 'Aula / sessão avulsa'
+      };
+      if (qPlano && selPlano) {
+        const pv = planoMap[qPlano] || qPlano;
+        if ([...selPlano.options].some(o => o.value === pv)) {
+          selPlano.value = pv;
+        }
+        syncPacks();
+      }
+
+      const packGrupoMap = {
+        'grupo-1x': '1× / semana — 35.000 AKZ',
+        'grupo-2x': '2× / semana — 40.000 AKZ',
+        'grupo-3x': '3× / semana — 45.000 AKZ (Mais popular)',
+        'grupo-4x': '4× / semana — 50.000 AKZ',
+        'grupo-5x': '5× / semana — 55.000 AKZ',
+        'grupo-7x': '7× / semana — 60.000 AKZ (Acesso total)'
+      };
+      const packPtMap = {
+        'pt-1x': '1× / semana (4 sessões) — 40.000 AKZ',
+        'pt-2x': '2× / semana (8 sessões) — 80.000 AKZ',
+        'pt-3x': '3× / semana (12 sessões) — 120.000 AKZ (Mais popular)',
+        'pt-4x': '4× / semana (16 sessões) — 160.000 AKZ',
+        'pt-5x': '5× / semana (20 sessões) — 200.000 AKZ',
+        'pt-6x': '6× / semana (24 sessões) — 240.000 AKZ (Melhor valor)'
+      };
+      const packAvMap = {
+        'grupo-membro': 'Aula de grupo (membro) — 7.500 AKZ',
+        'grupo-visitante': 'Aula de grupo (visitante) — 10.000 AKZ',
+        'pt-membro': 'Sessão PT (membro) — 15.000 AKZ',
+        'pt-visitante': 'Sessão PT (visitante) — 20.000 AKZ'
+      };
+
+      if (qPack && selGrupo && packGrupoMap[qPack]) {
+        selGrupo.value = packGrupoMap[qPack];
+      }
+      if (qPack && selPt && packPtMap[qPack]) {
+        selPt.value = packPtMap[qPack];
+      }
+      if (qPack && selAv && packAvMap[qPack]) {
+        selAv.value = packAvMap[qPack];
+      }
+
+      // Scroll form into view when arriving from Preçário
+      const form = document.getElementById('form-inscricao');
+      if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    })();
+
   })();
 
 
