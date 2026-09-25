@@ -452,6 +452,10 @@ function initWaForms() {
             (data.morada ? '*Address / area:* ' + data.morada + '\n' : '') +
             '*Type:* ' + data.tipo + '\n' +
             '*Program / event:* ' + data.detalhe + '\n' +
+            (data.plano ? '*Plan:* ' + data.plano + '\n' : '') +
+            (data.pack_grupo ? '*Group pack:* ' + data.pack_grupo + '\n' : '') +
+            (data.pack_pt ? '*PT pack:* ' + data.pack_pt + '\n' : '') +
+            (data.pack_avulsa ? '*Drop-in:* ' + data.pack_avulsa + '\n' : '') +
             (data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Preferred time:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Goals / message:* ' + data.mensagem + '\n' : '') +
@@ -470,6 +474,10 @@ function initWaForms() {
             (data.morada ? '*Morada / zona:* ' + data.morada + '\n' : '') +
             '*Tipo:* ' + data.tipo + '\n' +
             '*Modalidade / evento:* ' + data.detalhe + '\n' +
+            (data.plano ? '*Plano:* ' + data.plano + '\n' : '') +
+            (data.pack_grupo ? '*Pack grupo:* ' + data.pack_grupo + '\n' : '') +
+            (data.pack_pt ? '*Pack PT:* ' + data.pack_pt + '\n' : '') +
+            (data.pack_avulsa ? '*Avulsa:* ' + data.pack_avulsa + '\n' : '') +
             (data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Horário preferido:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Objectivos / mensagem:* ' + data.mensagem + '\n' : '') +
@@ -517,4 +525,21 @@ function initWaForms() {
     const sel = document.getElementById('mod-modalidade');
     if (sel) sel.value = map[hash];
   }
+
+  // Inscrição: show pack fields by plan type
+  const planoSel = document.getElementById('ins-plano');
+  if (planoSel) {
+    const rowGrupo = document.getElementById('row-pack-grupo');
+    const rowPt = document.getElementById('row-pack-pt');
+    const rowAv = document.getElementById('row-pack-avulsa');
+    const syncPlan = () => {
+      const v = planoSel.value;
+      if (rowGrupo) rowGrupo.hidden = v !== 'Aulas de grupo';
+      if (rowPt) rowPt.hidden = v !== 'Treino personalizado';
+      if (rowAv) rowAv.hidden = v !== 'Aula / sessão avulsa';
+    };
+    planoSel.addEventListener('change', syncPlan);
+    syncPlan();
+  }
+
 }
