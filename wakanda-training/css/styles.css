@@ -2391,3 +2391,9 @@ body.has-sticky-cart {
   color: var(--text-muted);
   font-weight: 400;
 }
+
+.price-card .pack-wa {
+  margin-top: 0.75rem;
+  width: 100%;
+  justify-content: center;
+}
