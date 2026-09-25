@@ -283,7 +283,7 @@
 
     'enroll.info.h2': { pt: 'Só queres informação?', en: 'Just looking for info?' },
     'enroll.info.lead': {
-      pt: 'Para preços, horários ou dúvidas sobre uma modalidade ou evento, usa os formulários nas páginas Modalidades e Eventos.',
+      pt: 'Para preços, horários ou dúvidas sobre uma modalidade, usa o formulário na página Modalidades ou o Preçário.',
       en: 'For prices, schedules or questions about a program or event, use the forms on Programs and Events.'
     },
     'enroll.info.mod': { pt: 'Perguntar sobre modalidades', en: 'Ask about programs' },

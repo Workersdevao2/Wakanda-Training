@@ -444,7 +444,6 @@ function initWaForms() {
         // Resolve detalhe from the visible branch
         const detalhe =
           data.detalhe_mod ||
-          data.detalhe_evt ||
           data.detalhe_trial ||
           (data.tipo === 'Gordus Project' ? 'Gordus Project 90 Plus' : '') ||
           data.detalhe ||
@@ -470,8 +469,6 @@ function initWaForms() {
             (data.mensagem ? '*Goals / message:* ' + data.mensagem + '\n' : '') +
             (data.tipo === 'Aula experimental'
               ? '\n_I want to book a trial class and confirm the time._'
-              : data.tipo === 'Evento'
-              ? '\n_Confirming interest in the event; I will send proof of payment if needed._'
               : data.tipo === 'Reinscrição'
               ? '\n_I want to *re-enroll* (fee 10.000 AKZ). I will send proof of payment next._'
               : data.tipo === 'Gordus Project'
@@ -498,8 +495,6 @@ function initWaForms() {
             (data.mensagem ? '*Objectivos / mensagem:* ' + data.mensagem + '\n' : '') +
             (data.tipo === 'Aula experimental'
               ? '\n_Quero marcar a aula experimental e confirmar horário._'
-              : data.tipo === 'Evento'
-              ? '\n_Confirmo interesse no evento; envio comprovativo se necessário._'
               : data.tipo === 'Reinscrição'
               ? '\n_Quero *reinscrever-me* (taxa 10.000 AKZ). Envio comprovativo em seguida._'
               : data.tipo === 'Gordus Project'
@@ -512,14 +507,6 @@ function initWaForms() {
           '*Nome:* ' + data.nome + '\n' +
           '*Telefone:* ' + data.telefone + '\n' +
           '*Modalidade:* ' + data.modalidade + '\n' +
-          '*Assunto:* ' + data.assunto + '\n' +
-          (data.mensagem ? '*Mensagem:* ' + data.mensagem + '\n' : '');
-      } else if (type === 'pergunta-evento') {
-        message =
-          'Olá! Tenho uma *pergunta sobre evento*.\n\n' +
-          '*Nome:* ' + data.nome + '\n' +
-          '*Telefone:* ' + data.telefone + '\n' +
-          '*Evento:* ' + data.evento + '\n' +
           '*Assunto:* ' + data.assunto + '\n' +
           (data.mensagem ? '*Mensagem:* ' + data.mensagem + '\n' : '');
       } else {
@@ -561,7 +548,6 @@ function initWaForms() {
     }
 
     const rowMod = document.getElementById('row-detalhe-mod');
-    const rowEvt = document.getElementById('row-detalhe-evt');
     const rowTrial = document.getElementById('row-detalhe-trial');
     const rowPlano = document.getElementById('row-plano');
     const rowGrupo = document.getElementById('row-pack-grupo');
@@ -569,7 +555,6 @@ function initWaForms() {
     const rowAv = document.getElementById('row-pack-avulsa');
 
     const selMod = document.getElementById('ins-detalhe-mod');
-    const selEvt = document.getElementById('ins-detalhe-evt');
     const selTrial = document.getElementById('ins-detalhe-trial');
     const selPlano = document.getElementById('ins-plano');
     const selGrupo = document.getElementById('ins-pack-grupo');
@@ -618,17 +603,14 @@ function initWaForms() {
     function syncTipo() {
       const v = tipo.value;
       const isMod = v === 'Modalidade';
-      const isEvt = v === 'Evento';
       const isTrial = v === 'Aula experimental';
       // Gordus: no extra detalhe row (tipo already names the program)
 
       show(rowMod, isMod);
-      show(rowEvt, isEvt);
       show(rowTrial, isTrial);
       show(rowPlano, isMod);
 
       setReq(selMod, false);
-      setReq(selEvt, isEvt);
       setReq(selTrial, isTrial);
       setReq(selPlano, isMod);
 
@@ -644,7 +626,6 @@ function initWaForms() {
         if (selMod) selMod.value = '';
         if (selPlano) selPlano.value = '';
       }
-      if (!isEvt && selEvt) selEvt.value = '';
       if (!isTrial && selTrial) selTrial.value = '';
 
       // Documents checklist by type
@@ -652,10 +633,9 @@ function initWaForms() {
         'Modalidade': 'docs-membro',
         'Reinscrição': 'docs-reinscricao',
         'Gordus Project': 'docs-gordus',
-        'Evento': 'docs-evento',
         'Aula experimental': 'docs-trial'
       };
-      ['docs-membro', 'docs-reinscricao', 'docs-gordus', 'docs-evento', 'docs-trial', 'docs-default'].forEach(id => {
+      ['docs-membro', 'docs-reinscricao', 'docs-gordus', 'docs-trial', 'docs-default'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.hidden = true;
       });
@@ -683,7 +663,6 @@ function initWaForms() {
         'Reinscricao': 'Reinscrição',
         'Gordus Project': 'Gordus Project',
         'Gordus': 'Gordus Project',
-        'Evento': 'Evento',
         'Aula experimental': 'Aula experimental'
       };
       const tipoVal = tipoMap[qTipo] || qTipo;
