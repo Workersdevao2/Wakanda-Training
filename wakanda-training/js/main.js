@@ -550,6 +550,15 @@ function initWaForms() {
   (function initInscricaoForm() {
     const tipo = document.getElementById('ins-tipo');
     if (!tipo) return;
+    function tr(key, fallback) {
+      try {
+        if (window.WakandaI18n && typeof window.WakandaI18n.t === 'function') {
+          const v = window.WakandaI18n.t(key);
+          if (v) return v;
+        }
+      } catch (e) {}
+      return fallback;
+    }
 
     const rowMod = document.getElementById('row-detalhe-mod');
     const rowEvt = document.getElementById('row-detalhe-evt');
@@ -594,8 +603,8 @@ function initWaForms() {
       const labelMod2 = document.getElementById('label-detalhe-mod');
       if (labelMod2) {
         labelMod2.textContent = (isMod && plano === 'Aula / sessão avulsa')
-          ? 'Modalidade *'
-          : 'Modalidade de interesse';
+          ? tr('enroll.mod.label.req', 'Modalidade *')
+          : tr('enroll.mod.label', 'Modalidade de interesse');
       }
       if (isMod && plano === 'Aulas de grupo' && selMod && !selMod.value) {
         const optAll = [...selMod.options].find(o => o.value.startsWith('Todas'));
@@ -628,7 +637,7 @@ function initWaForms() {
 
       const labelMod = document.getElementById('label-detalhe-mod');
       const hintMod = document.getElementById('hint-detalhe-mod');
-      if (labelMod) labelMod.textContent = 'Modalidade de interesse';
+      if (labelMod) labelMod.textContent = tr('enroll.mod.label', 'Modalidade de interesse');
       if (hintMod) hintMod.hidden = !isMod;
 
       if (!isMod) {

@@ -196,6 +196,91 @@
       pt: 'Abre o WhatsApp com a mensagem pronta. Envia o texto e, na mesma conversa, anexa o bilhete e a foto.',
       en: 'Opens WhatsApp with the message ready. Send the text, then attach your ID and photo in the same chat.'
     },
+
+    'enroll.opt.mod': { pt: 'Modalidade (aulas / packs)', en: 'Program (classes / packs)' },
+    'enroll.opt.re': { pt: 'Reinscrição (10.000 AKZ)', en: 'Re-enrollment (10.000 AKZ)' },
+    'enroll.opt.gordus': { pt: 'Gordus Project 90 Plus', en: 'Gordus Project 90 Plus' },
+    'enroll.opt.event': { pt: 'Evento', en: 'Event' },
+    'enroll.opt.trial': { pt: 'Aula experimental', en: 'Trial class' },
+    'enroll.mod.label': { pt: 'Modalidade de interesse', en: 'Program of interest' },
+    'enroll.mod.label.req': { pt: 'Modalidade *', en: 'Program *' },
+    'enroll.mod.all': { pt: 'Todas — acesso do pack de grupo', en: 'All — group pack access' },
+    'enroll.mod.hint': {
+      pt: 'No pack de grupo podes treinar várias modalidades. Indica a principal se quiseres.',
+      en: 'A group pack includes several classes. Pick a main one if you want.'
+    },
+    'enroll.evt.label': { pt: 'Evento *', en: 'Event *' },
+    'enroll.trial.label': { pt: 'Quero experimentar *', en: 'I want to try *' },
+    'enroll.trial.unsure': { pt: 'Ainda não sei', en: 'Not sure yet' },
+    'enroll.plan.label': { pt: 'Tipo de plano *', en: 'Plan type *' },
+    'enroll.plan.group': { pt: 'Aulas de grupo', en: 'Group classes' },
+    'enroll.plan.pt': { pt: 'Treino personalizado (PT)', en: 'Personal training (PT)' },
+    'enroll.plan.drop': { pt: 'Aula ou sessão avulsa', en: 'Drop-in class or session' },
+    'enroll.plan.unsure': { pt: 'Ainda não sei — quero aconselhar-me', en: 'Not sure — I want advice' },
+    'enroll.pack.group': { pt: 'Pack de grupo (frequência) *', en: 'Group pack (frequency) *' },
+    'enroll.pack.pt': { pt: 'Pack de treino personalizado *', en: 'Personal training pack *' },
+    'enroll.pack.drop': { pt: 'Aula ou sessão avulsa *', en: 'Drop-in class or session *' },
+    'enroll.pack.pick': { pt: 'Selecciona o pack...', en: 'Select a pack...' },
+    'enroll.pack.group.hint': {
+      pt: 'Validade 30 dias · inscrição à parte (20.000 AKZ)',
+      en: 'Valid 30 days · enrollment fee separate (20.000 AKZ)'
+    },
+    'enroll.pack.pt.hint': {
+      pt: 'Sessões de 1 hora · validade 30 dias · inscrição à parte (20.000 AKZ)',
+      en: '1-hour sessions · valid 30 days · enrollment fee separate (20.000 AKZ)'
+    },
+    'enroll.fee.check': {
+      pt: 'Sou novo no ginásio — a taxa de inscrição é 20.000 AKZ (além do pack).',
+      en: 'I am new to the gym — the enrollment fee is 20.000 AKZ (on top of the pack).'
+    },
+    'enroll.fee.hint': {
+      pt: 'Se já fores membro activo, deixa desmarcado. Reinscrição usa o tipo “Reinscrição” (10.000 AKZ).',
+      en: 'If you are already an active member, leave unchecked. Returning members use “Re-enrollment” (10.000 AKZ).'
+    },
+    'enroll.docs.member.title': {
+      pt: 'Para concluir no WhatsApp, anexa também:',
+      en: 'To finish on WhatsApp, also send:'
+    },
+    'enroll.docs.re.title': {
+      pt: 'Para a reinscrição no WhatsApp:',
+      en: 'For re-enrollment on WhatsApp:'
+    },
+    'enroll.docs.re.1': { pt: 'Confirma que queres voltar (taxa 10.000 AKZ)', en: 'Confirm you want to return (fee 10.000 AKZ)' },
+    'enroll.docs.re.2': { pt: 'Indica o pack que queres retomar (opcional)', en: 'Say which pack you want to resume (optional)' },
+    'enroll.docs.re.3': { pt: 'Comprovativo de pagamento da reinscrição', en: 'Proof of payment for re-enrollment' },
+    'enroll.docs.gordus.title': {
+      pt: 'Para concluir o Gordus no WhatsApp, anexa também:',
+      en: 'To finish Gordus on WhatsApp, also send:'
+    },
+    'enroll.docs.gordus.photo': { pt: 'Foto meio corpo (antes do desafio)', en: 'Half-body photo (before the challenge)' },
+    'enroll.docs.event.title': {
+      pt: 'No WhatsApp confirma também:',
+      en: 'On WhatsApp also confirm:'
+    },
+    'enroll.docs.event.1': { pt: 'Que evento queres e quantas pessoas', en: 'Which event and how many people' },
+    'enroll.docs.event.2': { pt: 'Comprovativo de pagamento (quando aplicável)', en: 'Proof of payment (when applicable)' },
+    'enroll.docs.trial.title': {
+      pt: 'Para a aula experimental:',
+      en: 'For the trial class:'
+    },
+    'enroll.docs.trial.1': { pt: 'Não precisas de documentos agora', en: 'No documents needed now' },
+    'enroll.docs.trial.2': { pt: 'Confirma no WhatsApp o dia e a hora', en: 'Confirm day and time on WhatsApp' },
+    'enroll.docs.trial.3': { pt: 'Leva roupa de treino e água', en: 'Bring training clothes and water' },
+    'enroll.docs.default.title': { pt: 'Depois de enviar:', en: 'After you send:' },
+    'enroll.docs.default.1': {
+      pt: 'Escolhe acima em que te queres inscrever',
+      en: 'Choose above what you want to join'
+    },
+    'enroll.docs.default.2': {
+      pt: 'A lista do que anexar no WhatsApp actualiza-se automaticamente',
+      en: 'The WhatsApp attachment list updates automatically'
+    },
+    'enroll.popular': { pt: 'Mais popular', en: 'Most popular' },
+    'enroll.best': { pt: 'Melhor valor', en: 'Best value' },
+    'enroll.full': { pt: 'Acesso total', en: 'Full access' },
+    'enroll.member': { pt: 'membro', en: 'member' },
+    'enroll.visitor': { pt: 'visitante', en: 'visitor' },
+
     'enroll.info.h2': { pt: 'Só queres informação?', en: 'Just looking for info?' },
     'enroll.info.lead': {
       pt: 'Para preços, horários ou dúvidas sobre uma modalidade ou evento, usa os formulários nas páginas Modalidades e Eventos.',
