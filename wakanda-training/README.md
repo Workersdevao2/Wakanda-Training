@@ -40,7 +40,6 @@ No GitHub Actions required for normal updates.
 | Horários | `pages/horarios.html` |
 | Preçário | `pages/precario.html` |
 | Loja | `pages/loja.html` |
-| Eventos | `pages/eventos.html` |
 | Resultados | `pages/resultados.html` |
 | Inscrição | `pages/inscricao.html` |
 | Contacto | `pages/contacto.html` |
@@ -60,6 +59,9 @@ No GitHub Actions required for normal updates.
 | Weightlifting | Sat 10h–11h |
 | G.A.P. | Sat 08h–09h |
 
+## Events
+Events are announced on **Instagram / social only** (no Eventos page on the site).
+
 ## Notable events
 - **Wakanda Games Face to Face** — Ndombele vs Francisco, Master 35+, Sat 3 Oct (Coach Romário / Coach Wilson)
 - **Gordus Project 90 Plus** — 21 Sep → 21 Dec 2026
@@ -72,7 +74,6 @@ No GitHub Actions required for normal updates.
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
 | Prices / packs | `pages/precario.html` |
 | Enrollment form (packs) | `pages/inscricao.html` + `js/main.js` |
-| Events | `pages/eventos.html` + `images/evento-*.jpg` / `hero-13.jpg` |
 | Resultados gallery / CTAs | `pages/resultados.html` + `images/resultado-*.jpg` + `transformacao-*.jpg` |
 | Store products | `pages/loja.html` + product images |
 | Team / coaches | `pages/sobre.html` + `images/coach-*.jpg` |
@@ -103,7 +104,7 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 - Responsive nav (hamburger → X)
 - SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
 - **Preçário:** pack cards with prices + “Quero este pack” → WhatsApp
-- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack; Reinscrição; Gordus / Evento / trial → only relevant fields. Prefill via `?tipo=&plano=&pack=&mod=`. Modalidades deep-link with `mod=`. Optional checkbox for taxa inscrição 20.000 AKZ.
+- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack; Reinscrição; Gordus / trial → only relevant fields. Prefill via `?tipo=&plano=&pack=&mod=`. Modalidades deep-link with `mod=`. Optional checkbox for taxa inscrição 20.000 AKZ.
 - **Preçário → Inscrição:** pack and avulsa buttons open Inscrição with options preset (not direct WhatsApp)
 - **Horários:** poster-based schedule cards + sticky section nav (no per-slot WA buttons)
 
