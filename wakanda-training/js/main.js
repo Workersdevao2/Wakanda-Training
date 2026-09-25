@@ -441,6 +441,14 @@ function initWaForms() {
       const lang = (window.WakandaI18n && window.WakandaI18n.getLang()) || 'pt';
       const en = lang === 'en';
       if (type === 'inscricao') {
+        // Resolve detalhe from the visible branch
+        const detalhe =
+          data.detalhe_mod ||
+          data.detalhe_evt ||
+          data.detalhe_trial ||
+          (data.tipo === 'Gordus Project' ? 'Gordus Project 90 Plus' : '') ||
+          data.detalhe ||
+          '';
         if (en) {
           message =
             'Hi! I want to *join* Wakanda Training.\n\n' +
@@ -451,7 +459,7 @@ function initWaForms() {
             (data.altura_peso ? '*Height / weight:* ' + data.altura_peso + '\n' : '') +
             (data.morada ? '*Address / area:* ' + data.morada + '\n' : '') +
             '*Type:* ' + data.tipo + '\n' +
-            '*Program / event:* ' + data.detalhe + '\n' +
+            (detalhe ? '*Detail:* ' + detalhe + '\n' : '') +
             (data.plano ? '*Plan:* ' + data.plano + '\n' : '') +
             (data.pack_grupo ? '*Group pack:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*PT pack:* ' + data.pack_pt + '\n' : '') +
@@ -473,7 +481,7 @@ function initWaForms() {
             (data.altura_peso ? '*Altura / peso:* ' + data.altura_peso + '\n' : '') +
             (data.morada ? '*Morada / zona:* ' + data.morada + '\n' : '') +
             '*Tipo:* ' + data.tipo + '\n' +
-            '*Modalidade / evento:* ' + data.detalhe + '\n' +
+            (detalhe ? '*Detalhe:* ' + detalhe + '\n' : '') +
             (data.plano ? '*Plano:* ' + data.plano + '\n' : '') +
             (data.pack_grupo ? '*Pack grupo:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*Pack PT:* ' + data.pack_pt + '\n' : '') +
@@ -526,20 +534,86 @@ function initWaForms() {
     if (sel) sel.value = map[hash];
   }
 
-  // Inscrição: show pack fields by plan type
-  const planoSel = document.getElementById('ins-plano');
-  if (planoSel) {
+  // Inscrição: smart form — fields depend on "Quero inscrever-me em"
+  (function initInscricaoForm() {
+    const tipo = document.getElementById('ins-tipo');
+    if (!tipo) return;
+
+    const rowMod = document.getElementById('row-detalhe-mod');
+    const rowEvt = document.getElementById('row-detalhe-evt');
+    const rowTrial = document.getElementById('row-detalhe-trial');
+    const rowPlano = document.getElementById('row-plano');
     const rowGrupo = document.getElementById('row-pack-grupo');
     const rowPt = document.getElementById('row-pack-pt');
     const rowAv = document.getElementById('row-pack-avulsa');
-    const syncPlan = () => {
-      const v = planoSel.value;
-      if (rowGrupo) rowGrupo.hidden = v !== 'Aulas de grupo';
-      if (rowPt) rowPt.hidden = v !== 'Treino personalizado';
-      if (rowAv) rowAv.hidden = v !== 'Aula / sessão avulsa';
-    };
-    planoSel.addEventListener('change', syncPlan);
-    syncPlan();
-  }
+
+    const selMod = document.getElementById('ins-detalhe-mod');
+    const selEvt = document.getElementById('ins-detalhe-evt');
+    const selTrial = document.getElementById('ins-detalhe-trial');
+    const selPlano = document.getElementById('ins-plano');
+    const selGrupo = document.getElementById('ins-pack-grupo');
+    const selPt = document.getElementById('ins-pack-pt');
+    const selAv = document.getElementById('ins-pack-avulsa');
+
+    function setReq(el, on) {
+      if (!el) return;
+      if (on) el.setAttribute('required', 'required');
+      else {
+        el.removeAttribute('required');
+        el.classList.remove('invalid');
+      }
+    }
+
+    function show(row, on) {
+      if (!row) return;
+      row.hidden = !on;
+    }
+
+    function syncPacks() {
+      const plano = selPlano ? selPlano.value : '';
+      const isMod = tipo.value === 'Modalidade';
+      show(rowGrupo, isMod && plano === 'Aulas de grupo');
+      show(rowPt, isMod && plano === 'Treino personalizado');
+      show(rowAv, isMod && plano === 'Aula / sessão avulsa');
+      setReq(selGrupo, isMod && plano === 'Aulas de grupo');
+      setReq(selPt, isMod && plano === 'Treino personalizado');
+      setReq(selAv, isMod && plano === 'Aula / sessão avulsa');
+      if (!(isMod && plano === 'Aulas de grupo') && selGrupo) selGrupo.value = '';
+      if (!(isMod && plano === 'Treino personalizado') && selPt) selPt.value = '';
+      if (!(isMod && plano === 'Aula / sessão avulsa') && selAv) selAv.value = '';
+    }
+
+    function syncTipo() {
+      const v = tipo.value;
+      const isMod = v === 'Modalidade';
+      const isEvt = v === 'Evento';
+      const isTrial = v === 'Aula experimental';
+      // Gordus: no extra detalhe row (tipo already names the program)
+
+      show(rowMod, isMod);
+      show(rowEvt, isEvt);
+      show(rowTrial, isTrial);
+      show(rowPlano, isMod);
+
+      setReq(selMod, isMod);
+      setReq(selEvt, isEvt);
+      setReq(selTrial, isTrial);
+      setReq(selPlano, isMod);
+
+      if (!isMod) {
+        if (selMod) selMod.value = '';
+        if (selPlano) selPlano.value = '';
+      }
+      if (!isEvt && selEvt) selEvt.value = '';
+      if (!isTrial && selTrial) selTrial.value = '';
+
+      syncPacks();
+    }
+
+    tipo.addEventListener('change', syncTipo);
+    if (selPlano) selPlano.addEventListener('change', syncPacks);
+    syncTipo();
+  })();
+
 
 }
