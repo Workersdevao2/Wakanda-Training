@@ -108,20 +108,22 @@
                 <input type="text" id="ins-altura-peso" name="altura_peso" placeholder="Ex: 1,75 m · 82 kg" />
               </div>
             </div>
-            <div class="form-row">
-              <label for="ins-tipo" data-i18n="enroll.type">Quero inscrever-me em *</label>
+                        <div class="form-row">
+              <label for="ins-tipo">Quero inscrever-me em *</label>
               <select id="ins-tipo" name="tipo" required>
-                <option value="" data-i18n="form.select">Selecciona...</option>
-                <option value="Modalidade">Modalidade</option>
+                <option value="">Selecciona...</option>
+                <option value="Modalidade">Modalidade (aulas / packs)</option>
+                <option value="Gordus Project">Gordus Project 90 Plus</option>
                 <option value="Evento">Evento</option>
-                <option value="Gordus Project">Gordus Project</option>
                 <option value="Aula experimental">Aula experimental</option>
               </select>
             </div>
-            <div class="form-row">
-              <label for="ins-detalhe" data-i18n="enroll.detail">Modalidade / evento *</label>
-              <select id="ins-detalhe" name="detalhe" required>
-                <option value="" data-i18n="form.select">Selecciona...</option>
+
+            <!-- Modalidade: which class -->
+            <div class="form-row" id="row-detalhe-mod" hidden>
+              <label for="ins-detalhe-mod">Modalidade *</label>
+              <select id="ins-detalhe-mod" name="detalhe_mod">
+                <option value="">Selecciona...</option>
                 <option value="CrossFit &amp; Hyrox">CrossFit &amp; Hyrox</option>
                 <option value="Musculação">Musculação</option>
                 <option value="Kickboxing">Kickboxing</option>
@@ -129,25 +131,55 @@
                 <option value="Jiu Jitsu Brasileiro">Jiu Jitsu Brasileiro</option>
                 <option value="Zumba">Zumba</option>
                 <option value="Functional Kids">Functional Kids</option>
-                <option value="Gordus Project 90 Plus">Gordus Project 90 Plus</option>
-                <option value="Sexta Festa, Zumba">Sexta Festa, Zumba</option>
-                <option value="Desafios internos">Desafios internos</option>
-                <option value="Workshop / evento especial">Workshop / evento especial</option>
+                <option value="Gymnastics">Gymnastics</option>
+                <option value="Weightlifting">Weightlifting</option>
+                <option value="G.A.P.">G.A.P.</option>
                 <option value="Outro">Outro</option>
               </select>
             </div>
-            <div class="form-row">
+
+            <!-- Evento -->
+            <div class="form-row" id="row-detalhe-evt" hidden>
+              <label for="ins-detalhe-evt">Evento *</label>
+              <select id="ins-detalhe-evt" name="detalhe_evt">
+                <option value="">Selecciona...</option>
+                <option value="Wakanda Games Face to Face">Wakanda Games Face to Face</option>
+                <option value="Sexta Festa, Zumba">Sexta Festa, Zumba</option>
+                <option value="Desafios internos">Desafios internos</option>
+                <option value="Workshop / evento especial">Workshop / evento especial</option>
+                <option value="Outro evento">Outro evento</option>
+              </select>
+            </div>
+
+            <!-- Aula experimental: which class to try -->
+            <div class="form-row" id="row-detalhe-trial" hidden>
+              <label for="ins-detalhe-trial">Quero experimentar *</label>
+              <select id="ins-detalhe-trial" name="detalhe_trial">
+                <option value="">Selecciona...</option>
+                <option value="CrossFit &amp; Hyrox">CrossFit &amp; Hyrox</option>
+                <option value="Musculação">Musculação</option>
+                <option value="Kickboxing">Kickboxing</option>
+                <option value="Judô">Judô</option>
+                <option value="Jiu Jitsu Brasileiro">Jiu Jitsu Brasileiro</option>
+                <option value="Zumba">Zumba</option>
+                <option value="Functional Kids">Functional Kids</option>
+                <option value="Ainda não sei">Ainda não sei</option>
+              </select>
+            </div>
+
+            <!-- Packs only for Modalidade -->
+            <div class="form-row" id="row-plano" hidden>
               <label for="ins-plano">Tipo de plano *</label>
-              <select id="ins-plano" name="plano" required>
+              <select id="ins-plano" name="plano">
                 <option value="">Selecciona...</option>
                 <option value="Aulas de grupo">Aulas de grupo</option>
-                <option value="Treino personalizado">Treino personalizado</option>
+                <option value="Treino personalizado">Treino personalizado (PT)</option>
                 <option value="Aula / sessão avulsa">Aula ou sessão avulsa</option>
                 <option value="Ainda não sei">Ainda não sei — quero aconselhar-me</option>
               </select>
             </div>
-            <div class="form-row" id="row-pack-grupo">
-              <label for="ins-pack-grupo">Pack de grupo (frequência)</label>
+            <div class="form-row" id="row-pack-grupo" hidden>
+              <label for="ins-pack-grupo">Pack de grupo (frequência) *</label>
               <select id="ins-pack-grupo" name="pack_grupo">
                 <option value="">Selecciona o pack...</option>
                 <option value="1× / semana — 35.000 AKZ">1× / semana — 35.000 AKZ</option>
@@ -160,7 +192,7 @@
               <p class="form-hint">Validade 30 dias · inscrição à parte (20.000 AKZ)</p>
             </div>
             <div class="form-row" id="row-pack-pt" hidden>
-              <label for="ins-pack-pt">Pack de treino personalizado</label>
+              <label for="ins-pack-pt">Pack de treino personalizado *</label>
               <select id="ins-pack-pt" name="pack_pt">
                 <option value="">Selecciona o pack...</option>
                 <option value="1× / semana (4 sessões) — 40.000 AKZ">1× / semana (4 sessões) — 40.000 AKZ</option>
@@ -173,7 +205,7 @@
               <p class="form-hint">Sessões de 1 hora · validade 30 dias · inscrição à parte (20.000 AKZ)</p>
             </div>
             <div class="form-row" id="row-pack-avulsa" hidden>
-              <label for="ins-pack-avulsa">Aula ou sessão avulsa</label>
+              <label for="ins-pack-avulsa">Aula ou sessão avulsa *</label>
               <select id="ins-pack-avulsa" name="pack_avulsa">
                 <option value="">Selecciona...</option>
                 <option value="Aula de grupo interna — 7.500 AKZ">Aula de grupo interna — 7.500 AKZ</option>
@@ -182,7 +214,8 @@
                 <option value="Sessão PT externa — 20.000 AKZ">Sessão PT externa — 20.000 AKZ</option>
               </select>
             </div>
-            <div class="form-row">
+
+<div class="form-row">
               <label for="ins-pagamento" data-i18n="enroll.payment">Método de pagamento preferido (opcional)</label>
               <select id="ins-pagamento" name="pagamento">
                 <option value="" data-i18n="form.select">Selecciona...</option>
