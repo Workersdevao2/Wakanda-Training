@@ -2386,3 +2386,8 @@ body.has-sticky-cart {
   color: var(--text-muted);
   line-height: 1.4;
 }
+
+.inscricao-docs .docs-hint {
+  color: var(--text-muted);
+  font-weight: 400;
+}
