@@ -55,7 +55,7 @@ No GitHub Actions required for normal updates.
 | Jiu Jitsu | Mon/Wed/Fri 09h–10h, 16h30–17h30 |
 | Functional Kids | Mon–Fri 16h–17h · Sat 08h–09h |
 | Zumba | Mon/Wed/Fri 19h00 |
-| Gymnastics | Thu 19h–20h |
+| Ginástica Rítmica | Tue/Thu 16h30–17h30 · Sat 10h30–12h00 · mensalidade 45.000 KZ |
 | Weightlifting | Sat 10h–11h |
 | G.A.P. | Sat 08h–09h |
 
