@@ -238,15 +238,45 @@
               <textarea id="ins-mensagem" name="mensagem" rows="3" placeholder="Metas fitness, experiência prévia, dúvidas..." data-i18n-placeholder="enroll.ph.goals"></textarea>
             </div>
 
-            <!-- Merged: documents checklist -->
-            <div class="inscricao-docs">
-              <p class="inscricao-docs-title" data-i18n="enroll.docs.title">Para concluir no WhatsApp, anexa também:</p>
+            <!-- Documents checklist — context-aware -->
+            <div class="inscricao-docs" id="docs-membro" hidden>
+              <p class="inscricao-docs-title">Para concluir no WhatsApp, anexa também:</p>
               <ul class="inscricao-docs-list">
-                <li><span data-i18n="enroll.docs.id">Bilhete de identidade</span> <span data-i18n="enroll.docs.id.hint">(PDF ou foto legível)</span></li>
-                <li><span data-i18n="enroll.docs.photo">Foto meio corpo</span> <span data-i18n="enroll.docs.photo.hint">(tipo passe ou selfie)</span></li>
-                <li data-i18n="enroll.docs.relative">WhatsApp de um parente</li>
-                <li><span data-i18n="enroll.docs.social">Instagram e TikTok</span> <span data-i18n="enroll.docs.social.hint">(se tiveres)</span></li>
-                <li class="docs-bonus" data-i18n="enroll.docs.bonus">Bónus: 3 amigos dos arredores</li>
+                <li>Bilhete de identidade <span class="docs-hint">(PDF ou foto legível)</span></li>
+                <li>Foto meio corpo <span class="docs-hint">(tipo passe ou selfie)</span></li>
+                <li>WhatsApp de um parente</li>
+                <li>Instagram e TikTok <span class="docs-hint">(se tiveres)</span></li>
+                <li class="docs-bonus">Bónus: 3 amigos dos arredores</li>
+              </ul>
+            </div>
+            <div class="inscricao-docs" id="docs-gordus" hidden>
+              <p class="inscricao-docs-title">Para concluir o Gordus no WhatsApp, anexa também:</p>
+              <ul class="inscricao-docs-list">
+                <li>Bilhete de identidade <span class="docs-hint">(PDF ou foto legível)</span></li>
+                <li>Foto meio corpo <span class="docs-hint">(antes do desafio)</span></li>
+                <li>WhatsApp de um parente</li>
+              </ul>
+            </div>
+            <div class="inscricao-docs" id="docs-evento" hidden>
+              <p class="inscricao-docs-title">No WhatsApp confirma também:</p>
+              <ul class="inscricao-docs-list">
+                <li>Que evento queres e quantas pessoas</li>
+                <li>Comprovativo de pagamento <span class="docs-hint">(quando aplicável)</span></li>
+              </ul>
+            </div>
+            <div class="inscricao-docs" id="docs-trial" hidden>
+              <p class="inscricao-docs-title">Para a aula experimental:</p>
+              <ul class="inscricao-docs-list">
+                <li>Não precisas de documentos agora</li>
+                <li>Confirma no WhatsApp o dia e a hora</li>
+                <li>Leva roupa de treino e água</li>
+              </ul>
+            </div>
+            <div class="inscricao-docs" id="docs-default">
+              <p class="inscricao-docs-title">Depois de enviar:</p>
+              <ul class="inscricao-docs-list">
+                <li>Escolhe acima em que te queres inscrever</li>
+                <li>A lista do que anexar no WhatsApp actualiza-se automaticamente</li>
               </ul>
             </div>
 
