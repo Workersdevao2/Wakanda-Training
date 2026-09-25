@@ -37,7 +37,6 @@
         <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
         <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
         <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
-        <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
         <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
         <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
         <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
@@ -60,7 +59,6 @@
     <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
     <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
     <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
-    <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
     <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
     <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
     <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
@@ -115,7 +113,6 @@
                 <option value="Modalidade" data-i18n="enroll.opt.mod">Modalidade (aulas / packs)</option>
                 <option value="Reinscrição" data-i18n="enroll.opt.re">Reinscrição (10.000 AKZ)</option>
                 <option value="Gordus Project" data-i18n="enroll.opt.gordus">Gordus Project 90 Plus</option>
-                <option value="Evento" data-i18n="enroll.opt.event">Evento</option>
                 <option value="Aula experimental" data-i18n="enroll.opt.trial">Aula experimental</option>
               </select>
             </div>
@@ -139,19 +136,6 @@
                 <option value="Outro">Outro</option>
               </select>
               <p class="form-hint" id="hint-detalhe-mod" data-i18n="enroll.mod.hint">No pack de grupo podes treinar várias modalidades. Indica a principal se quiseres.</p>
-            </div>
-
-            <!-- Evento -->
-            <div class="form-row" id="row-detalhe-evt" hidden>
-              <label for="ins-detalhe-evt" data-i18n="enroll.evt.label">Evento *</label>
-              <select id="ins-detalhe-evt" name="detalhe_evt">
-                <option value="" data-i18n="form.select">Selecciona...</option>
-                <option value="Wakanda Games Face to Face">Wakanda Games Face to Face</option>
-                <option value="Sexta Festa, Zumba">Sexta Festa, Zumba</option>
-                <option value="Desafios internos">Desafios internos</option>
-                <option value="Workshop / evento especial">Workshop / evento especial</option>
-                <option value="Outro evento">Outro evento</option>
-              </select>
             </div>
 
             <!-- Aula experimental: which class to try -->
@@ -276,13 +260,6 @@
                 <li>WhatsApp de um parente</li>
               </ul>
             </div>
-            <div class="inscricao-docs" id="docs-evento" hidden>
-              <p class="inscricao-docs-title" data-i18n="enroll.docs.event.title">No WhatsApp confirma também:</p>
-              <ul class="inscricao-docs-list">
-                <li data-i18n="enroll.docs.event.1">Que evento queres e quantas pessoas</li>
-                <li data-i18n="enroll.docs.event.2">Comprovativo de pagamento (quando aplicável)</li>
-              </ul>
-            </div>
             <div class="inscricao-docs" id="docs-trial" hidden>
               <p class="inscricao-docs-title" data-i18n="enroll.docs.trial.title">Para a aula experimental:</p>
               <ul class="inscricao-docs-list">
@@ -322,11 +299,10 @@
     <div class="container cta-band-content text-center">
       <h2 class="mb-md" data-i18n="enroll.info.h2">Só queres informação?</h2>
       <p class="mb-lg" style="max-width: 50ch;">
-        Para preços, horários ou dúvidas sobre uma modalidade ou evento, usa os formulários nas páginas Modalidades e Eventos.
+        Para preços, horários ou dúvidas sobre uma modalidade, usa o formulário na página Modalidades ou o Preçário.
       </p>
       <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
         <a href="modalidades.html#perguntas" class="btn btn-ghost"><span data-i18n="enroll.info.mod">Perguntar sobre modalidades</span></a>
-        <a href="eventos.html#perguntas" class="btn btn-ghost"><span data-i18n="enroll.info.ev">Perguntar sobre eventos</span></a>
         <a href="precario.html" class="btn btn-ghost">Ver preçário</a>
       </div>
     </div>
