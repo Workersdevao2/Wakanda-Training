@@ -9,6 +9,27 @@ Static multi-page website for **Wakanda Training** gym (Luanda, Angola).
 - Hosting: Cloudflare Pages (from GitHub `Workersdevao2/Wakanda-Training`)
 - i18n: PT / EN (`js/i18n.js`)
 
+## GitHub layout (current)
+Site files live under the **`wakanda-training/`** folder in the repo (Cloudflare Worker is linked to that tree):
+
+```
+Wakanda-Training/
+  wakanda-training/
+    index.html
+    pages/
+    css/
+    js/
+    images/
+    robots.txt
+    sitemap.xml
+    README.md
+    googledc4e37b1da1d983c.html
+  .github/workflows/   (optional; Actions not required for deploy)
+```
+
+**Deploy:** push to `main` → Cloudflare Git integration updates the live site.  
+No GitHub Actions required for normal updates.
+
 ## Pages
 | Page | File |
 |------|------|
@@ -49,11 +70,14 @@ Static multi-page website for **Wakanda Training** gym (Luanda, Angola).
 | Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (hero-13 first = Face to Face) |
 | About text/images | `pages/sobre.html` + `images/sobre-*.jpg` |
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
+| Prices / packs | `pages/precario.html` |
+| Enrollment form (packs) | `pages/inscricao.html` + `js/main.js` |
 | Events | `pages/eventos.html` + `images/evento-*.jpg` / `hero-13.jpg` |
 | Resultados gallery / CTAs | `pages/resultados.html` + `images/resultado-*.jpg` + `transformacao-*.jpg` |
 | Store products | `pages/loja.html` + product images |
+| Team / coaches | `pages/sobre.html` + `images/coach-*.jpg` |
 | PT/EN text | `js/i18n.js` |
-| Styles (incl. `.cta-band`) | `css/styles.css` |
+| Styles (incl. `.cta-band`, packs, schedules) | `css/styles.css` |
 | Nav / cart / WA forms | `js/main.js` |
 | SEO sitemap / robots | `sitemap.xml`, `robots.txt` |
 | SEO meta (canonical, OG) | `<head>` on each HTML page |
@@ -75,10 +99,27 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 - WhatsApp CTAs (`+244 940 668 530`) — forms + buttons (no floating button)
 - Full-bleed CTA bands (`modalidades-hero.jpg` + text overlay) on most pages
 - Language toggle PT | EN
-- Client-side cart (Loja)
+- Client-side cart (Loja) + sticky cart bar on mobile
 - Responsive nav (hamburger → X)
 - SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
+- **Preçário:** pack cards with prices + “Quero este pack” → WhatsApp
+- **Inscrição:** plan type (grupo / PT / avulsa) + pack frequency with prices; WhatsApp message includes chosen pack
+- **Horários:** poster-based schedule cards + sticky section nav (no per-slot WA buttons)
 
+## Coaches (Sobre nós)
+| Order | Name | Role |
+|-------|------|------|
+| 1 | Romário N'gama | Coach |
+| 2 | — | (name TBD) |
+| 3 | — | (name TBD) |
+| 4 | Wilson Benjamim | Head Coach |
+| 5 | Sérgio Monteiro | Coach |
+| 6 | — | (name TBD) |
+
+Photos: `images/coach-01.jpg` … `coach-06.jpg`
+
+## Documentation habit
+Update this **README** whenever features, schedules, prices, coaches, or deploy notes change.
 ## Design system
 - Background `#0A0A0A` · Surface `#161616`
 - Text `#F5F5F5` · muted `#A3A3A3`
