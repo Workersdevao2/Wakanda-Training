@@ -330,8 +330,8 @@
       en: 'Wakanda Training was born from a passion for high performance and the drive to build a space where anyone, at any level, can grow with discipline, real coaching and a supportive community.'
     },
     'about.story.p2': {
-      pt: 'Com 6 anos de existência e a experiência de 15 anos do Coach Wilson Benjamim no mundo fitness, transformámos um armazém industrial em Luanda num verdadeiro templo de treino.',
-      en: 'With 6 years of history and Coach Wilson Benjamim’s 15 years in fitness, we turned an industrial warehouse in Luanda into a true training temple.'
+      pt: 'Com 6 anos de existência e a experiência de 15 anos do Coach Wilson Benjamim no mundo fitness, transformámos um armazém em Luanda num verdadeiro templo de treino.',
+      en: 'With 6 years of history and Coach Wilson Benjamim’s 15 years in fitness, we turned a warehouse in Luanda into a true training temple.'
     },
     'about.story.p3': {
       pt: 'Aqui não se trata apenas de números na balança ou de carga na barra. Trata-se de construir hábitos, recuperar autoestima e viver com mais energia.',
