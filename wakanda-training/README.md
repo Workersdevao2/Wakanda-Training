@@ -103,7 +103,7 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 - Responsive nav (hamburger → X)
 - SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
 - **Preçário:** pack cards with prices + “Quero este pack” → WhatsApp
-- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack; Reinscrição; Gordus / Evento / trial → only relevant fields. Prefill from Preçário via `?tipo=&plano=&pack=`.
+- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack; Reinscrição; Gordus / Evento / trial → only relevant fields. Prefill via `?tipo=&plano=&pack=&mod=`. Modalidades deep-link with `mod=`. Optional checkbox for taxa inscrição 20.000 AKZ.
 - **Preçário → Inscrição:** pack and avulsa buttons open Inscrição with options preset (not direct WhatsApp)
 - **Horários:** poster-based schedule cards + sticky section nav (no per-slot WA buttons)
 
