@@ -464,6 +464,7 @@ function initWaForms() {
             (data.pack_grupo ? '*Group pack:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*PT pack:* ' + data.pack_pt + '\n' : '') +
             (data.pack_avulsa ? '*Drop-in:* ' + data.pack_avulsa + '\n' : '') +
+            (data.taxa_nova ? '*Enrollment fee:* ' + data.taxa_nova + '\n' : '') +
             (data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Preferred time:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Goals / message:* ' + data.mensagem + '\n' : '') +
@@ -491,6 +492,7 @@ function initWaForms() {
             (data.pack_grupo ? '*Pack grupo:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*Pack PT:* ' + data.pack_pt + '\n' : '') +
             (data.pack_avulsa ? '*Avulsa:* ' + data.pack_avulsa + '\n' : '') +
+            (data.taxa_nova ? '*Taxa inscrição:* ' + data.taxa_nova + '\n' : '') +
             (data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Horário preferido:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Objectivos / mensagem:* ' + data.mensagem + '\n' : '') +
@@ -588,6 +590,17 @@ function initWaForms() {
       setReq(selGrupo, isMod && plano === 'Aulas de grupo');
       setReq(selPt, isMod && plano === 'Treino personalizado');
       setReq(selAv, isMod && plano === 'Aula / sessão avulsa');
+      setReq(selMod, isMod && plano === 'Aula / sessão avulsa');
+      const labelMod2 = document.getElementById('label-detalhe-mod');
+      if (labelMod2) {
+        labelMod2.textContent = (isMod && plano === 'Aula / sessão avulsa')
+          ? 'Modalidade *'
+          : 'Modalidade de interesse';
+      }
+      if (isMod && plano === 'Aulas de grupo' && selMod && !selMod.value) {
+        const optAll = [...selMod.options].find(o => o.value.startsWith('Todas'));
+        if (optAll) selMod.value = optAll.value;
+      }
       if (!(isMod && plano === 'Aulas de grupo') && selGrupo) selGrupo.value = '';
       if (!(isMod && plano === 'Treino personalizado') && selPt) selPt.value = '';
       if (!(isMod && plano === 'Aula / sessão avulsa') && selAv) selAv.value = '';
@@ -605,10 +618,18 @@ function initWaForms() {
       show(rowTrial, isTrial);
       show(rowPlano, isMod);
 
-      setReq(selMod, isMod);
+      setReq(selMod, false);
       setReq(selEvt, isEvt);
       setReq(selTrial, isTrial);
       setReq(selPlano, isMod);
+
+      const rowTaxa = document.getElementById('row-taxa-inscricao');
+      if (rowTaxa) rowTaxa.hidden = !isMod;
+
+      const labelMod = document.getElementById('label-detalhe-mod');
+      const hintMod = document.getElementById('hint-detalhe-mod');
+      if (labelMod) labelMod.textContent = 'Modalidade de interesse';
+      if (hintMod) hintMod.hidden = !isMod;
 
       if (!isMod) {
         if (selMod) selMod.value = '';
@@ -711,7 +732,37 @@ function initWaForms() {
         selAv.value = packAvMap[qPack];
       }
 
-      // Scroll form into view when arriving from Preçário
+      const qMod = params.get('mod');
+      if (qMod && selMod) {
+        const modMap = {
+          'hyrox': 'CrossFit & Hyrox',
+          'crossfit': 'CrossFit & Hyrox',
+          'CrossFit & Hyrox': 'CrossFit & Hyrox',
+          'musculacao': 'Musculação',
+          'Musculação': 'Musculação',
+          'kickboxing': 'Kickboxing',
+          'Kickboxing': 'Kickboxing',
+          'judo': 'Judô',
+          'Judô': 'Judô',
+          'jiujitsu': 'Jiu Jitsu Brasileiro',
+          'Jiu Jitsu Brasileiro': 'Jiu Jitsu Brasileiro',
+          'zumba': 'Zumba',
+          'Zumba': 'Zumba',
+          'kids': 'Functional Kids',
+          'Functional Kids': 'Functional Kids',
+          'gymnastics': 'Gymnastics',
+          'Gymnastics': 'Gymnastics',
+          'weightlifting': 'Weightlifting',
+          'Weightlifting': 'Weightlifting',
+          'gap': 'G.A.P.',
+          'G.A.P.': 'G.A.P.'
+        };
+        const mv = modMap[qMod] || qMod;
+        if ([...selMod.options].some(o => o.value === mv)) {
+          selMod.value = mv;
+        }
+      }
+
       const form = document.getElementById('form-inscricao');
       if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     })();
