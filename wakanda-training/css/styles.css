@@ -2378,3 +2378,11 @@ body.has-sticky-cart {
   color: var(--text-muted);
   line-height: 1.45;
 }
+
+
+.form-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
