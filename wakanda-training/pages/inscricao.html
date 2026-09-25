@@ -122,9 +122,10 @@
 
             <!-- Modalidade: which class -->
             <div class="form-row" id="row-detalhe-mod" hidden>
-              <label for="ins-detalhe-mod">Modalidade *</label>
+              <label for="ins-detalhe-mod" id="label-detalhe-mod">Modalidade de interesse</label>
               <select id="ins-detalhe-mod" name="detalhe_mod">
                 <option value="">Selecciona...</option>
+                <option value="Todas (pack de grupo)">Todas — acesso do pack de grupo</option>
                 <option value="CrossFit &amp; Hyrox">CrossFit &amp; Hyrox</option>
                 <option value="Musculação">Musculação</option>
                 <option value="Kickboxing">Kickboxing</option>
@@ -137,6 +138,7 @@
                 <option value="G.A.P.">G.A.P.</option>
                 <option value="Outro">Outro</option>
               </select>
+              <p class="form-hint" id="hint-detalhe-mod">No pack de grupo podes treinar várias modalidades. Indica a principal se quiseres.</p>
             </div>
 
             <!-- Evento -->
@@ -216,6 +218,14 @@
               </select>
             </div>
 
+
+            <div class="form-row" id="row-taxa-inscricao" hidden>
+              <label class="fee-check-label">
+                <input type="checkbox" id="ins-taxa" name="taxa_nova" value="Sim — inscrição 20.000 AKZ" />
+                <span>Sou novo no ginásio — a <strong>taxa de inscrição é 20.000 AKZ</strong> (além do pack).</span>
+              </label>
+              <p class="form-hint">Se já fores membro activo, deixa desmarcado. Reinscrição usa o tipo “Reinscrição” (10.000 AKZ).</p>
+            </div>
 <div class="form-row">
               <label for="ins-pagamento" data-i18n="enroll.payment">Método de pagamento preferido (opcional)</label>
               <select id="ins-pagamento" name="pagamento">
