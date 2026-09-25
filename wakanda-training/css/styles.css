@@ -2397,3 +2397,20 @@ body.has-sticky-cart {
   width: 100%;
   justify-content: center;
 }
+
+.fee-check-label {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.45;
+  cursor: pointer;
+}
+.fee-check-label input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--gold);
+}
