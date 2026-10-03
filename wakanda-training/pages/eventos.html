@@ -26,10 +26,31 @@
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
+    <!-- Announcement bar -->
+  <a href="projetos.html" class="announce-bar"><span data-i18n-html="announce.text">GORDUS PROJECT <em>90+</em> · Inscrições abertas</span></a>
+
+  <!-- Header -->
   <header class="header">
     <div class="header-inner">
-      <a href="../index.html" class="logo"><img src="../images/logo-sm.jpg" alt="Wakanda Training" class="logo-img" />WAKANDA <span>TRAINING</span></a>
-            <nav class="nav-desktop">
+      <button class="hamburger" aria-label="Menu" data-i18n-aria="aria.menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a href="../index.html" class="brand">
+        <span class="brand-name">WAKANDA TRAINING</span>
+        <span class="brand-tag">HIGH PERFORMANCE</span>
+      </a>
+
+      <div class="header-actions">
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+
+      <nav class="nav-desktop">
         <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
         <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
         <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
@@ -37,34 +58,34 @@
         <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
         <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
         <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
-        <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
         <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
         <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
         <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
       </nav>
-      <div class="header-actions">
-        <div class="lang-toggle" role="group" aria-label="Language">
-        <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
-        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
-      </div>
-        <button class="hamburger" aria-label="Menu" data-i18n-aria="aria.menu"><span></span><span></span><span></span></button>
-      </div>
     </div>
   </header>
 
-    <nav class="nav-mobile">
-    <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
-    <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
-    <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
-    <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
-    <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
-    <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
-    <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
-    <a href="eventos.html"><span data-i18n="nav.events">Eventos</span></a>
-    <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
-    <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
-    <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+  <!-- Mobile left drawer -->
+  <div class="nav-drawer-overlay" aria-hidden="true"></div>
+  <nav class="nav-drawer" id="nav-drawer" aria-label="Menu">
+    <div class="nav-drawer-header">
+      <span class="brand-name">WAKANDA TRAINING</span>
+      <button type="button" class="nav-drawer-close" aria-label="Fechar menu" data-i18n-aria="aria.close">&times;</button>
+    </div>
+    <div class="nav-drawer-links">
+      <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
+      <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
+      <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+      <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+      <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+      <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+      <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+      <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
+      <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+      <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+    </div>
   </nav>
+
 
   <section class="page-hero page-hero--image">
     <div class="page-hero-bg" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-label="Wakanda Training"></div>

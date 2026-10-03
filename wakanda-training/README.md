@@ -66,10 +66,13 @@ Events are announced on **Instagram / social only** (no Eventos page on the site
 - **Wakanda Games Face to Face** — Ndombele vs Francisco, Master 35+, Sat 3 Oct (Coach Romário / Coach Wilson)
 - **Gordus Project 90 Plus** — 21 Sep → 21 Dec 2026
 
+## Manual upload (GitHub only)
+- **`images/hero-5.mp4`** — not accepted via Grok (sensitive/moderation). Add this file manually on GitHub into `wakanda-training/images/`. Required for the home hero carousel.
+
 ## Folder map (what to edit where)
 | Goal | Files |
 |------|--------|
-| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (hero-13 first = Face to Face) |
+| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (hero-13 first = Face to Face; **hero-5.mp4** must be uploaded manually) |
 | About text/images | `pages/sobre.html` + `images/sobre-*.jpg` |
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
 | Prices / packs | `pages/precario.html` |
@@ -122,6 +125,15 @@ Photos: `images/coach-01.jpg` … `coach-06.jpg`
 
 ## Documentation habit
 Update this **README** whenever features, schedules, prices, coaches, or deploy notes change.
+
+## Header system
+- **Announce bar** (36px): Gordus 90+ CTA → Projetos; hides on scroll down, returns near top
+- **Main header**: transparent over hero → solid surface + blur on scroll
+- **Brand**: text only (WAKANDA TRAINING / HIGH PERFORMANCE), centered
+- **Desktop** (≥900px): brand above centered nav links
+- **Mobile**: hamburger left · brand center · lang/cart right · left slide-in drawer (X + swipe to close)
+- No logo image in header (footer may still use logo)
+
 ## Design system
 - Background `#0A0A0A` · Surface `#161616`
 - Text `#F5F5F5` · muted `#A3A3A3`

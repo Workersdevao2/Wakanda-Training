@@ -1,30 +1,97 @@
 // Wakanda Training, Main JS + Client-side Cart
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ---------- Hamburger ----------
+  // ---------- Mobile drawer (left) ----------
   const hamburger = document.querySelector('.hamburger');
-  const navMobile = document.querySelector('.nav-mobile');
+  const drawer = document.querySelector('.nav-drawer');
+  const overlay = document.querySelector('.nav-drawer-overlay');
+  const drawerClose = document.querySelector('.nav-drawer-close');
 
-  if (hamburger && navMobile) {
+  function openDrawer() {
+    if (!drawer) return;
+    drawer.classList.add('open');
+    if (overlay) overlay.classList.add('open');
+    if (hamburger) hamburger.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    if (!drawer) return;
+    drawer.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    if (hamburger) hamburger.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburger) {
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navMobile.classList.toggle('open');
-      document.body.style.overflow = navMobile.classList.contains('open') ? 'hidden' : '';
-    });
-
-    navMobile.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMobile.classList.remove('open');
-        document.body.style.overflow = '';
-      });
+      if (drawer && drawer.classList.contains('open')) closeDrawer();
+      else openDrawer();
     });
   }
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+
+  if (drawer) {
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    // Swipe left to close
+    let touchStartX = 0;
+    let touchStartY = 0;
+    drawer.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    drawer.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = Math.abs(e.changedTouches[0].screenY - touchStartY);
+      if (dx < -60 && dy < 80) closeDrawer();
+    }, { passive: true });
+  }
+
+  // ---------- Announce bar + header solid on scroll ----------
+  const header = document.querySelector('.header');
+  const announce = document.querySelector('.announce-bar');
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function updateHeaderOnScroll() {
+    const y = window.scrollY;
+    const goingDown = y > lastScrollY;
+
+    if (header) {
+      if (y > 24) header.classList.add('is-solid');
+      else header.classList.remove('is-solid');
+    }
+
+    if (announce) {
+      if (y > 80 && goingDown) {
+        announce.classList.add('is-hidden');
+        document.body.classList.add('announce-hidden');
+      } else if (y < 40) {
+        announce.classList.remove('is-hidden');
+        document.body.classList.remove('announce-hidden');
+      }
+    }
+
+    lastScrollY = y;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateHeaderOnScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+  updateHeaderOnScroll();
 
   // Active nav link (works with or without .html, and with ../)
   const rawPath = window.location.pathname.split('/').pop() || 'index.html';
   const currentPage = rawPath.replace(/\.html$/, '') || 'index';
-  document.querySelectorAll('.nav-desktop a, .nav-mobile a').forEach(link => {
+  document.querySelectorAll('.nav-desktop a, .nav-drawer-links a').forEach(link => {
     const href = (link.getAttribute('href') || '').split('/').pop().replace(/\.html$/, '') || 'index';
     if (href === currentPage) {
       link.classList.add('active');

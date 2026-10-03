@@ -19,6 +19,10 @@
     'nav.results': { pt: 'Resultados', en: 'Results' },
     'nav.enroll': { pt: 'Inscrição', en: 'Join' },
     'nav.contact': { pt: 'Contacto', en: 'Contact' },
+    'announce.text': {
+      pt: 'GORDUS PROJECT <em>90+</em> · Inscrições abertas',
+      en: 'GORDUS PROJECT <em>90+</em> · Enrollment open'
+    },
 
     /* ---------- Common / footer ---------- */
     'footer.nav': { pt: 'Navegação', en: 'Navigate' },
@@ -32,6 +36,7 @@
     'aria.menu': { pt: 'Menu', en: 'Menu' },
     'aria.cart': { pt: 'Carrinho', en: 'Cart' },
     'aria.lang': { pt: 'Mudar idioma', en: 'Change language' },
+    'aria.close': { pt: 'Fechar menu', en: 'Close menu' },
 
     /* ---------- Home ---------- */
     'home.tag': { pt: 'High Performance • Luanda', en: 'High Performance • Luanda' },
