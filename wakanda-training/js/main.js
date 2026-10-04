@@ -139,6 +139,7 @@ function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartBadge();
   renderCart();
+  renderCheckoutPage();
 }
 
 function addToCart(id, name, price, image = '') {
@@ -277,32 +278,83 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
-function checkoutWhatsApp() {
+function buildOrderMessage(name, phone, note) {
   const cart = getCart();
-  if (cart.length === 0) return;
-
-  const name = document.getElementById('checkout-name')?.value.trim() || '';
-  const phone = document.getElementById('checkout-phone')?.value.trim() || '';
-  const note = document.getElementById('checkout-note')?.value.trim() || '';
-
-  let message = 'Olá! Quero encomendar:\n\n';
+  const lang = (window.WakandaI18n && window.WakandaI18n.getLang()) || 'pt';
+  let message = lang === 'en'
+    ? 'Hi! I want to order:\n\n'
+    : 'Olá! Quero encomendar:\n\n';
 
   cart.forEach(item => {
     message += `• ${item.name} × ${item.qty}, ${formatPrice(item.price * item.qty)}\n`;
   });
 
   message += `\n*Total: ${formatPrice(getCartTotal())}*`;
+  if (name) message += (lang === 'en' ? `\n\nName: ${name}` : `\n\nNome: ${name}`);
+  if (phone) message += (lang === 'en' ? `\nPhone: ${phone}` : `\nTelefone: ${phone}`);
+  if (note) message += (lang === 'en' ? `\nNote: ${note}` : `\nNota: ${note}`);
+  return message;
+}
 
-  if (name) message += `\n\nNome: ${name}`;
-  if (phone) message += `\nTelefone: ${phone}`;
-  if (note) message += `\nNota: ${note}`;
+function checkoutWhatsApp() {
+  const cart = getCart();
+  if (cart.length === 0) return;
+  const name = document.getElementById('checkout-name')?.value.trim() || '';
+  const phone = document.getElementById('checkout-phone')?.value.trim() || '';
+  const note = document.getElementById('checkout-note')?.value.trim() || '';
+  openWhatsApp(buildOrderMessage(name, phone, note));
+}
 
-  openWhatsApp(message);
+function renderCheckoutPage() {
+  const emptyEl = document.getElementById('checkout-empty');
+  const mainEl = document.getElementById('checkout-main');
+  const itemsEl = document.getElementById('checkout-items');
+  const totalEl = document.getElementById('checkout-total');
+  if (!emptyEl || !mainEl || !itemsEl) return;
+
+  const cart = getCart();
+  if (cart.length === 0) {
+    emptyEl.hidden = false;
+    mainEl.hidden = true;
+    return;
+  }
+
+  emptyEl.hidden = true;
+  mainEl.hidden = false;
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="checkout-item" data-id="${item.id}">
+      <div class="checkout-item-info">
+        <div class="checkout-item-name">${item.name}</div>
+        <div class="checkout-item-meta">${formatPrice(item.price)} × ${item.qty}</div>
+      </div>
+      <div class="checkout-item-actions">
+        <button type="button" class="qty-btn" onclick="updateQty('${item.id}', -1)" aria-label="-">−</button>
+        <span class="qty-val">${item.qty}</span>
+        <button type="button" class="qty-btn" onclick="updateQty('${item.id}', 1)" aria-label="+">+</button>
+        <button type="button" class="remove-btn" onclick="removeFromCart('${item.id}')" aria-label="Remove">×</button>
+      </div>
+      <div class="checkout-item-line">${formatPrice(item.price * item.qty)}</div>
+    </div>
+  `).join('');
+
+  if (totalEl) totalEl.textContent = formatPrice(getCartTotal());
+}
+
+function submitCheckout(e) {
+  if (e) e.preventDefault();
+  const cart = getCart();
+  if (cart.length === 0) return;
+  const name = document.getElementById('co-name')?.value.trim() || '';
+  const phone = document.getElementById('co-phone')?.value.trim() || '';
+  const note = document.getElementById('co-note')?.value.trim() || '';
+  if (!name || !phone) return;
+  openWhatsApp(buildOrderMessage(name, phone, note));
 }
 
 function initCart() {
   updateCartBadge();
   renderCart();
+  renderCheckoutPage();
 
   // Close on overlay click
   const overlay = document.getElementById('cart-overlay');

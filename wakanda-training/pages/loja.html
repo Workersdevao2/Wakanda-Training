@@ -116,19 +116,11 @@
         <span>Total</span>
         <strong id="cart-total">0 KZ</strong>
       </div>
-      <div class="checkout-form">
-        <label for="checkout-name">Nome (opcional)</label>
-        <input type="text" id="checkout-name" placeholder="O teu nome" />
-        <label for="checkout-phone">Telefone (opcional)</label>
-        <input type="tel" id="checkout-phone" placeholder="+244 ..." />
-        <label for="checkout-note">Nota (opcional)</label>
-        <textarea id="checkout-note" placeholder="Tamanho, cor, observações..."></textarea>
-      </div>
-      <button class="btn btn-solid" style="width: 100%;" onclick="checkoutWhatsApp()">
-        <span data-i18n="shop.checkout">Enviar encomenda via WhatsApp</span>
-      </button>
+      <a href="checkout.html" class="btn btn-solid" style="width: 100%; text-align: center;" onclick="closeCart()">
+        <span data-i18n="shop.cart.checkout">Finalizar encomenda</span>
+      </a>
       <button class="btn btn-ghost" style="width: 100%; margin-top: 0.5rem;" onclick="clearCart()">
-        Limpar carrinho
+        <span data-i18n="shop.cart.clear">Limpar carrinho</span>
       </button>
     </div>
   </aside>

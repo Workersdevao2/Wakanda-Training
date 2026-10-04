@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Wakanda Training</title>
+  <meta name="description" content="Finaliza a tua encomenda da Loja Oficial Wakanda Training. Confirma produtos e envia via WhatsApp." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://wakandatraining.com/pages/checkout.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_AO" />
+  <meta property="og:site_name" content="Wakanda Training" />
+  <meta property="og:url" content="https://wakandatraining.com/pages/checkout.html" />
+  <meta property="og:title" content="Checkout | Wakanda Training" />
+  <meta property="og:description" content="Finaliza a tua encomenda da Loja Oficial Wakanda Training." />
+  <meta property="og:image" content="https://wakandatraining.com/images/modalidades-hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Checkout | Wakanda Training" />
+  <meta name="twitter:description" content="Finaliza a tua encomenda da Loja Oficial Wakanda Training." />
+  <meta name="twitter:image" content="https://wakandatraining.com/images/modalidades-hero.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="../images/favicon.jpg" />
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.jpg" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <!-- Announcement bar -->
+  <a href="projetos.html" class="announce-bar"><span data-i18n-html="announce.text">GORDUS PROJECT <em>90+</em> · Inscrições abertas</span></a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <button class="hamburger" aria-label="Menu" data-i18n-aria="aria.menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a href="../index.html" class="brand">
+        <span class="brand-name">WAKANDA TRAINING</span>
+        <span class="brand-tag">HIGH PERFORMANCE</span>
+      </a>
+
+      <div class="header-actions">
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <button class="cart-trigger" onclick="openCart()" aria-label="Carrinho" data-i18n-aria="aria.cart">
+          <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/></svg>
+          <span class="cart-badge">0</span>
+        </button>
+      </div>
+
+      <nav class="nav-desktop">
+        <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
+        <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
+        <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+        <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+        <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+        <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+        <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+        <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
+        <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+        <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile left drawer -->
+  <div class="nav-drawer-overlay" aria-hidden="true"></div>
+  <nav class="nav-drawer" id="nav-drawer" aria-label="Menu">
+    <div class="nav-drawer-header">
+      <span class="brand-name">WAKANDA TRAINING</span>
+      <button type="button" class="nav-drawer-close" aria-label="Fechar menu" data-i18n-aria="aria.close">&times;</button>
+    </div>
+    <div class="nav-drawer-links">
+      <a href="../index.html"><span data-i18n="nav.home">Início</span></a>
+      <a href="sobre.html"><span data-i18n="nav.about">Sobre Nós</span></a>
+      <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+      <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+      <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+      <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+      <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+      <a href="resultados.html"><span data-i18n="nav.results">Resultados</span></a>
+      <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+      <a href="contacto.html"><span data-i18n="nav.contact">Contacto</span></a>
+    </div>
+  </nav>
+
+  <!-- Cart Overlay + Drawer -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3 data-i18n="shop.cart.title">O teu carrinho</h3>
+      <button class="cart-close" onclick="closeCart()" aria-label="Fechar">×</button>
+    </div>
+    <div class="cart-body">
+      <div id="cart-empty" class="cart-empty">O carrinho está vazio.</div>
+      <div id="cart-items"></div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display: none;">
+      <div class="cart-total-row">
+        <span data-i18n="shop.total">Total</span>
+        <strong id="cart-total">0 KZ</strong>
+      </div>
+      <a href="checkout.html" class="btn btn-solid" style="width: 100%; text-align: center;" onclick="closeCart()">
+        <span data-i18n="shop.cart.checkout">Finalizar encomenda</span>
+      </a>
+      <button class="btn btn-ghost" style="width: 100%; margin-top: 0.5rem;" onclick="clearCart()">
+        <span data-i18n="shop.cart.clear">Limpar carrinho</span>
+      </button>
+    </div>
+  </aside>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="checkout-breadcrumb">
+        <a href="loja.html" data-i18n="nav.shop">Loja</a>
+        <span aria-hidden="true"> / </span>
+        <span data-i18n="checkout.h1">Checkout</span>
+      </p>
+      <h1 data-i18n="checkout.h1">Checkout</h1>
+      <p class="lead" data-i18n="checkout.lead">Confirma os produtos e envia a encomenda via WhatsApp.</p>
+    </div>
+  </section>
+
+  <section class="section checkout-section">
+    <div class="container">
+      <!-- Empty state -->
+      <div id="checkout-empty" class="checkout-empty" hidden>
+        <p data-i18n="checkout.empty">O teu carrinho está vazio.</p>
+        <a href="loja.html" class="btn btn-solid" data-i18n="checkout.back">Voltar à loja</a>
+      </div>
+
+      <!-- Checkout layout -->
+      <div id="checkout-main" class="checkout-layout" hidden>
+        <div class="checkout-summary card">
+          <div class="card-body">
+            <h2 class="checkout-block-title" data-i18n="checkout.summary">Resumo da encomenda</h2>
+            <div id="checkout-items" class="checkout-items"></div>
+            <div class="checkout-total-row">
+              <span data-i18n="shop.total">Total</span>
+              <strong id="checkout-total">0 KZ</strong>
+            </div>
+            <a href="loja.html" class="checkout-continue" data-i18n="checkout.continue">Continuar a comprar</a>
+          </div>
+        </div>
+
+        <div class="checkout-form-panel card">
+          <div class="card-body">
+            <h2 class="checkout-block-title" data-i18n="checkout.details">Dados da encomenda</h2>
+            <form id="checkout-page-form" class="checkout-page-form" onsubmit="submitCheckout(event)">
+              <div class="form-row">
+                <label for="co-name"><span data-i18n="checkout.name">Nome *</span></label>
+                <input type="text" id="co-name" name="name" required autocomplete="name" placeholder="O teu nome" />
+              </div>
+              <div class="form-row">
+                <label for="co-phone"><span data-i18n="checkout.phone">Telefone / WhatsApp *</span></label>
+                <input type="tel" id="co-phone" name="phone" required autocomplete="tel" placeholder="+244 ..." />
+              </div>
+              <div class="form-row">
+                <label for="co-note"><span data-i18n="checkout.note">Nota (opcional)</span></label>
+                <textarea id="co-note" name="note" rows="3" placeholder="Tamanho, cor, levantamentos, observações..."></textarea>
+              </div>
+              <p class="checkout-hint" data-i18n="checkout.hint">A encomenda é confirmada no WhatsApp. Disponibilidade e pagamento combinados directamente.</p>
+              <button type="submit" class="btn btn-solid" style="width: 100%;">
+                <span data-i18n="shop.checkout">Enviar encomenda via WhatsApp</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo mb-md">WAKANDA <span>TRAINING</span></div>
+          <p style="font-size: 0.9rem;">Benfica, Rua Direita do BFA<br>Defronte ao Condomínio Ville Vermont<br>Luanda, Angola</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.nav">Navegação</h4>
+          <a href="modalidades.html"><span data-i18n="nav.modalities">Modalidades</span></a>
+          <a href="projetos.html"><span data-i18n="nav.projects">Projetos</span></a>
+          <a href="horarios.html"><span data-i18n="nav.schedule">Horários</span></a>
+          <a href="precario.html"><span data-i18n="nav.pricing">Preçário</span></a>
+          <a href="loja.html"><span data-i18n="nav.shop">Loja</span></a>
+          <a href="inscricao.html"><span data-i18n="nav.enroll">Inscrição</span></a>
+        </div>
+        <div>
+          <h4 data-i18n="footer.contact">Contacto</h4>
+          <a href="https://wa.me/244940668530" target="_blank">+244 940 668 530</a>
+          <a href="mailto:teamwakandacf@gmail.com">teamwakandacf@gmail.com</a>
+          <a href="https://instagram.com/wakandatraining" target="_blank">@wakandatraining</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Wakanda Training</span>
+        <span data-i18n="footer.tagline">Mais que treino, um estilo de vida.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sticky-cart-bar" id="sticky-cart-bar" hidden>
+    <button type="button" class="sticky-cart-bar__btn" onclick="openCart()">
+      <span class="sticky-cart-bar__label" data-i18n="shop.cart.view">Ver carrinho</span>
+      <span class="sticky-cart-bar__meta">
+        <span class="sticky-cart-bar__count" id="sticky-cart-count">0</span>
+        <span class="sticky-cart-bar__dot">·</span>
+        <span class="sticky-cart-bar__total" id="sticky-cart-total">0 KZ</span>
+      </span>
+    </button>
+  </div>
+
+  <script src="../js/i18n.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

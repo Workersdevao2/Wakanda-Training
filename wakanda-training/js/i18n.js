@@ -511,6 +511,25 @@
     'shop.accessories': { pt: 'Acessórios de Treino', en: 'Training accessories' },
     'shop.cart.title': { pt: 'O teu carrinho', en: 'Your cart' },
     'shop.cart.view': { pt: 'Ver carrinho', en: 'View cart' },
+    'shop.cart.checkout': { pt: 'Finalizar encomenda', en: 'Checkout' },
+    'shop.cart.clear': { pt: 'Limpar carrinho', en: 'Clear cart' },
+    'checkout.h1': { pt: 'Checkout', en: 'Checkout' },
+    'checkout.lead': {
+      pt: 'Confirma os produtos e envia a encomenda via WhatsApp.',
+      en: 'Confirm your products and send the order via WhatsApp.'
+    },
+    'checkout.empty': { pt: 'O teu carrinho está vazio.', en: 'Your cart is empty.' },
+    'checkout.back': { pt: 'Voltar à loja', en: 'Back to shop' },
+    'checkout.summary': { pt: 'Resumo da encomenda', en: 'Order summary' },
+    'checkout.details': { pt: 'Dados da encomenda', en: 'Order details' },
+    'checkout.name': { pt: 'Nome *', en: 'Name *' },
+    'checkout.phone': { pt: 'Telefone / WhatsApp *', en: 'Phone / WhatsApp *' },
+    'checkout.note': { pt: 'Nota (opcional)', en: 'Note (optional)' },
+    'checkout.hint': {
+      pt: 'A encomenda é confirmada no WhatsApp. Disponibilidade e pagamento combinados directamente.',
+      en: 'The order is confirmed on WhatsApp. Availability and payment are arranged directly.'
+    },
+    'checkout.continue': { pt: 'Continuar a comprar', en: 'Continue shopping' },
     'shop.size': { pt: 'Tamanho', en: 'Size' },
     'shop.qty': { pt: 'Qtd', en: 'Qty' },
 
