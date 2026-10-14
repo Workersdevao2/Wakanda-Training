@@ -424,54 +424,177 @@
     /* ---------- Pricing body ---------- */
     'price.group.h2': { pt: 'Aulas de grupo', en: 'Group classes' },
     'price.group.lead': {
-      pt: 'Packs mensais · frequência semanal · validade 30 dias · aulas não acumuláveis',
-      en: 'Monthly packs · weekly frequency · 30-day validity · classes not rollover'
+      pt: 'Um pack mensal = quantas vezes por semana queres treinar. Validade 30 dias. As aulas não acumulam para o mês seguinte.',
+      en: 'A monthly pack = how many times per week you want to train. 30-day validity. Classes do not roll over to the next month.'
     },
+    'price.jump.group': { pt: 'Aulas de grupo', en: 'Group classes' },
+    'price.jump.pt': { pt: 'Treino personalizado', en: 'Personal training' },
+    'price.jump.pay': { pt: 'Pagamento', en: 'Payment' },
+
+    'price.sub.enroll': { pt: 'Inscrição e aulas avulsas', en: 'Enrollment & drop-in classes' },
     'price.enroll': { pt: 'Inscrição', en: 'Enrollment' },
-    'price.enroll.note': { pt: 'Renovável após 90 dias', en: 'Renewable after 90 days' },
+    'price.enroll.note': { pt: 'Nova inscrição · uma vez (renovável após 90 dias)', en: 'New enrollment · one-time (renewable after 90 days)' },
     'price.reenroll': { pt: 'Reinscrição', en: 'Re-enrollment' },
-    'price.reenroll.note': { pt: 'Após período de inatividade', en: 'After a period of inactivity' },
-    'price.drop.in': { pt: 'Aula avulsa (interno)', en: 'Drop-in (member)' },
-    'price.drop.in.note': { pt: 'Atleta inscrito no ginásio', en: 'Registered gym athlete' },
-    'price.drop.out': { pt: 'Aula avulsa (externo)', en: 'Drop-in (visitor)' },
-    'price.drop.out.note': { pt: 'Atleta visitante', en: 'Visiting athlete' },
-    'price.freq': { pt: 'Frequência', en: 'Frequency' },
-    'price.validity': { pt: 'Validade', en: 'Validity' },
-    'price.value': { pt: 'Valor', en: 'Price' },
+    'price.reenroll.note': { pt: 'Voltar após período de inactividade', en: 'Return after a period of inactivity' },
+    'price.drop.member': { pt: 'Aula avulsa · membro', en: 'Drop-in · member' },
+    'price.drop.member.note': { pt: 'Membro do ginásio · 1 aula / 1 dia', en: 'Gym member · 1 class / 1 day' },
+    'price.drop.visitor': { pt: 'Aula avulsa · visitante', en: 'Drop-in · visitor' },
+    'price.drop.visitor.note': { pt: 'Visitante · 1 aula / 1 dia', en: 'Visitor · 1 class / 1 day' },
+    'price.btn.enroll': { pt: 'Inscrever-me', en: 'Join' },
+    'price.btn.reenroll': { pt: 'Reinscrever-me', en: 'Re-enroll' },
+    'price.btn.class': { pt: 'Quero esta aula', en: 'I want this class' },
+    'price.btn.session': { pt: 'Quero esta sessão', en: 'I want this session' },
+    'price.btn.pack': { pt: 'Quero este pack', en: 'I want this pack' },
+    'price.btn.enroll.pt': { pt: 'Inscrever-me (PT)', en: 'Join (PT)' },
+
+    'price.sub.packs': { pt: 'Packs mensais — escolhe a frequência', en: 'Monthly packs — choose your frequency' },
+    'price.packs.hint': {
+      pt: 'O preço é por 30 dias. Quanto mais vezes por semana, melhor o valor por aula.',
+      en: 'Price is for 30 days. The more times per week, the better the value per class.'
+    },
+    'price.freq.1': { pt: '1× / semana', en: '1× / week' },
+    'price.freq.2': { pt: '2× / semana', en: '2× / week' },
+    'price.freq.3': { pt: '3× / semana', en: '3× / week' },
+    'price.freq.4': { pt: '4× / semana', en: '4× / week' },
+    'price.freq.5': { pt: '5× / semana', en: '5× / week' },
+    'price.freq.6': { pt: '6× / semana', en: '6× / week' },
+    'price.freq.7': { pt: '7× / semana', en: '7× / week' },
+    'price.meta.4': { pt: '~4 aulas / mês', en: '~4 classes / month' },
+    'price.meta.8': { pt: '~8 aulas / mês', en: '~8 classes / month' },
+    'price.meta.12': { pt: '~12 aulas / mês', en: '~12 classes / month' },
+    'price.meta.16': { pt: '~16 aulas / mês', en: '~16 classes / month' },
+    'price.meta.20': { pt: '~20 aulas / mês', en: '~20 classes / month' },
+    'price.meta.daily': { pt: 'Treina todos os dias', en: 'Train every day' },
+    'price.meta.s4': { pt: '4 sessões / mês', en: '4 sessions / month' },
+    'price.meta.s8': { pt: '8 sessões / mês', en: '8 sessions / month' },
+    'price.meta.s12': { pt: '12 sessões / mês', en: '12 sessions / month' },
+    'price.meta.s16': { pt: '16 sessões / mês', en: '16 sessions / month' },
+    'price.meta.s20': { pt: '20 sessões / mês', en: '20 sessions / month' },
+    'price.meta.s24': { pt: '24 sessões / mês', en: '24 sessions / month' },
+    'price.valid': { pt: 'Validade 30 dias', en: '30-day validity' },
+    'price.valid.popular': { pt: 'Validade 30 dias · escolha mais comum', en: '30-day validity · most common choice' },
+    'price.valid.best': { pt: 'Validade 30 dias · melhor valor por aula', en: '30-day validity · best value per class' },
+    'price.valid.best.pt': { pt: 'Validade 30 dias · melhor preço por sessão', en: '30-day validity · best price per session' },
     'price.popular': { pt: 'Mais popular', en: 'Most popular' },
     'price.full': { pt: 'Acesso total', en: 'Full access' },
     'price.best': { pt: 'Melhor valor', en: 'Best value' },
-    'price.access': {
-      pt: 'Acesso a todas as aulas:',
-      en: 'Access to all classes:'
+
+    'price.sub.included': { pt: 'O que está incluído', en: 'What is included' },
+    'price.included.hint': {
+      pt: 'Com qualquer pack de grupo tens acesso a todas estas modalidades:',
+      en: 'With any group pack you get access to all these programs:'
     },
-    'price.hours': {
-      pt: 'Funcionamento: Seg–Sex 05h00–21h30 · Sáb–Dom 07h00–18h00 · Mensalidade até dia 5 de cada mês.',
-      en: 'Hours: Mon–Fri 05:00–21:30 · Sat–Sun 07:00–18:00 · Membership due by the 5th of each month.'
+    'price.rules.h3': { pt: 'Regras importantes', en: 'Important rules' },
+    'price.rules.1': {
+      pt: 'O pack é pela <strong>frequência semanal</strong> (1× a 7×). Validade <strong>30 dias</strong>.',
+      en: 'The pack is based on <strong>weekly frequency</strong> (1× to 7×). Validity <strong>30 days</strong>.'
     },
+    'price.rules.2': {
+      pt: 'As aulas <strong>não acumulam</strong> — o que não usares na semana não passa para a seguinte.',
+      en: 'Classes <strong>do not roll over</strong> — what you don’t use in the week does not carry to the next.'
+    },
+    'price.rules.3': {
+      pt: 'Mensalidade até ao <strong>dia 5</strong> de cada mês. Depois do dia 5, o pagamento fecha no final do mês.',
+      en: 'Membership due by the <strong>5th</strong> of each month. After the 5th, payment closes at the end of the month.'
+    },
+    'price.rules.4': {
+      pt: 'Actualizações de pagamento podem levar até <strong>48 horas</strong> — paga com antecedência.',
+      en: 'Payment updates can take up to <strong>48 hours</strong> — pay in advance.'
+    },
+    'price.rules.5': {
+      pt: 'Se estiveres <strong>90 dias</strong> ausente, precisas de renovar a inscrição.',
+      en: 'If you are absent for <strong>90 days</strong>, you need to renew enrollment.'
+    },
+    'price.rules.6': {
+      pt: 'Mensalidade expirada ou em dívida: <strong>não podes treinar</strong> até regularizar.',
+      en: 'Expired or outstanding membership: <strong>you cannot train</strong> until settled.'
+    },
+    'price.rules.7': {
+      pt: 'Envia o pagamento por WhatsApp com o <strong>comprovativo</strong>.',
+      en: 'Send payment via WhatsApp with the <strong>receipt</strong>.'
+    },
+    'price.hours.label': {
+      pt: '<strong>Horário do ginásio:</strong> Seg–Sex 05h00–21h30 · Sáb–Dom 07h00–18h00',
+      en: '<strong>Gym hours:</strong> Mon–Fri 05:00–21:30 · Sat–Sun 07:00–18:00'
+    },
+
     'price.pt.h2': { pt: 'Treino personalizado', en: 'Personal training' },
     'price.pt.lead': {
-      pt: 'Sessões individuais com treinador · validade 30 dias',
-      en: '1-on-1 sessions with a coach · 30-day validity'
+      pt: 'Sessões de 1 hora só contigo e o treinador. Packs válidos 30 dias.',
+      en: '1-hour sessions just you and the coach. Packs valid for 30 days.'
     },
-    'price.pt.session': { pt: 'Sessão avulsa', en: 'Single session' },
-    'price.pt.session.note': { pt: 'Interno · Externo (1 hora)', en: 'Member · Visitor (1 hour)' },
-    'price.sessions': { pt: 'Sessões / mês', en: 'Sessions / month' },
+    'price.pt.sub.enroll': { pt: 'Inscrição e sessão avulsa', en: 'Enrollment & single session' },
+    'price.pt.session.member': { pt: 'Sessão avulsa · membro', en: 'Single session · member' },
+    'price.pt.session.member.note': { pt: 'Membro do ginásio · 1 hora', en: 'Gym member · 1 hour' },
+    'price.pt.session.visitor': { pt: 'Sessão avulsa · visitante', en: 'Single session · visitor' },
+    'price.pt.session.visitor.note': { pt: 'Visitante · 1 hora', en: 'Visitor · 1 hour' },
+    'price.pt.sub.packs': { pt: 'Packs mensais de PT', en: 'Monthly PT packs' },
+    'price.pt.packs.hint': {
+      pt: 'Mais sessões por semana = melhor preço por sessão.',
+      en: 'More sessions per week = better price per session.'
+    },
+    'price.pt.rules.h3': { pt: 'Regras do PT', en: 'PT rules' },
+    'price.pt.rules.1': {
+      pt: 'Os packs valem <strong>30 dias</strong>. Se a mensalidade for carregada a tempo, as sessões são creditadas.',
+      en: 'Packs are valid for <strong>30 days</strong>. If membership is paid on time, sessions are credited.'
+    },
+    'price.pt.rules.2': {
+      pt: 'Actualizações de pagamento até <strong>48 horas</strong>.',
+      en: 'Payment updates up to <strong>48 hours</strong>.'
+    },
+    'price.pt.rules.3': {
+      pt: 'Após <strong>90 dias</strong> ausente, renova a inscrição.',
+      en: 'After <strong>90 days</strong> absent, renew enrollment.'
+    },
+    'price.pt.rules.4': {
+      pt: 'Mensalidade expirada ou em dívida: <strong>sem sessão</strong> até regularizar.',
+      en: 'Expired or outstanding membership: <strong>no session</strong> until settled.'
+    },
+    'price.pt.rules.5': {
+      pt: 'Pagamento por WhatsApp com comprovativo.',
+      en: 'Payment via WhatsApp with receipt.'
+    },
+
     'price.pay.h2': { pt: 'Pagamento', en: 'Payment' },
     'price.pay.lead': {
-      pt: 'Transferência ou Multicaixa Express · envia o comprovativo no WhatsApp',
-      en: 'Bank transfer or Multicaixa Express · send the receipt on WhatsApp'
+      pt: 'Transfere e envia o comprovativo no WhatsApp. Sem comprovativo, o acesso não é actualizado.',
+      en: 'Transfer and send the receipt on WhatsApp. Without a receipt, access is not updated.'
     },
-    'price.pay.note': {
-      pt: 'Actualizações de pagamento levam até 48h. Quem tiver a mensalidade expirada não poderá treinar até regularizar.',
-      en: 'Payment updates can take up to 48h. Expired memberships cannot train until settled.'
+    'price.pay.iban': { pt: 'IBAN', en: 'IBAN' },
+    'price.pay.copy.iban': { pt: 'Copiar IBAN', en: 'Copy IBAN' },
+    'price.pay.copy.num': { pt: 'Copiar número', en: 'Copy number' },
+    'price.pay.copied': { pt: 'Copiado', en: 'Copied' },
+    'price.pay.holder': {
+      pt: 'Titular: Corpos Malhados — Prestação de Serviços, Lda',
+      en: 'Account holder: Corpos Malhados — Prestação de Serviços, Lda'
     },
-    'price.holder': { pt: 'Titular', en: 'Account holder' },
+    'price.pay.number': { pt: 'Número', en: 'Number' },
+    'price.pay.receipt': { pt: 'Envia o comprovativo aqui:', en: 'Send the receipt here:' },
+    'price.pay.open.wa': { pt: 'Abrir WhatsApp', en: 'Open WhatsApp' },
+    'price.faq.h3': { pt: 'Perguntas rápidas', en: 'Quick questions' },
+    'price.faq.1': {
+      pt: '<strong>As aulas acumulam?</strong> Não. O que não usares na semana não passa para a seguinte.',
+      en: '<strong>Do classes roll over?</strong> No. What you don’t use in the week does not carry to the next.'
+    },
+    'price.faq.2': {
+      pt: '<strong>Até quando pago?</strong> Idealmente até ao dia 5. Depois, o pagamento fecha no final do mês.',
+      en: '<strong>When is payment due?</strong> Ideally by the 5th. After that, payment closes at the end of the month.'
+    },
+    'price.faq.3': {
+      pt: '<strong>E se faltar?</strong> A aula não usada não é transferida. O pack continua válido 30 dias.',
+      en: '<strong>What if I miss a class?</strong> The unused class is not transferred. The pack remains valid for 30 days.'
+    },
+    'price.faq.4': {
+      pt: '<strong>Quanto tempo demora a activar?</strong> Até 48 horas após enviares o comprovativo.',
+      en: '<strong>How long to activate?</strong> Up to 48 hours after you send the receipt.'
+    },
     'price.ready.h2': { pt: 'Pronto para começar?', en: 'Ready to start?' },
     'price.ready.p': {
-      pt: 'Formaliza a inscrição ou fala connosco no WhatsApp.',
-      en: 'Complete enrollment or message us on WhatsApp.'
+      pt: 'Escolhe o pack, paga e envia o comprovativo — ou fala connosco se tiveres dúvidas.',
+      en: 'Choose the pack, pay and send the receipt — or message us if you have questions.'
     },
+    'price.ready.enroll': { pt: 'Inscrever-me', en: 'Join' },
+    'price.ready.wa': { pt: 'WhatsApp', en: 'WhatsApp' },
 
     /* ---------- Schedule body ---------- */
     'sch.cf.h2': { pt: 'CrossFit & Hyrox', en: 'CrossFit & Hyrox' },

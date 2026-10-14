@@ -2481,6 +2481,216 @@ body.has-sticky-cart {
   word-break: normal;
 }
 
+/* ========== Preçário — mobile polish ========== */
+@media (max-width: 639px) {
+  /* Sticky jump: full-bleed, clearer pills */
+  .price-jump {
+    top: 56px;
+  }
+  .price-jump-inner {
+    padding: 0.6rem var(--space-sm);
+    gap: 0.4rem;
+    scrollbar-width: none;
+  }
+  .price-jump-inner::-webkit-scrollbar {
+    display: none;
+  }
+  .price-jump-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    background: var(--surface);
+  }
+  .price-jump-link:active {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* Section headers: less air, clearer hierarchy */
+  #aulas-grupo .section-header,
+  #treino-pt .section-header,
+  #pagamento .section-header {
+    margin-bottom: 1.25rem;
+    text-align: left;
+  }
+  #aulas-grupo .section-header p,
+  #treino-pt .section-header p,
+  #pagamento .section-header p {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+    font-size: 0.92rem;
+  }
+
+  .price-subh {
+    font-size: 0.95rem;
+    margin-bottom: 0.65rem;
+  }
+  .price-hint {
+    font-size: 0.86rem;
+    margin-bottom: 0.85rem;
+  }
+
+  /* Enrollment / drop-in cards: compact 2-col on narrow phones when space allows */
+  .price-cards.grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .price-card .card-body {
+    padding: 1rem 1rem 1.05rem;
+  }
+  .price-label {
+    font-size: 0.7rem;
+    margin-bottom: 0.25rem;
+  }
+  .price-card .product-price {
+    font-size: 1.25rem;
+    margin: 0.2rem 0 0.35rem;
+  }
+  .price-note {
+    font-size: 0.78rem;
+  }
+  .price-card .pack-wa {
+    margin-top: 0.65rem;
+    min-height: 44px;
+  }
+
+  /* Pack cards: stronger hierarchy, bigger price, full-width CTA */
+  .pack-grid {
+    gap: 0.75rem;
+  }
+  .pack-card {
+    padding: 1.1rem 1rem 1.15rem;
+  }
+  .pack-card--featured {
+    box-shadow: 0 0 0 1px rgba(245, 197, 24, 0.2), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  .pack-badge {
+    top: 0.65rem;
+    right: 0.65rem;
+    font-size: 0.62rem;
+    padding: 0.22rem 0.55rem;
+  }
+  .pack-card-top {
+    padding-right: 5rem;
+    margin-bottom: 0.4rem;
+  }
+  .pack-freq {
+    font-size: 1.1rem;
+  }
+  .pack-meta {
+    font-size: 0.78rem;
+  }
+  .pack-price {
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0.2rem;
+  }
+  .pack-price span {
+    font-size: 0.8rem;
+  }
+  .pack-valid {
+    font-size: 0.78rem;
+    margin-bottom: 0.85rem;
+  }
+  .pack-wa {
+    min-height: 46px;
+    font-size: 0.9rem;
+  }
+
+  /* Modality chips: tighter, horizontal scroll feel */
+  .mod-chips {
+    gap: 0.4rem;
+  }
+  .mod-chips li {
+    padding: 0.32rem 0.65rem;
+    font-size: 0.75rem;
+  }
+
+  /* Rules box: more readable on small screens */
+  .rules-box {
+    padding: 1rem 0.95rem 1.1rem;
+  }
+  .rules-list {
+    font-size: 0.86rem;
+    padding-left: 1.05rem;
+    line-height: 1.55;
+  }
+  .rules-list li + li {
+    margin-top: 0.55rem;
+  }
+  .price-hours {
+    font-size: 0.84rem;
+    margin-top: 0.9rem;
+  }
+
+  /* Payment / bank cards */
+  .bank-grid {
+    gap: 0.75rem;
+  }
+  .bank-grid .card-body {
+    padding: 1rem 1rem 1.05rem;
+  }
+  .bank-value {
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+  .bank-value--gold {
+    font-size: 1.15rem;
+  }
+  .bank-grid .btn {
+    min-height: 42px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Bottom CTA: stack cleanly */
+  .cta-band-content {
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
+  .cta-band-content h2 {
+    font-size: 1.45rem;
+  }
+  .cta-band-content p {
+    font-size: 0.92rem;
+  }
+  .cta-band-content .btn {
+    min-height: 48px;
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* Very small phones: single-column packs stay, slightly denser */
+@media (max-width: 380px) {
+  .pack-price {
+    font-size: 1.5rem;
+  }
+  .pack-card-top {
+    padding-right: 4.25rem;
+  }
+  .price-jump-link {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.76rem;
+  }
+}
+
+/* Mid phones (390–639): optional 2-up for enrollment cards only */
+@media (min-width: 400px) and (max-width: 639px) {
+  .price-cards.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+  .price-card .product-price {
+    font-size: 1.1rem;
+  }
+  .price-card .pack-wa {
+    font-size: 0.8rem;
+    min-height: 40px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 
 /* ========== Horários — modality cards ========== */
 .sch-mod-grid {
