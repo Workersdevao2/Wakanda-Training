@@ -69,10 +69,24 @@ Events are announced on **Instagram / social only** (no Eventos page on the site
 ## Manual upload (GitHub only)
 - **`images/hero-5.mp4`** — not accepted via Grok (sensitive/moderation). Add this file manually on GitHub into `wakanda-training/images/`. Required for the home hero carousel.
 
+## Hero carousel (current)
+1. `hero-1.mp4`  
+2. `hero-2.jpg`  
+3. `hero-3.mp4`  
+4. `hero-4.jpg`  
+5. `hero-5.mp4` (manual upload)  
+6. `hero-6.jpg`  
+7. `hero-7.mp4`  
+8. `hero-8.mp4` — Judo / BJJ training  
+9. `hero-9.mp4` — Corporate / team activation  
+10. `hero-10.mp4`  
+
+Removed: previous `hero-8.mp4` and `hero-9.jpg`.
+
 ## Folder map (what to edit where)
 | Goal | Files |
 |------|--------|
-| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (hero-13 first = Face to Face; **hero-5.mp4** must be uploaded manually) |
+| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (**hero-5.mp4** must be uploaded manually) |
 | About text/images | `pages/sobre.html` + `images/sobre-*.jpg` |
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
 | Prices / packs | `pages/precario.html` |
