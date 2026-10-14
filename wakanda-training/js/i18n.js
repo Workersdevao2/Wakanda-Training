@@ -103,11 +103,44 @@
     /* ---------- Projects ---------- */
     'proj.h1': { pt: 'Projetos de Transformação', en: 'Transformation Projects' },
     'proj.lead': {
-      pt: 'Programas pensados para mudar o corpo e a mentalidade.',
-      en: 'Programs designed to change body and mindset.'
+      pt: 'Programas pensados para mudar vidas de forma real e sustentável.',
+      en: 'Programs designed to change lives in a real and lasting way.'
     },
     'proj.featured': { pt: 'Em destaque', en: 'Featured' },
     'proj.join': { pt: 'Inscreve-te agora', en: 'Join now' },
+    'proj.join.90': { pt: 'Inscreve-te agora, “GORDUS 90”', en: 'Join now, “GORDUS 90”' },
+    'proj.90.p': {
+      pt: '90 dias para transformares o teu corpo, a tua saúde e a tua mentalidade antes das festas. Ideal para quem nunca treinou, para quem já tentou e parou, ou para quem quer terminar 2026 em grande.',
+      en: '90 days to transform your body, health and mindset before the holidays. Ideal if you have never trained, tried and stopped, or want to finish 2026 strong.'
+    },
+    'proj.full.h2': { pt: 'Gordus Project, 6 Meses', en: 'Gordus Project, 6 Months' },
+    'proj.phases.h3': { pt: 'As 3 Fases', en: 'The 3 Phases' },
+    'proj.phase1': {
+      pt: '<strong style="color: var(--text);">Fase 1, Kickstart (Meses 1-2)</strong><br>Mudança de hábitos',
+      en: '<strong style="color: var(--text);">Phase 1, Kickstart (Months 1-2)</strong><br>Habit change'
+    },
+    'proj.phase2.full': {
+      pt: '<strong style="color: var(--text);">Fase 2: Transformação (Meses 3-4)</strong><br>Treinos intensos + desafios',
+      en: '<strong style="color: var(--text);">Phase 2: Transformation (Months 3-4)</strong><br>Intense training + challenges'
+    },
+    'proj.phase3': {
+      pt: '<strong style="color: var(--text);">Fase 3, Performance & Lifestyle (Meses 5-6)</strong><br>Consolidação e competição final',
+      en: '<strong style="color: var(--text);">Phase 3, Performance & Lifestyle (Months 5-6)</strong><br>Consolidation and final competition'
+    },
+    'proj.groups.h3': { pt: 'Divisão em 4 Grupos', en: 'Divided into 4 Groups' },
+    'proj.group.a': { pt: 'Grupo A: Sobrepeso', en: 'Group A: Overweight' },
+    'proj.group.b': { pt: 'Grupo B: Obesidade Grau I', en: 'Group B: Obesity Grade I' },
+    'proj.group.c': { pt: 'Grupo C: Obesidade Grau II', en: 'Group C: Obesity Grade II' },
+    'proj.group.d': { pt: 'Grupo D: Obesidade Grau III', en: 'Group D: Obesity Grade III' },
+    'proj.groups.note': {
+      pt: 'Cada grupo tem o seu coach representante e acompanhamento contínuo.',
+      en: 'Each group has its representative coach and ongoing support.'
+    },
+    'proj.prize.h3': { pt: 'O Grande Prémio', en: 'The Grand Prize' },
+    'proj.cta.p': {
+      pt: 'É a oportunidade de ganhar saúde, recuperar autoestima, viver com mais energia e fazer parte de uma comunidade que te apoia. Sabemos que a luta contra a obesidade é física, emocional e psicológica. O Gordus Project é mais do que treino: é comunidade, apoio e saúde integral.',
+      en: 'It is the chance to gain health, rebuild self-esteem, live with more energy and join a community that supports you. We know the fight against obesity is physical, emotional and psychological. Gordus Project is more than training: community, support and whole-person health.'
+    },
 
     /* ---------- Schedule ---------- */
     'sch.h1': { pt: 'Horários', en: 'Schedule' },
@@ -158,8 +191,8 @@
     /* ---------- Results ---------- */
     'res.h1': { pt: 'Resultados & Transformações', en: 'Results & Transformations' },
     'res.lead': {
-      pt: 'Histórias reais. Pessoas reais. Resultados reais.',
-      en: 'Real stories. Real people. Real results.'
+      pt: 'Histórias reais. Pessoas reais. Evolução real.',
+      en: 'Real stories. Real people. Real progress.'
     },
 
     /* ---------- Enroll ---------- */
@@ -214,6 +247,17 @@
       pt: 'No pack de grupo podes treinar várias modalidades. Indica a principal se quiseres.',
       en: 'A group pack includes several classes. Pick a main one if you want.'
     },
+    'enroll.mod.cf': { pt: 'CrossFit & Hyrox', en: 'CrossFit & Hyrox' },
+    'enroll.mod.musc': { pt: 'Musculação', en: 'Strength' },
+    'enroll.mod.kb': { pt: 'Kickboxing', en: 'Kickboxing' },
+    'enroll.mod.judo': { pt: 'Judô', en: 'Judo' },
+    'enroll.mod.bjj': { pt: 'Jiu Jitsu Brasileiro', en: 'Brazilian Jiu Jitsu' },
+    'enroll.mod.zumba': { pt: 'Zumba', en: 'Zumba' },
+    'enroll.mod.kids': { pt: 'Functional Kids', en: 'Functional Kids' },
+    'enroll.mod.rg': { pt: 'Ginástica Rítmica', en: 'Rhythmic Gymnastics' },
+    'enroll.mod.wl': { pt: 'Weightlifting', en: 'Weightlifting' },
+    'enroll.mod.gap': { pt: 'G.A.P.', en: 'G.A.P.' },
+    'enroll.mod.other': { pt: 'Outro', en: 'Other' },
     'enroll.evt.label': { pt: 'Evento *', en: 'Event *' },
     'enroll.trial.label': { pt: 'Quero experimentar *', en: 'I want to try *' },
     'enroll.trial.unsure': { pt: 'Ainda não sei', en: 'Not sure yet' },
@@ -390,36 +434,111 @@
     'about.cta.btn': { pt: 'Agendar aula experimental', en: 'Book a trial class' },
 
     /* ---------- Modalities body ---------- */
+    'mod.hyrox.p': {
+      pt: 'Resistência, força e performance.',
+      en: 'Endurance, strength and performance.'
+    },
     'mod.crossfit.p': {
-      pt: 'Força, resistência e performance. Programação completa, dinâmica e desafiante, respeitando a progressão de cada atleta. Foco em Operação Dezembro.',
-      en: 'Strength, endurance and performance. Complete, dynamic programming that respects each athlete’s progress. Focus on Operation December.'
+      pt: 'Força, resistência e performance. Programação completa, dinâmica e desafiante, respeitando a progressão de cada atleta.',
+      en: 'Strength, endurance and performance. Complete, dynamic programming that respects each athlete’s progress.'
     },
     'mod.musc.p': {
-      pt: 'Estrutura completa, equipamentos de qualidade, acompanhamento profissional e plano estruturado para todos os níveis. Força, técnica e evolução.',
-      en: 'Full structure, quality equipment, professional coaching and structured plans for every level. Strength, technique and progress.'
+      pt: 'Estrutura completa, equipamentos de qualidade e acompanhamento profissional.',
+      en: 'Full structure, quality equipment and professional coaching.'
     },
     'mod.kick.p': {
-      pt: 'Técnica, controlo e disciplina. Melhora a condição física, ganha confiança e desenvolve velocidade.',
-      en: 'Technique, control and discipline. Build fitness, confidence and speed.'
+      pt: 'Disciplina, autocontrolo e evolução.',
+      en: 'Discipline, self-control and progress.'
     },
     'mod.zumba.p': {
-      pt: 'Energia, ritmo e bem-estar. Segundas, quartas e sextas às 19h00.',
-      en: 'Energy, rhythm and wellbeing. Mondays, Wednesdays and Fridays at 19:00.'
+      pt: 'Energia, ritmo e bem-estar.',
+      en: 'Energy, rhythm and well-being.'
     },
     'mod.kids.p': {
-      pt: 'Coordenação motora, força, equilíbrio, disciplina, confiança e espírito de equipa. Atividades dinâmicas e adaptadas à idade.',
-      en: 'Motor skills, strength, balance, discipline, confidence and teamwork. Dynamic, age-adapted activities.'
+      pt: 'Movimento, disciplina, confiança e futuro. Pequenos grandes atletas.',
+      en: 'Movement, discipline, confidence and future. Little great athletes.'
     },
     'mod.bjj.p': {
-      pt: 'Arte, disciplina e vida. Mais do que um desporto.',
-      en: 'Art, discipline and life. More than a sport.'
+      pt: 'Disciplina, respeito e evolução. Para crianças e adultos.',
+      en: 'Discipline, respect and progress. For kids and adults.'
     },
     'mod.judo.p': {
-      pt: 'Técnica, equilíbrio e disciplina. Para crianças e adultos.',
-      en: 'Technique, balance and discipline. For kids and adults.'
+      pt: 'Disciplina, respeito e evolução. Para crianças e adultos.',
+      en: 'Discipline, respect and progress. For kids and adults.'
     },
+    'mod.rg.p': {
+      pt: 'Disciplina, elegância e confiança em cada movimento.',
+      en: 'Discipline, elegance and confidence in every movement.'
+    },
+    'mod.wl.p': {
+      pt: 'Força, técnica e evolução.',
+      en: 'Strength, technique and progress.'
+    },
+    'mod.gap.p': {
+      pt: 'Glúteos, Abdómen e Pernas. Força, tonificação e resultados.',
+      en: 'Glutes, Abs and Legs. Strength, toning and results.'
+    },
+    'mod.name.judo': { pt: 'Judô', en: 'Judo' },
+    'mod.name.bjj': { pt: 'Jiu Jitsu Brasileiro', en: 'Brazilian Jiu Jitsu' },
+    'mod.name.rg': { pt: 'Ginástica Rítmica', en: 'Rhythmic Gymnastics' },
+    'mod.name.musc': { pt: 'Musculação', en: 'Strength' },
     'mod.enroll': { pt: 'Inscrever-me', en: 'Join' },
     'mod.musc': { pt: 'Musculação', en: 'Strength training' },
+
+    'mod.sched.hyrox': {
+      pt: 'Segunda a Sexta: 05h00 · 06h00 · 07h00 · 08h00 · 09h00<br>Sábados: 07h00',
+      en: 'Monday to Friday: 05:00 · 06:00 · 07:00 · 08:00 · 09:00<br>Saturdays: 07:00'
+    },
+    'mod.sched.cf': {
+      pt: 'Segunda a Sexta: 17h00 · 18h00 · 19h00 · 20h00<br>Sábados: 09h00 · 11h00',
+      en: 'Monday to Friday: 17:00 · 18:00 · 19:00 · 20:00<br>Saturdays: 09:00 · 11:00'
+    },
+    'mod.sched.musc': {
+      pt: 'Segunda a Sexta: 05h00 às 21h00<br>Sábados e Domingos: 07h00 às 14h00',
+      en: 'Monday to Friday: 05:00 to 21:00<br>Saturdays and Sundays: 07:00 to 14:00'
+    },
+    'mod.sched.kb': {
+      pt: 'Terças e Quintas: 18h30–19h30 | 19h30–20h30<br>Sábados: 08h30–09h30 | 10h30–11h30',
+      en: 'Tuesdays and Thursdays: 18:30–19:30 | 19:30–20:30<br>Saturdays: 08:30–09:30 | 10:30–11:30'
+    },
+    'mod.sched.judo': {
+      pt: 'Terças e Quintas: 17h30–18h30',
+      en: 'Tuesdays and Thursdays: 17:30–18:30'
+    },
+    'mod.sched.bjj': {
+      pt: 'Segunda, Quarta e Sexta: 09h00–10h00 | 16h30–17h30',
+      en: 'Monday, Wednesday and Friday: 09:00–10:00 | 16:30–17:30'
+    },
+    'mod.sched.kids': {
+      pt: 'Segunda a Sexta: 16h00–17h00<br>Sábados: 08h00–09h00',
+      en: 'Monday to Friday: 16:00–17:00<br>Saturdays: 08:00–09:00'
+    },
+    'mod.sched.zumba': {
+      pt: 'Segundas, Quartas e Sextas: 19h00',
+      en: 'Mondays, Wednesdays and Fridays: 19:00'
+    },
+    'mod.sched.rg': {
+      pt: 'Terças e Quintas: 16h30–17h30<br>Sábados: 10h30–12h00',
+      en: 'Tuesdays and Thursdays: 16:30–17:30<br>Saturdays: 10:30–12:00'
+    },
+    'mod.sched.wl': {
+      pt: 'Sábados: 10h00–11h00',
+      en: 'Saturdays: 10:00–11:00'
+    },
+    'mod.sched.gap': {
+      pt: 'Sábados: 08h00–09h00',
+      en: 'Saturdays: 08:00–09:00'
+    },
+
+    'mod.form.mod.label': { pt: 'Modalidade *', en: 'Program *' },
+    'mod.form.topic.prices': { pt: 'Preços', en: 'Pricing' },
+    'mod.form.topic.sched': { pt: 'Horários', en: 'Schedule' },
+    'mod.form.topic.trial': { pt: 'Aula experimental', en: 'Trial class' },
+    'mod.form.topic.level': { pt: 'Nível / para principiantes', en: 'Level / for beginners' },
+    'mod.form.topic.other': { pt: 'Outro', en: 'Other' },
+    'mod.form.unsure': { pt: 'Ainda não sei', en: 'Not sure yet' },
+    'mod.ph.name': { pt: 'O teu nome', en: 'Your name' },
+    'mod.ph.msg': { pt: 'A tua dúvida...', en: 'Your question...' },
 
     /* ---------- Pricing body ---------- */
     'price.group.h2': { pt: 'Aulas de grupo', en: 'Group classes' },
@@ -597,6 +716,49 @@
     'price.ready.wa': { pt: 'WhatsApp', en: 'WhatsApp' },
 
     /* ---------- Schedule body ---------- */
+    'sch.jump.hc': { pt: 'Hyrox & CrossFit', en: 'Hyrox & CrossFit' },
+    'sch.jump.musc': { pt: 'Musculação', en: 'Strength' },
+    'sch.jump.other': { pt: 'Outras modalidades', en: 'Other programs' },
+
+    'sch.hc.h2': { pt: 'Hyrox & CrossFit', en: 'Hyrox & CrossFit' },
+    'sch.hc.lead': { pt: 'Horários oficiais · aulas de 60 minutos', en: 'Official times · 60-minute classes' },
+    'sch.musc.h2': { pt: 'Musculação', en: 'Strength training' },
+    'sch.musc.lead': { pt: 'Força · Saúde · Disciplina · Resultados', en: 'Strength · Health · Discipline · Results' },
+    'sch.other.h2': { pt: 'Outras modalidades', en: 'Other programs' },
+    'sch.other.lead': { pt: 'Horários por dia da semana', en: 'Times by day of the week' },
+
+    'sch.day.weekdays': { pt: 'Segunda a sexta', en: 'Monday to Friday' },
+    'sch.day.sat': { pt: 'Sábados', en: 'Saturdays' },
+    'sch.day.sat.sun': { pt: 'Sábados e domingos', en: 'Saturdays and Sundays' },
+    'sch.day.tue.thu': { pt: 'Terças e quintas', en: 'Tuesdays and Thursdays' },
+    'sch.day.tue.thu.alt': { pt: 'Terça e Quinta', en: 'Tuesday and Thursday' },
+    'sch.day.mwf': { pt: 'Segunda, quarta e sexta', en: 'Monday, Wednesday and Friday' },
+    'sch.day.mwf.alt': { pt: 'Segundas, quartas e sextas', en: 'Mondays, Wednesdays and Fridays' },
+    'sch.day.sat.one': { pt: 'Sábado', en: 'Saturday' },
+
+    'sch.tag.hyrox': { pt: 'Resistência · Força · Performance', en: 'Endurance · Strength · Performance' },
+    'sch.tag.cf': { pt: 'Disciplina · Comunidade · Resultados', en: 'Discipline · Community · Results' },
+    'sch.tag.kb': { pt: 'Disciplina · Autocontrolo · Evolução', en: 'Discipline · Self-control · Progress' },
+    'sch.tag.judo': { pt: 'Disciplina · Respeito · Evolução · Crianças e adultos', en: 'Discipline · Respect · Progress · Kids and adults' },
+    'sch.tag.bjj': { pt: 'Disciplina · Respeito · Evolução · Crianças e adultos', en: 'Discipline · Respect · Progress · Kids and adults' },
+    'sch.tag.kids': { pt: 'Movimento · Disciplina · Confiança', en: 'Movement · Discipline · Confidence' },
+    'sch.tag.zumba': { pt: 'Energia · Ritmo · Bem-estar', en: 'Energy · Rhythm · Well-being' },
+    'sch.tag.rg': { pt: 'Disciplina · Elegância · Confiança', en: 'Discipline · Elegance · Confidence' },
+    'sch.tag.wl': { pt: 'Força · Técnica · Evolução', en: 'Strength · Technique · Progress' },
+    'sch.tag.gap': { pt: 'Glúteos · Abdómen · Pernas', en: 'Glutes · Abs · Legs' },
+
+    'sch.name.musc': { pt: 'Musculação', en: 'Strength' },
+    'sch.name.judo': { pt: 'Judô', en: 'Judo' },
+    'sch.name.rg': { pt: 'Ginástica Rítmica', en: 'Rhythmic Gymnastics' },
+
+    'sch.range.musc.wd': { pt: '05h00 às 21h00', en: '05:00 to 21:00' },
+    'sch.range.musc.we': { pt: '07h00 às 14h00', en: '07:00 to 14:00' },
+
+    'sch.footnote': {
+      pt: 'Horários oficiais Wakanda Training (posters). Confirma sempre no WhatsApp em caso de feriados ou alterações.',
+      en: 'Official Wakanda Training times (posters). Always confirm on WhatsApp for holidays or changes.'
+    },
+
     'sch.cf.h2': { pt: 'CrossFit & Hyrox', en: 'CrossFit & Hyrox' },
     'sch.cf.lead': { pt: 'Actualizado · Head Coach Wilson Benjamim', en: 'Updated · Head Coach Wilson Benjamim' },
     'sch.weekdays': { pt: 'Segunda a Sexta', en: 'Monday to Friday' },
@@ -743,8 +905,8 @@
     'proj.full.lead': { pt: 'A jornada completa de transformação.', en: 'The full transformation journey.' },
     'proj.phase2': { pt: 'Fase 2: Transformação (Meses 3-4)', en: 'Phase 2: Transformation (Months 3-4)' },
     'proj.prize': {
-      pt: 'Após 6 meses de disciplina: 1 milhão de Kwanzas para o homem e 1 milhão para a mulher com melhores resultados.',
-      en: 'After 6 months of discipline: 1 million Kwanzas for the top man and 1 million for the top woman.'
+      pt: 'Após 6 meses de disciplina: 1 milhão de Kwanzas para o homem e 1 milhão para a mulher + ofertas de patrocinadores.',
+      en: 'After 6 months of discipline: 1 million Kwanzas for the top man and 1 million for the top woman + sponsor offers.'
     },
     'proj.criteria': {
       pt: 'Critérios: Carisma, empenho, motivação, resiliência e resultados.',
@@ -791,6 +953,22 @@
       pt: 'O projeto prova que, com acompanhamento e comunidade, a transformação é possível.',
       en: 'The project proves that with coaching and community, transformation is possible.'
     },
+    'res.gordus.p': {
+      pt: 'Participantes que entraram com excesso de peso e saíram com mais saúde, autoestima e uma rotina sustentável.',
+      en: 'Participants who started overweight and left with better health, self-esteem and a sustainable routine.'
+    },
+    'res.gordus.cta': { pt: 'Conhecer o projeto', en: 'Learn about the project' },
+    'res.athletes.h3': { pt: 'Atletas da box', en: 'Box athletes' },
+    'res.athletes.p': {
+      pt: 'Melhorias de força, resistência, composição corporal e, acima de tudo, mentalidade. Quem treina connosco sabe: o verdadeiro prémio é o bem-estar.',
+      en: 'Gains in strength, endurance, body composition and, above all, mindset. Anyone who trains with us knows: the real prize is well-being.'
+    },
+    'res.next.p': {
+      pt: 'Se acreditas que podes, já venceste a primeira batalha. Agora é aparecer, treinar, insistir e repetir. O resto constrói-se todos os dias.',
+      en: 'If you believe you can, you have already won the first battle. Now show up, train, persist and repeat. The rest is built every day.'
+    },
+    'res.next.start': { pt: 'Começar agora', en: 'Start now' },
+    'res.next.gordus': { pt: 'Ver Gordus Project', en: 'See Gordus Project' },
     'enroll.aside.price': { pt: 'Preçário:', en: 'Pricing:' },
     'enroll.aside.packs': { pt: 'ver packs', en: 'view packs' },
     'enroll.ph.name': { pt: 'Nome por extenso', en: 'Full name' },
