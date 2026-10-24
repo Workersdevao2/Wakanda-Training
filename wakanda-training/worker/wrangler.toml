@@ -12,8 +12,8 @@ preview_urls = true
 # and update binding id.
 [[kv_namespaces]]
 binding = "SUBMISSIONS"
-id = "REPLACE_AFTER_KV_CREATE"
-preview_id = "REPLACE_AFTER_KV_CREATE"
+id = "8c1cb8293aae4fc6bb0cb5e5d11e08e1"
+preview_id = "8c1cb8293aae4fc6bb0cb5e5d11e08e1"
 
 # Secrets (set via CLI — never commit):
 #   npx wrangler secret put ADMIN_PASSWORD
