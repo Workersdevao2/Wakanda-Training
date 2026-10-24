@@ -913,11 +913,21 @@ async function initCatalogAndShop() {
   } catch (_) {}
 
   // Remote catalog (wins over defaults, loses to drafts)
+  // Prefer versioned URL from last admin publish (avoids long CDN cache on unversioned path)
+  const catalogUrls = [];
   try {
-    const res = await fetch(WT_CATALOG_URL + '?t=' + Date.now(), { cache: 'no-store' });
-    if (res.ok) {
+    const last = localStorage.getItem('wt_catalog_url');
+    if (last) catalogUrls.push(last);
+  } catch (_) {}
+  catalogUrls.push(WT_CATALOG_URL + '?t=' + Date.now());
+
+  for (const url of catalogUrls) {
+    try {
+      const res = await fetch(url, { cache: 'no-store', mode: 'cors' });
+      if (!res.ok) continue;
       const remote = await res.json();
-      if (!localStorage.getItem('wt_products_override') && Array.isArray(remote.products) && remote.products.length) {
+      if (!remote || !Array.isArray(remote.products)) continue;
+      if (!localStorage.getItem('wt_products_override') && remote.products.length) {
         catalog.products = remote.products;
       }
       if (!localStorage.getItem('wt_zones_override') && Array.isArray(remote.zones)) {
@@ -930,9 +940,10 @@ async function initCatalogAndShop() {
         catalog.images = { ...catalog.images, ...remote.images };
       }
       catalog.updatedAt = remote.updatedAt;
+      break;
+    } catch (_) {
+      // try next URL
     }
-  } catch (_) {
-    // keep defaults / drafts
   }
 
   window.WT_CATALOG = catalog;

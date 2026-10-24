@@ -136,22 +136,41 @@
   }
 
   async function loadRemoteCatalog() {
+    // Prefer last published versioned URL (avoids 30-day CDN cache on unversioned path)
+    const urls = [];
     try {
-      const res = await fetch(CATALOG_URL + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) return false;
-      const data = await res.json();
-      if (Array.isArray(data.products) && data.products.length) {
-        // Only overwrite if no local draft
-        if (!localStorage.getItem(DRAFT_PRODUCTS)) products = data.products;
+      const last = localStorage.getItem('wt_catalog_url');
+      if (last) urls.push(last);
+    } catch (_) {}
+    urls.push(CATALOG_URL + '?t=' + Date.now());
+
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { cache: 'no-store', mode: 'cors' });
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (!data || !Array.isArray(data.products)) continue;
+
+        // Remote wins when there is no local draft
+        if (!localStorage.getItem(DRAFT_PRODUCTS) && data.products.length) {
+          products = data.products;
+        }
+        if (!localStorage.getItem(DRAFT_ZONES) && Array.isArray(data.zones)) {
+          zones = data.zones;
+        }
+        if (!localStorage.getItem(DRAFT_TEXTS) && data.texts) {
+          texts = data.texts;
+        }
+        if (!localStorage.getItem(DRAFT_IMAGES) && data.images) {
+          siteImages = data.images;
+        }
+        updateStatus(data.updatedAt || 'remoto');
+        return true;
+      } catch (_) {
+        // try next URL
       }
-      if (Array.isArray(data.zones) && !localStorage.getItem(DRAFT_ZONES)) zones = data.zones;
-      if (data.texts && !localStorage.getItem(DRAFT_TEXTS)) texts = data.texts;
-      if (data.images && !localStorage.getItem(DRAFT_IMAGES)) siteImages = data.images;
-      updateStatus(data.updatedAt);
-      return true;
-    } catch {
-      return false;
     }
+    return false;
   }
 
   function saveDrafts() {
@@ -561,13 +580,21 @@
           if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
           return;
         }
-        // Clear drafts so public load uses remote
+        // Clear drafts so next load uses remote; remember versioned CDN URL
         localStorage.removeItem(DRAFT_PRODUCTS);
         localStorage.removeItem(DRAFT_ZONES);
         localStorage.removeItem(DRAFT_TEXTS);
         localStorage.removeItem(DRAFT_IMAGES);
+        if (data.url) {
+          try { localStorage.setItem('wt_catalog_url', data.url); } catch (_) {}
+        }
         updateStatus(data.updatedAt || 'publicado');
         toast('Publicado com sucesso', 'success');
+        // Re-render from in-memory catalog (already has new prices)
+        renderProducts();
+        renderZones();
+        renderSlots();
+        renderDashboard();
       } catch (e) {
         toast('Erro de rede: ' + e.message, 'error');
       }

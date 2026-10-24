@@ -65,7 +65,8 @@ async function handlePublish(request, env) {
     }
 
     const folder = env.CLOUDINARY_FOLDER || 'wakanda-training';
-    const publicId = env.CATALOG_PUBLIC_ID || `${folder}/catalog`;
+    // Include .json so delivery URL matches site fetch path
+    const publicId = env.CATALOG_PUBLIC_ID || `${folder}/catalog.json`;
 
     // Ensure metadata
     catalog.updatedAt = new Date().toISOString();
@@ -110,10 +111,17 @@ async function handlePublish(request, env) {
     }
 
     const secureUrl = data.secure_url || data.url;
+    // Prefer versioned URL so CDN never serves a stale catalog after publish
+    const version = data.version;
+    const versionedUrl = version
+      ? `https://res.cloudinary.com/${cloudName}/raw/upload/v${version}/${data.public_id || publicId}`
+      : secureUrl;
+
     return json({
       ok: true,
       updatedAt: catalog.updatedAt,
-      url: secureUrl,
+      url: versionedUrl,
+      version: version || null,
       public_id: data.public_id,
       products: catalog.products.length,
       zones: catalog.zones.length
