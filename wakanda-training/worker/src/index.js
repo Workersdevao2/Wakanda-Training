@@ -77,13 +77,13 @@ async function handlePublish(request, env) {
     const payload = JSON.stringify(catalog, null, 2);
     const timestamp = Math.floor(Date.now() / 1000);
 
-    // Cloudinary signed raw upload parameters
-    // Signature: sha1 of sorted params + secret (excluding file & cloud_name)
+    // Cloudinary signed raw upload
+    // Sign ONLY params that go in the body except: file, api_key, cloud_name, resource_type
+    // resource_type lives in the URL path (/raw/upload), never in the signature string
     const paramsToSign = {
-      public_id: publicId,
-      timestamp: String(timestamp),
       overwrite: 'true',
-      resource_type: 'raw'
+      public_id: publicId,
+      timestamp: String(timestamp)
     };
 
     const signature = await signParams(paramsToSign, apiSecret);
@@ -94,7 +94,6 @@ async function handlePublish(request, env) {
     form.append('timestamp', String(timestamp));
     form.append('public_id', publicId);
     form.append('overwrite', 'true');
-    form.append('resource_type', 'raw');
     form.append('signature', signature);
 
     const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`;
@@ -103,9 +102,10 @@ async function handlePublish(request, env) {
 
     if (!res.ok) {
       console.error('Cloudinary error', data);
+      const detail = data.error?.message || data.message || JSON.stringify(data);
       return json({
-        error: 'Cloudinary upload failed',
-        detail: data.error?.message || data.message || JSON.stringify(data)
+        error: 'Cloudinary upload failed: ' + detail,
+        detail
       }, 502);
     }
 
