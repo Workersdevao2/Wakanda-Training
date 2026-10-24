@@ -126,187 +126,41 @@
   </aside>
 
   <section class="page-hero page-hero--image">
-    <div class="page-hero-bg" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-label="Wakanda Training"></div>
+    <div class="page-hero-bg" data-site-img-bg="hero-loja" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-label="Wakanda Training"></div>
     <div class="page-hero-scrim"></div>
     <div class="container page-hero-content">
       <h1 data-i18n="shop.h1">Loja Oficial</h1>
-      <p class="lead"><span data-i18n="shop.lead">Veste a tribo. Treina com o equipamento certo.</span></p>
-    </div>
-  </section>
-
-
-  <!-- Vestuário -->
+      <p class="lead"><span data-i18n="shop.lead">Veste a tribo. Treina com o equipamento certo.</span></  <!-- Vestuário (rendered by main.js from catalog) -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="shop.apparel">Vestuário</h2>
         <p>T-shirts oficiais Athlete, identidade e performance.</p>
       </div>
-
-      <div class="grid-2 product-grid product-grid--apparel">
-        <div class="card product-card">
-          <img src="../images/tshirt-amarela-athlete.jpg" alt="T-shirt Athlete Amarela" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>T-shirt Athlete Amarela</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Energia, vitalidade e foco. Tecido poliéster microperfurado.</p>
-            <p class="product-price">18.000 KZ</p>
-            <div style="margin: 0.75rem 0 0.5rem;">
-              <label style="font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Tamanho</label>
-              <select id="size-amarela" class="product-size-select" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
-                <option value="S">S</option>
-                <option value="M" selected>M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-              </select>
-            </div>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addTshirt('amarela', 'T-shirt Athlete Amarela', 18000)">
-                <span data-i18n="shop.add">Adicionar ao carrinho</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/tshirt-preta-athlete.jpg" alt="T-shirt Athlete Preta" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>T-shirt Athlete Preta</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Elegância, poder e atitude. Mesma qualidade técnica.</p>
-            <p class="product-price">18.000 KZ</p>
-            <div style="margin: 0.75rem 0 0.5rem;">
-              <label style="font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Tamanho</label>
-              <select id="size-preta" class="product-size-select" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
-                <option value="S">S</option>
-                <option value="M" selected>M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-              </select>
-            </div>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addTshirt('preta', 'T-shirt Athlete Preta', 18000)">
-                <span data-i18n="shop.add">Adicionar ao carrinho</span>
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="grid-2 product-grid product-grid--apparel" id="shop-apparel">
+        <!-- products injected by JS -->
       </div>
     </div>
   </section>
 
-  <!-- Acessórios -->
+  <!-- Acessórios (rendered by main.js from catalog) -->
   <section class="section" style="background: var(--surface);">
     <div class="container">
       <div class="section-header">
         <h2 data-i18n="shop.accessories">Acessórios de Treino</h2>
         <p><span data-i18n="shop.acc.lead">Bandas, gloves, ligaduras e cordas para elevar o teu treino.</span></p>
       </div>
-
-      <div class="grid-3 product-grid product-grid--accessories">
-        <div class="card product-card">
-          <img src="../images/banda-45mm-verde.jpg" alt="Banda Elástica 45mm verde" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Banda Elástica 45 mm</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Verde • Semperfit</p>
-            <p class="product-price">30.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('banda-45', 'Banda Elástica 45mm (Verde)', 30000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/banda-32mm-roxa.jpg" alt="Banda Elástica 32mm roxa" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Banda Elástica 32 mm</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Roxa • Semperfit</p>
-            <p class="product-price">23.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('banda-32', 'Banda Elástica 32mm (Roxa)', 23000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/banda-22mm-preta.jpg" alt="Banda Elástica 22mm preta" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Banda Elástica 22 mm</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Preta • Semperfit</p>
-            <p class="product-price">14.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('banda-22', 'Banda Elástica 22mm (Preta)', 14000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/banda-13mm-vermelha.jpg" alt="Banda Elástica 13mm vermelha" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Banda Elástica 13 mm</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Vermelha • Semperfit</p>
-            <p class="product-price">10.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('banda-13', 'Banda Elástica 13mm (Vermelha)', 10000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/grip-glove.jpg" alt="Grip Glove" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Grip Glove</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Preto • Quamtrax</p>
-            <p class="product-price">25.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('grip-glove', 'Grip Glove', 25000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/ligadura-pulso.jpg" alt="Ligadura de Pulso" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Ligadura de Pulso</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Amarela / Azul</p>
-            <p class="product-price">6.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('ligadura', 'Ligadura de Pulso', 6000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card product-card">
-          <img src="../images/jump-rope.jpg" alt="Speed Jump Rope" class="product-img"  loading="lazy" decoding="async" />
-          <div class="card-body">
-            <h3>Speed Jump Rope</h3>
-            <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">Alças de alumínio • Rolamentos</p>
-            <p class="product-price">20.000 KZ</p>
-            <div class="product-actions">
-              <button class="btn btn-sm btn-solid" onclick="addToCart('jump-rope', 'Speed Jump Rope', 20000)">
-                <span data-i18n="shop.add">Adicionar</span>
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="grid-3 product-grid product-grid--accessories" id="shop-accessories">
+        <!-- products injected by JS -->
       </div>
-
       <p class="text-center mt-lg" style="color: var(--text-muted); font-size: 0.9rem;">
         Adiciona os produtos ao carrinho e envia a encomenda completa via WhatsApp.<br>
         Confirma disponibilidade e tamanhos antes de pagar.
       </p>
+    </div>
+  </section>
+
+/p>
     </div>
   </section>
 
@@ -352,6 +206,7 @@
   </div>
 
 
+<script src="../js/products.js"></script>
 <script src="../js/i18n.js"></script>
 <script src="../js/main.js"></script>
 </body>

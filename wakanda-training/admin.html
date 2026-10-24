@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin | Wakanda Training</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/jpeg" href="images/favicon.jpg" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- Login -->
+  <div class="admin-login" id="admin-login">
+    <div class="admin-login-card">
+      <h1>Wakanda Admin</h1>
+      <p>Painel da equipa · High Performance</p>
+      <form id="login-form">
+        <div id="login-error" class="admin-login-error"></div>
+        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required />
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--admin-muted);margin-bottom:1rem;cursor:pointer;">
+          <input type="checkbox" id="login-remember" /> Manter sessão neste dispositivo
+        </label>
+        <button type="submit" class="btn btn-solid" style="width:100%;">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Shell -->
+  <div class="admin-shell" id="admin-shell">
+    <header class="admin-header">
+      <h1>WT Admin</h1>
+      <div class="admin-header-actions">
+        <div class="admin-status" id="admin-status-text"><strong>—</strong></div>
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-logout">Sair</button>
+      </div>
+    </header>
+
+    <nav class="admin-tabs" role="tablist">
+      <button type="button" class="admin-tab active" data-panel="dash">Dashboard</button>
+      <button type="button" class="admin-tab" data-panel="products">Produtos</button>
+      <button type="button" class="admin-tab" data-panel="zones">Entrega</button>
+      <button type="button" class="admin-tab" data-panel="media">Média</button>
+      <button type="button" class="admin-tab" data-panel="images">Imagens site</button>
+      <button type="button" class="admin-tab" data-panel="guide">Guia</button>
+    </nav>
+
+    <!-- Dashboard -->
+    <section class="admin-panel active" id="panel-dash">
+      <div class="dash-stats">
+        <div class="dash-stat"><div class="num" id="stat-products">0</div><div class="lbl">Produtos activos</div></div>
+        <div class="dash-stat"><div class="num" id="stat-zones">0</div><div class="lbl">Zonas entrega</div></div>
+        <div class="dash-stat"><div class="num" id="stat-media">0</div><div class="lbl">Média</div></div>
+      </div>
+      <div class="staff-guide">
+        <h3>Fluxo rápido</h3>
+        <ol>
+          <li>Edita <strong>Produtos</strong>, <strong>Entrega</strong> ou <strong>Imagens do site</strong>.</li>
+          <li><strong>Guardar rascunho</strong> — só neste telemóvel/browser (pré-visualiza a loja).</li>
+          <li><strong>Publicar na loja</strong> — todos os visitantes passam a ver os novos dados.</li>
+        </ol>
+        <h3>Password</h3>
+        <p>Default local: <code>wakanda2026</code>. Altera no Worker (<code>ADMIN_PASSWORD</code>) e deixa de usar a local em produção.</p>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="admin-panel" id="panel-products">
+      <div class="admin-panel-header">
+        <h2>Produtos</h2>
+        <button type="button" class="btn btn-solid btn-sm" id="btn-new-product">+ Novo</button>
+      </div>
+      <div class="product-list" id="product-list"></div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nome</th>
+              <th>Preço</th>
+              <th>Cat.</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Zones -->
+    <section class="admin-panel" id="panel-zones">
+      <div class="admin-panel-header">
+        <h2>Zonas de entrega</h2>
+        <button type="button" class="btn btn-solid btn-sm" id="btn-add-zone">+ Zona</button>
+      </div>
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">Preço em KZ. 0 = grátis / levantamento no ginásio.</p>
+      <div id="zones-list"></div>
+    </section>
+
+    <!-- Media -->
+    <section class="admin-panel" id="panel-media">
+      <div class="admin-panel-header">
+        <h2>Biblioteca de média</h2>
+        <button type="button" class="btn btn-solid btn-sm" id="btn-upload-media">Carregar</button>
+      </div>
+      <input type="file" id="media-file-input" class="sr-only" accept="image/*" multiple />
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+        Upload directo para Cloudinary (preset unsigned). Apagar aqui só remove da lista local — não apaga o ficheiro no Cloudinary.
+      </p>
+      <div class="media-grid" id="media-grid"></div>
+    </section>
+
+    <!-- Site images -->
+    <section class="admin-panel" id="panel-images">
+      <div class="admin-panel-header">
+        <h2>Imagens do site</h2>
+      </div>
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+        Atribui fotos aos slots da loja e páginas públicas sem colar URLs à mão.
+      </p>
+      <input type="file" id="slot-file-input" class="sr-only" accept="image/*" />
+      <div class="slot-grid" id="slot-grid"></div>
+    </section>
+
+    <!-- Guide -->
+    <section class="admin-panel" id="panel-guide">
+      <div class="staff-guide">
+        <h3>Guia da equipa</h3>
+        <p>Este painel controla a <strong>loja</strong>, zonas de entrega e algumas imagens do site. Não precisa de programador para preços ou fotos.</p>
+
+        <h3>Rascunho vs Publicar</h3>
+        <ul>
+          <li><strong>Guardar rascunho</strong> — fica só neste browser. Podes abrir a loja no mesmo telemóvel e ver as alterações.</li>
+          <li><strong>Publicar na loja</strong> — envia o catálogo para a cloud. Todos os clientes vêem os novos dados depois de atualizar a página.</li>
+        </ul>
+
+        <h3>Produtos</h3>
+        <ul>
+          <li>T-shirts: preenche o campo <em>Tamanhos</em> com S, M, L, XL, XXL.</li>
+          <li>Acessórios: deixa tamanhos vazio.</li>
+          <li>Desactiva um produto em vez de apagar se quiseres esconder temporariamente.</li>
+        </ul>
+
+        <h3>Média</h3>
+        <ul>
+          <li>Carrega fotos → aparecem na grelha.</li>
+          <li>Botão <em>Usar</em> aplica a imagem a um produto aberto ou a um slot do site.</li>
+          <li>✕ remove só da lista deste telefone.</li>
+        </ul>
+
+        <h3>Se algo falhar</h3>
+        <p>Contacta o programador. Não partilhes a password do admin nem as chaves do Cloudinary.</p>
+      </div>
+    </section>
+
+    <!-- Sticky actions -->
+    <div class="admin-sticky-bar">
+      <button type="button" class="btn btn-ghost" id="sticky-save">Guardar rascunho</button>
+      <button type="button" class="btn btn-solid" id="sticky-publish">Publicar na loja</button>
+    </div>
+  </div>
+
+  <!-- Product modal -->
+  <div class="admin-modal-overlay" id="product-modal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="modal-product-title">Produto</h3>
+        <button type="button" class="admin-modal-close" id="btn-close-product" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="form-row">
+        <label>Nome (PT)</label>
+        <input type="text" id="f-name" />
+      </div>
+      <div class="form-row">
+        <label>Nome (EN)</label>
+        <input type="text" id="f-name-en" />
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Preço (KZ)</label>
+          <input type="number" inputmode="decimal" id="f-price" />
+        </div>
+        <div class="form-row">
+          <label>Categoria</label>
+          <select id="f-category">
+            <option value="apparel">Vestuário</option>
+            <option value="accessories">Acessórios</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Descrição (PT)</label>
+        <textarea id="f-desc"></textarea>
+      </div>
+      <div class="form-row">
+        <label>Descrição (EN)</label>
+        <textarea id="f-desc-en"></textarea>
+      </div>
+      <div class="form-row">
+        <label>URL da imagem</label>
+        <input type="text" id="f-image" placeholder="images/… ou https://…" />
+      </div>
+      <div class="form-row">
+        <label>Tamanhos (vírgula, vazio = sem tamanhos)</label>
+        <input type="text" id="f-sizes" placeholder="S, M, L, XL, XXL" />
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Ordem</label>
+          <input type="number" id="f-order" />
+        </div>
+        <div class="form-row" style="display:flex;align-items:flex-end;padding-bottom:0.5rem;">
+          <label style="display:flex;align-items:center;gap:0.4rem;text-transform:none;letter-spacing:0;font-size:0.9rem;cursor:pointer;">
+            <input type="checkbox" id="f-active" checked /> Activo na loja
+          </label>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" class="btn btn-ghost" id="btn-close-product-2" onclick="document.getElementById('btn-close-product').click()">Cancelar</button>
+        <button type="button" class="btn btn-solid" id="btn-save-product">Guardar produto</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="admin-toast"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

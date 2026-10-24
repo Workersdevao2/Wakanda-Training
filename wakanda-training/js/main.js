@@ -106,6 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---------- WhatsApp forms ----------
   initWaForms();
+
+  // ---------- Live catalog + dynamic shop ----------
+  initCatalogAndShop();
 });
 
 // WhatsApp helper
@@ -877,4 +880,168 @@ function initWaForms() {
   })();
 
 
+}
+
+/* =====================================================
+   LIVE CATALOG (Cloudinary) + DYNAMIC SHOP
+   ===================================================== */
+const WT_CLOUD = 'ogtzpc3v';
+const WT_FOLDER = 'wakanda-training';
+const WT_CATALOG_URL = `https://res.cloudinary.com/${WT_CLOUD}/raw/upload/${WT_FOLDER}/catalog.json`;
+
+window.WT_CATALOG = null;
+
+async function initCatalogAndShop() {
+  // Start from defaults (products.js)
+  let catalog = {
+    products: (window.WT_DEFAULTS && window.WT_DEFAULTS.products) || window.PRODUCTS || [],
+    zones: (window.WT_DEFAULTS && window.WT_DEFAULTS.zones) || window.DELIVERY_ZONES || [],
+    texts: (window.WT_DEFAULTS && window.WT_DEFAULTS.texts) || { pt: {}, en: {} },
+    images: (window.WT_DEFAULTS && window.WT_DEFAULTS.images) || {}
+  };
+
+  // Drafts (same browser as admin)
+  try {
+    const dp = localStorage.getItem('wt_products_override');
+    const dz = localStorage.getItem('wt_zones_override');
+    const dt = localStorage.getItem('wt_texts_override');
+    const di = localStorage.getItem('wt_images_override');
+    if (dp) catalog.products = JSON.parse(dp);
+    if (dz) catalog.zones = JSON.parse(dz);
+    if (dt) catalog.texts = JSON.parse(dt);
+    if (di) catalog.images = { ...catalog.images, ...JSON.parse(di) };
+  } catch (_) {}
+
+  // Remote catalog (wins over defaults, loses to drafts)
+  try {
+    const res = await fetch(WT_CATALOG_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const remote = await res.json();
+      if (!localStorage.getItem('wt_products_override') && Array.isArray(remote.products) && remote.products.length) {
+        catalog.products = remote.products;
+      }
+      if (!localStorage.getItem('wt_zones_override') && Array.isArray(remote.zones)) {
+        catalog.zones = remote.zones;
+      }
+      if (!localStorage.getItem('wt_texts_override') && remote.texts) {
+        catalog.texts = remote.texts;
+      }
+      if (!localStorage.getItem('wt_images_override') && remote.images) {
+        catalog.images = { ...catalog.images, ...remote.images };
+      }
+      catalog.updatedAt = remote.updatedAt;
+    }
+  } catch (_) {
+    // keep defaults / drafts
+  }
+
+  window.WT_CATALOG = catalog;
+  window.PRODUCTS = catalog.products;
+  window.DELIVERY_ZONES = catalog.zones;
+
+  applySiteImages(catalog.images);
+  renderShopFromCatalog(catalog.products);
+}
+
+function applySiteImages(images) {
+  if (!images || typeof images !== 'object') return;
+  document.querySelectorAll('[data-site-img]').forEach((el) => {
+    const key = el.getAttribute('data-site-img');
+    const url = images[key];
+    if (!url) return;
+    if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
+      el.src = url.startsWith('http') || url.startsWith('/') ? url : '../' + url.replace(/^\.\.\//, '');
+    } else if (el.tagName === 'VIDEO') {
+      el.poster = url;
+    }
+  });
+  document.querySelectorAll('[data-site-img-bg]').forEach((el) => {
+    const key = el.getAttribute('data-site-img-bg');
+    const url = images[key];
+    if (!url) return;
+    const resolved = url.startsWith('http') || url.startsWith('/') ? url : '../' + url.replace(/^\.\.\//, '');
+    el.style.backgroundImage = `url('${resolved}')`;
+  });
+}
+
+function renderShopFromCatalog(products) {
+  const apparelGrid = document.getElementById('shop-apparel');
+  const accGrid = document.getElementById('shop-accessories');
+  if (!apparelGrid && !accGrid) return;
+
+  const active = (products || []).filter((p) => p.active !== false);
+  const apparel = active.filter((p) => p.category === 'apparel').sort((a, b) => (a.order || 0) - (b.order || 0));
+  const accessories = active.filter((p) => p.category !== 'apparel').sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  function productCard(p) {
+    const img = resolveProductImage(p.image);
+    const hasSizes = Array.isArray(p.sizes) && p.sizes.length;
+    const sizeSelect = hasSizes
+      ? `<div style="margin: 0.75rem 0 0.5rem;">
+          <label style="font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Tamanho</label>
+          <select id="size-${p.id}" class="product-size-select" style="width: 100%; padding: 0.55rem 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 0.9rem;">
+            ${p.sizes.map((s, i) => `<option value="${s}" ${s === 'M' || i === 0 ? 'selected' : ''}>${s}</option>`).join('')}
+          </select>
+        </div>`
+      : '';
+    const onclick = hasSizes
+      ? `addSizedProduct('${p.id}', '${escapeJs(p.name)}', ${p.price}, '${escapeJs(img)}')`
+      : `addToCart('${p.id}', '${escapeJs(p.name)}', ${p.price}, '${escapeJs(img)}')`;
+
+    return `
+      <div class="card product-card" data-product-id="${p.id}">
+        <img src="${img}" alt="${escapeHtml(p.name)}" class="product-img" loading="lazy" decoding="async" />
+        <div class="card-body">
+          <h3>${escapeHtml(p.name)}</h3>
+          <p style="font-size: 0.85rem; margin-bottom: 0.35rem;">${escapeHtml(p.description || '')}</p>
+          <p class="product-price">${formatPrice(p.price)}</p>
+          ${sizeSelect}
+          <div class="product-actions">
+            <button class="btn btn-sm btn-solid" onclick="${onclick}">
+              <span data-i18n="shop.add">Adicionar ao carrinho</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (apparelGrid) {
+    apparelGrid.innerHTML = apparel.map(productCard).join('') || '<p class="text-muted">Sem produtos de vestuário.</p>';
+  }
+  if (accGrid) {
+    accGrid.innerHTML = accessories.map(productCard).join('') || '<p class="text-muted">Sem acessórios.</p>';
+  }
+}
+
+function resolveProductImage(src) {
+  if (!src) return '';
+  if (src.startsWith('http') || src.startsWith('data:') || src.startsWith('/')) return src;
+  // loja.html is under pages/
+  if (src.startsWith('images/')) return '../' + src;
+  return src;
+}
+
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeJs(s) {
+  return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function addSizedProduct(baseId, baseName, price, image) {
+  const select = document.getElementById('size-' + baseId);
+  const size = select ? select.value : 'M';
+  const id = baseId + '-' + size;
+  const name = baseName + ', Tamanho ' + size;
+  addToCart(id, name, price, image);
+}
+
+// Keep legacy addTshirt working
+function addTshirt(colorKey, baseName, price) {
+  addSizedProduct('tshirt-' + colorKey, baseName, price, '');
 }

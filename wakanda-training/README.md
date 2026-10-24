@@ -179,3 +179,21 @@ Preview: `https://wakanda-training.workersdevao.workers.dev`
 - Email: teamwakandacf@gmail.com
 - Instagram: @wakandatraining
 - Address: Benfica, Rua Direita do BFA, defronte Ville Vermont, Luanda
+
+## Admin panel + live catalog
+
+See **BLUEPRINT.md** for the full architecture.
+
+| Item | Path / value |
+|------|----------------|
+| Admin UI | `/admin.html` |
+| Default local password | `wakanda2026` (change after handoff) |
+| Seed products | `js/products.js` |
+| Publish Worker | `worker/` → deploy with Wrangler + 4 secrets |
+| Catalog URL | `https://res.cloudinary.com/ogtzpc3v/raw/upload/wakanda-training/catalog.json` |
+| Cloudinary cloud | `ogtzpc3v` |
+| Unsigned preset (create once) | `wakanda_unsigned` |
+
+**After Worker deploy**, set `PUBLISH_URL` in `js/admin.js`.
+
+Shop products render from catalog (defaults → remote → local drafts). No site redeploy needed for price/photo changes.
