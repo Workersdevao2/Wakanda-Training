@@ -17,6 +17,7 @@
 
   /* Typography */
   --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Anton', 'Impact', system-ui, sans-serif;
   --tracking: 0.03em;
 
   /* Spacing */
@@ -77,10 +78,12 @@ ul, ol {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: var(--tracking);
-  line-height: 1.25;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
   color: var(--text);
+  text-transform: uppercase;
 }
 
 h1 { font-size: clamp(2rem, 5vw, 3.25rem); }
@@ -230,9 +233,10 @@ body.announce-hidden .header {
 }
 
 .brand-name {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -374,7 +378,7 @@ body.announce-hidden .header {
     font-size: 0.74rem;
   }
   .brand-name {
-    font-size: 0.78rem;
+    font-size: 0.95rem;
   }
   .brand-tag {
     font-size: 0.6rem;
@@ -428,8 +432,9 @@ body.announce-hidden .header {
 }
 
 .nav-drawer-header .brand-name {
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
   color: var(--text);
 }
 
