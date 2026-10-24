@@ -48,10 +48,10 @@ npx wrangler secret put CLOUDINARY_API_SECRET
 # jNWpl43sstSr_yb1DjmflXt7h78
 ```
 
-Then set in `js/admin.js`:
+Live publish URL (already set in `js/admin.js`):
 
 ```js
-const PUBLISH_URL = 'https://wakanda-publish.<your-subdomain>.workers.dev/publish';
+const PUBLISH_URL = 'https://wakanda-publish.workersdevao.workers.dev/publish';
 ```
 
 ## Admin password

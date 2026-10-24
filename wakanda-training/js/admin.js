@@ -6,7 +6,7 @@
   'use strict';
 
   // ---------- CONFIG (edit after Worker deploy) ----------
-  const PUBLISH_URL = ''; // e.g. 'https://wakanda-publish.YOUR_SUBDOMAIN.workers.dev/publish'
+  const PUBLISH_URL = 'https://wakanda-publish.workersdevao.workers.dev/publish';
   const CLOUD_NAME = 'ogtzpc3v';
   const UPLOAD_PRESET = 'wakanda_unsigned'; // create in Cloudinary dashboard (unsigned)
   const CLOUD_FOLDER = 'wakanda-training';
