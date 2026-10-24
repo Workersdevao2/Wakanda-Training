@@ -2,16 +2,21 @@ name = "wakanda-publish"
 main = "src/index.js"
 compatibility_date = "2024-09-23"
 
-# Free workers.dev subdomain + preview URLs
 workers_dev = true
 preview_urls = true
+
+# KV for form submissions (inscrição, contacto, perguntas)
+# Create once: npx wrangler kv namespace create SUBMISSIONS
+# Then paste the id below, or run:
+#   npx wrangler kv namespace create SUBMISSIONS
+# and update binding id.
+[[kv_namespaces]]
+binding = "SUBMISSIONS"
+id = "REPLACE_AFTER_KV_CREATE"
+preview_id = "REPLACE_AFTER_KV_CREATE"
 
 # Secrets (set via CLI — never commit):
 #   npx wrangler secret put ADMIN_PASSWORD
 #   npx wrangler secret put CLOUDINARY_CLOUD_NAME
 #   npx wrangler secret put CLOUDINARY_API_KEY
 #   npx wrangler secret put CLOUDINARY_API_SECRET
-#
-# Optional vars (can also be secrets):
-#   CLOUDINARY_FOLDER = wakanda-training
-#   CATALOG_PUBLIC_ID = wakanda-training/catalog

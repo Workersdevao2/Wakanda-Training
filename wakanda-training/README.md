@@ -3,37 +3,63 @@
 Static multi-page website for **Wakanda Training** gym (Luanda, Angola).
 
 ## Stack
-- Pure HTML + CSS + vanilla JS
+
+- Pure HTML + CSS + vanilla JS (no framework, no build step)
 - Design system: Minimalist Luxury (deep off-black + gold accent)
 - Fully mobile-first
-- Hosting: Cloudflare Pages (from GitHub `Workersdevao2/Wakanda-Training`)
+- Hosting: Cloudflare Pages / Worker project **wakanda-training**
 - i18n: PT / EN (`js/i18n.js`)
+- **Admin + live catalog:** Cloudflare Worker `wakanda-publish` + Cloudinary
+- Orders: WhatsApp (`+244 940 668 530`)
 
-## GitHub layout (current)
-Site files live under the **`wakanda-training/`** folder in the repo (Cloudflare Worker is linked to that tree):
+## Live URLs
+
+| Role | URL |
+|------|-----|
+| Site | https://wakandatraining.com |
+| Admin | https://wakandatraining.com/admin.html |
+| Site Worker (preview) | https://wakanda-training.workersdevao.workers.dev |
+| Publish API | https://wakanda-publish.workersdevao.workers.dev |
+
+## GitHub layout
+
+Site files live under the **`wakanda-training/`** folder in the repo:
 
 ```
 Wakanda-Training/
   wakanda-training/
     index.html
+    admin.html              # Staff panel (password-gated)
     pages/
     css/
+      styles.css            # Public site
+      admin.css             # Admin UI
     js/
+      main.js               # Cart, catalog load, shop render
+      products.js           # Seed products + zones (fallback)
+      admin.js              # Admin CRUD + publish
+      i18n.js
     images/
+    worker/                 # Separate Cloudflare Worker (publish API)
+      src/index.js
+      wrangler.toml
+      README.md
+    BLUEPRINT.md            # Full admin/catalog architecture
     robots.txt
     sitemap.xml
     README.md
     googledc4e37b1da1d983c.html
-  .github/workflows/   (optional; Actions not required for deploy)
 ```
 
-**Deploy:** push to `main` → Cloudflare Git integration updates the live site.  
-No GitHub Actions required for normal updates.
+**Deploy site:** push to `main` → Cloudflare updates the live site.  
+**Deploy publish Worker:** `cd worker && npx wrangler deploy` (secrets stay on Cloudflare).
 
 ## Pages
+
 | Page | File |
 |------|------|
 | Home | `index.html` |
+| Admin (staff) | `admin.html` |
 | Sobre Nós | `pages/sobre.html` |
 | Modalidades | `pages/modalidades.html` |
 | Projetos (Gordus) | `pages/projetos.html` |
@@ -43,8 +69,60 @@ No GitHub Actions required for normal updates.
 | Resultados | `pages/resultados.html` |
 | Inscrição | `pages/inscricao.html` |
 | Contacto | `pages/contacto.html` |
+| Checkout | `pages/checkout.html` |
+
+## Admin panel + live catalog
+
+Full detail: **BLUEPRINT.md**.
+
+| Item | Value |
+|------|--------|
+| Admin UI | `/admin.html` |
+| Local login fallback | `wakanda2026` (change after handoff) |
+| Publish password | Worker secret `ADMIN_PASSWORD` |
+| Seed products | `js/products.js` |
+| Publish Worker | `wakanda-publish.workersdevao.workers.dev` |
+| `PUBLISH_URL` | Already set in `js/admin.js` |
+| Catalog (public) | `https://res.cloudinary.com/ogtzpc3v/raw/upload/wakanda-training/catalog.json` |
+| Cloudinary cloud | `ogtzpc3v` |
+| Unsigned media preset | `wakanda_unsigned` (folder `wakanda-training/media`) |
+
+### Staff workflow
+
+1. Open `/admin.html` → password  
+2. **Inbox** — inscrição / perguntas / contactos (mark treated or open). Client still gets WhatsApp.  
+3. Edit products / zones / site images / upload media  
+4. **Guardar rascunho** — only this browser (preview Loja on same device)  
+5. **Publicar na loja** — writes `catalog.json` via Worker; all visitors get new data on next load  
+
+No site redeploy needed for price or product photo changes.
+
+Site forms (`wa-form`) POST to Worker `/submit` then open WhatsApp. Inbox requires KV namespace `SUBMISSIONS` — see `worker/README.md`.
+
+### Data load order (public shop)
+
+1. `products.js` defaults  
+2. Remote `catalog.json` (versioned URL preferred after publish)  
+3. localStorage drafts (`wt_*_override`) win on the admin’s browser  
+
+### Worker secrets (already set)
+
+```bash
+cd worker
+npx wrangler secret put ADMIN_PASSWORD
+npx wrangler secret put CLOUDINARY_CLOUD_NAME    # ogtzpc3v
+npx wrangler secret put CLOUDINARY_API_KEY
+npx wrangler secret put CLOUDINARY_API_SECRET
+```
+
+Redeploy Worker after code changes:
+
+```bash
+cd worker && npx wrangler deploy
+```
 
 ## Modalidades (official schedule)
+
 | Modalidade | Schedule |
 |------------|----------|
 | Hyrox | Mon–Fri 05h–09h · Sat 07h |
@@ -60,16 +138,20 @@ No GitHub Actions required for normal updates.
 | G.A.P. | Sat 08h–09h |
 
 ## Events
-Events are announced on **Instagram / social only** (no Eventos page on the site).
 
-## Notable events
+Events are announced on **Instagram / social only** (no Eventos page on the public nav as primary).
+
+Notable:
+
 - **Wakanda Games Face to Face** — Ndombele vs Francisco, Master 35+, Sat 3 Oct (Coach Romário / Coach Wilson)
 - **Gordus Project 90 Plus** — 21 Sep → 21 Dec 2026
 
 ## Manual upload (GitHub only)
-- **`images/hero-5.mp4`** — not accepted via Grok (sensitive/moderation). Add this file manually on GitHub into `wakanda-training/images/`. Required for the home hero carousel.
+
+- **`images/hero-5.mp4`** — add manually on GitHub into `wakanda-training/images/` if missing. Required for the home hero carousel.
 
 ## Hero carousel (current)
+
 1. `hero-1.mp4`  
 2. `hero-2.jpg`  
 3. `hero-3.mp4`  
@@ -81,51 +163,51 @@ Events are announced on **Instagram / social only** (no Eventos page on the site
 9. `hero-9.mp4` — Corporate / team activation  
 10. `hero-10.mp4`  
 
-Removed: previous `hero-8.mp4` and `hero-9.jpg`.
-
 ## Folder map (what to edit where)
+
 | Goal | Files |
 |------|--------|
-| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` (**hero-5.mp4** must be uploaded manually) |
-| About text/images | `pages/sobre.html` + `images/sobre-*.jpg` |
+| Home hero slides | `index.html` + `images/hero-*.jpg/mp4` |
+| About text/images | `pages/sobre.html` + `images/sobre-*.jpg` / `coach-*.jpg` |
 | Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
 | Prices / packs | `pages/precario.html` |
-| Enrollment form (packs) | `pages/inscricao.html` + `js/main.js` |
-| Resultados gallery / CTAs | `pages/resultados.html` + `images/resultado-*.jpg` + `transformacao-*.jpg` |
-| Store products | `pages/loja.html` + product images |
+| Enrollment form | `pages/inscricao.html` + `js/main.js` |
+| Resultados gallery | `pages/resultados.html` + `images/resultado-*.jpg` |
+| **Store products / prices** | **Admin → Publicar** (or seed `js/products.js`) |
 | Team / coaches | `pages/sobre.html` + `images/coach-*.jpg` |
 | PT/EN text | `js/i18n.js` |
-| Styles (incl. `.cta-band`, packs, schedules) | `css/styles.css` |
-| Nav / cart / WA forms | `js/main.js` |
-| SEO sitemap / robots | `sitemap.xml`, `robots.txt` |
-| SEO meta (canonical, OG) | `<head>` on each HTML page |
+| Public styles | `css/styles.css` |
+| Admin styles | `css/admin.css` |
+| Nav / cart / WA / catalog load | `js/main.js` |
+| Admin CRUD / publish | `js/admin.js` |
+| Publish API | `worker/src/index.js` |
+| SEO | `sitemap.xml`, `robots.txt`, page `<head>` |
 
 ## Safe GitHub updates (Angola / unstable power)
+
 **Do not** delete the whole repo folder to re-upload.
 
-After every change, the assistant will list **exactly which files changed** so you can download only those and push to GitHub.
+1. Note the **Files changed** list in chat  
+2. Download only those paths  
+3. In GitHub: edit or upload into the **same folders**  
+4. Commit → Cloudflare redeploys from `main`  
 
-1. Note the **Files changed** list in the chat
-2. Download only those paths from the project folder
-3. In GitHub: open each file → Edit (pencil) **or** Upload files into the **same folders** (e.g. `pages/`, `images/`)
-4. Commit message e.g. `Resultados: primary CTA transformation image`
-5. Cloudflare redeploys automatically from `main`
-
-If you only touch 2–5 files, risk of a long outage is much lower than replacing the entire tree.
+Worker code changes need `npx wrangler deploy` from `worker/` separately.
 
 ## Features
-- WhatsApp CTAs (`+244 940 668 530`) — forms + buttons (no floating button)
-- Full-bleed CTA bands (`modalidades-hero.jpg` + text overlay) on most pages
-- Language toggle PT | EN
-- Client-side cart (Loja) + sticky cart bar on mobile
-- Responsive nav (hamburger → X)
-- SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD
-- **Preçário:** pack cards with prices + “Quero este pack” → WhatsApp
-- **Inscrição (smart form):** fields depend on type — Modalidade → modality + plan + pack; Reinscrição; Gordus / trial → only relevant fields. Prefill via `?tipo=&plano=&pack=&mod=`. Modalidades deep-link with `mod=`. Optional checkbox for taxa inscrição 20.000 AKZ.
-- **Preçário → Inscrição:** pack and avulsa buttons open Inscrição with options preset (not direct WhatsApp)
-- **Horários:** poster-based schedule cards + sticky section nav (no per-slot WA buttons)
+
+- WhatsApp CTAs (`+244 940 668 530`) — forms + buttons  
+- Full-bleed CTA bands on most pages  
+- Language toggle PT \| EN  
+- Client-side cart (Loja) + sticky cart bar on mobile  
+- **Live product catalog** via Cloudinary + admin publish  
+- Responsive nav (hamburger → X)  
+- SEO: canonical, Open Graph, Twitter cards, `robots.txt`, `sitemap.xml`, LocalBusiness JSON-LD  
+- **Preçário:** pack cards + “Quero este pack” → Inscrição / WhatsApp  
+- **Inscrição (smart form):** fields depend on type; prefill via query params  
 
 ## Coaches (Sobre nós)
+
 | Order | Name | Role |
 |-------|------|------|
 | 1 | Romário N'gama | Coach |
@@ -137,63 +219,45 @@ If you only touch 2–5 files, risk of a long outage is much lower than replacin
 
 Photos: `images/coach-01.jpg` … `coach-06.jpg`
 
-## Documentation habit
-Update this **README** whenever features, schedules, prices, coaches, or deploy notes change.
-
 ## Header system
-- **Announce bar** (36px): Gordus 90+ CTA → Projetos; hides on scroll down, returns near top
-- **Main header**: transparent over hero → solid surface + blur on scroll
-- **Brand**: text only (WAKANDA TRAINING / HIGH PERFORMANCE), centered
-- **Desktop** (≥900px): brand above centered nav links
-- **Mobile**: hamburger left · brand center · lang/cart right · left slide-in drawer (X + swipe to close)
-- No logo image in header (footer may still use logo)
+
+- **Announce bar** (36px): Gordus 90+ CTA → Projetos; hides on scroll down  
+- **Main header**: transparent over hero → solid on scroll  
+- **Brand**: text (WAKANDA TRAINING / HIGH PERFORMANCE) in **Anton**  
+- **Desktop** (≥900px): brand above centered nav  
+- **Mobile**: hamburger left · brand center · lang/cart right · left drawer  
 
 ## Design system
-- Background `#0A0A0A` · Surface `#161616`
-- Text `#F5F5F5` · muted `#A3A3A3`
-- Gold `#F5C518`
-- Font: Inter 300–500
+
+- Background `#0A0A0A` · Surface `#161616`  
+- Text `#F5F5F5` · muted `#A3A3A3`  
+- Gold `#F5C518`  
+- Body: **Inter** 300–500  
+- Display / headings / brand: **Anton**  
 
 ## Local preview
+
 ```bash
 npx serve .
+# then open http://localhost:3000 and /admin.html
 ```
 
 ## SEO
-- Canonical + Open Graph + Twitter on every page
-- `robots.txt` → allows crawl, points to sitemap
-- `sitemap.xml` → all public URLs (`https://wakandatraining.com/...`)
-- JSON-LD `HealthClub` on Home + Contacto (address, phone, geo, Instagram)
-- Google Search Console: property `https://wakandatraining.com/` **verified** (HTML file `googledc4e37b1da1d983c.html`)
-- Sitemap submitted → **Success** (11 pages discovered, 2026-09-23)
-- Keep verification file at site root; do not delete it
-- Local SEO next: Google Business Profile; keep NAP consistent on the site
 
-## Deploy
-Repo connected to Cloudflare Worker/Pages project **wakanda-training**.  
-Live: `https://wakandatraining.com` and `https://www.wakandatraining.com`  
-Preview: `https://wakanda-training.workersdevao.workers.dev`
+- Canonical + Open Graph + Twitter on every page  
+- `robots.txt` → sitemap  
+- `sitemap.xml` → public URLs (`https://wakandatraining.com/...`)  
+- JSON-LD `HealthClub` on Home + Contacto  
+- Google Search Console verified (`googledc4e37b1da1d983c.html`)  
+- Do not delete the verification file  
 
 ## Contact
-- WhatsApp: +244 940 668 530
-- Email: teamwakandacf@gmail.com
-- Instagram: @wakandatraining
-- Address: Benfica, Rua Direita do BFA, defronte Ville Vermont, Luanda
 
-## Admin panel + live catalog
+- WhatsApp: +244 940 668 530  
+- Email: teamwakandacf@gmail.com  
+- Instagram: @wakandatraining  
+- Address: Benfica, Rua Direita do BFA, defronte Ville Vermont, Luanda  
 
-See **BLUEPRINT.md** for the full architecture.
+## Documentation habit
 
-| Item | Path / value |
-|------|----------------|
-| Admin UI | `/admin.html` |
-| Default local password | `wakanda2026` (change after handoff) |
-| Seed products | `js/products.js` |
-| Publish Worker | `worker/` → deploy with Wrangler + 4 secrets |
-| Catalog URL | `https://res.cloudinary.com/ogtzpc3v/raw/upload/wakanda-training/catalog.json` |
-| Cloudinary cloud | `ogtzpc3v` |
-| Unsigned preset (create once) | `wakanda_unsigned` |
-
-**After Worker deploy**, set `PUBLISH_URL` in `js/admin.js`.
-
-Shop products render from catalog (defaults → remote → local drafts). No site redeploy needed for price/photo changes.
+Update this **README** and **BLUEPRINT.md** when features, deploy URLs, or admin/catalog setup change.

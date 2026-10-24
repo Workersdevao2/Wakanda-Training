@@ -1,65 +1,60 @@
-# Wakanda Training — Publish Worker
+# Wakanda Training — Publish + Forms Worker
 
-Small Cloudflare Worker that receives the admin catalog + password, verifies credentials, and performs a **signed** Cloudinary raw upload of `catalog.json`.
+Cloudflare Worker that:
+
+1. Publishes `catalog.json` to Cloudinary (signed upload)
+2. Stores form submissions in **KV** (inscrição, perguntas, contacto)
+3. Serves admin inbox (list + mark handled)
+
+## Endpoints
+
+| Method | Path | Auth | Role |
+|--------|------|------|------|
+| GET | `/health` | — | Health |
+| POST | `/publish` | admin password | Catalog → Cloudinary |
+| POST | `/submit` | public | Save form submission |
+| GET | `/submissions?password=&filter=` | admin | List inbox |
+| POST | `/submissions/status` | admin | Mark handled / open |
+
+## First-time: create KV
+
+```bash
+cd worker
+npx wrangler kv namespace create SUBMISSIONS
+```
+
+Copy the **id** from the output into `wrangler.toml`:
+
+```toml
+[[kv_namespaces]]
+binding = "SUBMISSIONS"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+Optional preview namespace:
+
+```bash
+npx wrangler kv namespace create SUBMISSIONS --preview
+```
 
 ## Deploy
 
 ```bash
-cd worker
 npx wrangler deploy
 ```
 
-## Secrets (required)
+## Secrets
 
 ```bash
 npx wrangler secret put ADMIN_PASSWORD
-# Choose a strong password (staff will type this in /admin.html)
-
 npx wrangler secret put CLOUDINARY_CLOUD_NAME
-# Value: ogtzpc3v
-
 npx wrangler secret put CLOUDINARY_API_KEY
-# Value: 321851197572399
-
 npx wrangler secret put CLOUDINARY_API_SECRET
-# Value: jNWpl43sstSr_yb1DjmflXt7h78
 ```
 
-Optional (defaults shown):
-
-```bash
-# If you want a different folder / public_id:
-npx wrangler secret put CLOUDINARY_FOLDER
-# default: wakanda-training
-
-npx wrangler secret put CATALOG_PUBLIC_ID
-# default: wakanda-training/catalog
-```
-
-## After deploy
-
-Copy the worker URL, e.g.:
+## Live URL
 
 ```
-https://wakanda-publish.<your-subdomain>.workers.dev
+https://wakanda-publish.workersdevao.workers.dev
 ```
-
-Then set in `js/admin.js`:
-
-```js
-const PUBLISH_URL = 'https://wakanda-publish.<your-subdomain>.workers.dev/publish';
-```
-
-## Test
-
-```bash
-curl -X POST https://wakanda-publish....workers.dev/publish \
-  -H 'Content-Type: application/json' \
-  -d '{"password":"YOUR_ADMIN_PASSWORD","catalog":{"products":[],"zones":[],"texts":{},"images":{}}}'
-```
-
-## Security
-
-- API secret never leaves the Worker.
-- Only a correct `ADMIN_PASSWORD` can overwrite the catalog.
-- Media uploads use an **unsigned** preset from the browser (separate from this Worker).

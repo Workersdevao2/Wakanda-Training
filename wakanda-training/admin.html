@@ -41,6 +41,7 @@
 
     <nav class="admin-tabs" role="tablist">
       <button type="button" class="admin-tab active" data-panel="dash">Dashboard</button>
+      <button type="button" class="admin-tab" data-panel="inbox">Inbox <span class="tab-badge" id="inbox-badge" hidden>0</span></button>
       <button type="button" class="admin-tab" data-panel="products">Produtos</button>
       <button type="button" class="admin-tab" data-panel="zones">Entrega</button>
       <button type="button" class="admin-tab" data-panel="media">Média</button>
@@ -51,6 +52,7 @@
     <!-- Dashboard -->
     <section class="admin-panel active" id="panel-dash">
       <div class="dash-stats">
+        <div class="dash-stat"><div class="num" id="stat-inbox">0</div><div class="lbl">Inbox abertas</div></div>
         <div class="dash-stat"><div class="num" id="stat-products">0</div><div class="lbl">Produtos activos</div></div>
         <div class="dash-stat"><div class="num" id="stat-zones">0</div><div class="lbl">Zonas entrega</div></div>
         <div class="dash-stat"><div class="num" id="stat-media">0</div><div class="lbl">Média</div></div>
@@ -65,6 +67,23 @@
         <h3>Password</h3>
         <p>Default local: <code>wakanda2026</code>. Altera no Worker (<code>ADMIN_PASSWORD</code>) e deixa de usar a local em produção.</p>
       </div>
+    </section>
+
+    <!-- Inbox -->
+    <section class="admin-panel" id="panel-inbox">
+      <div class="admin-panel-header">
+        <h2>Inbox</h2>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+          <button type="button" class="btn btn-sm btn-ghost inbox-filter active" data-filter="open">Abertas</button>
+          <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="handled">Tratadas</button>
+          <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="all">Todas</button>
+          <button type="button" class="btn btn-sm btn-solid" id="btn-refresh-inbox">Actualizar</button>
+        </div>
+      </div>
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+        Inscrições, perguntas e contactos do site. O cliente também recebe a mensagem no WhatsApp.
+      </p>
+      <div id="inbox-list" class="inbox-list"></div>
     </section>
 
     <!-- Products -->

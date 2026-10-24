@@ -533,6 +533,19 @@ function initHeroSlider() {
 
 
 /* =====================================================
+   Form → Admin inbox (Worker KV) + WhatsApp
+   ===================================================== */
+const WT_API_BASE = 'https://wakanda-publish.workersdevao.workers.dev';
+
+function submitFormToAdmin(payload) {
+  return fetch(WT_API_BASE + '/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(() => null);
+}
+
+/* =====================================================
    WhatsApp forms (perguntas + inscrição)
    ===================================================== */
 function initWaForms() {
@@ -631,11 +644,41 @@ function initWaForms() {
           '*Modalidade:* ' + data.modalidade + '\n' +
           '*Assunto:* ' + data.assunto + '\n' +
           (data.mensagem ? '*Mensagem:* ' + data.mensagem + '\n' : '');
+      } else if (type === 'pergunta-evento') {
+        message =
+          'Olá! Tenho uma *pergunta sobre evento*.\n\n' +
+          '*Nome:* ' + (data.nome || '') + '\n' +
+          '*Telefone:* ' + (data.telefone || '') + '\n' +
+          (data.evento ? '*Evento:* ' + data.evento + '\n' : '') +
+          (data.mensagem ? '*Mensagem:* ' + data.mensagem + '\n' : '');
+      } else if (type === 'contacto' || type === 'contact') {
+        message =
+          'Olá! *Contacto* via site.\n\n' +
+          '*Nome:* ' + (data.nome || '') + '\n' +
+          '*Telefone:* ' + (data.telefone || '') + '\n' +
+          (data.email ? '*Email:* ' + data.email + '\n' : '') +
+          (data.assunto ? '*Assunto:* ' + data.assunto + '\n' : '') +
+          (data.mensagem ? '*Mensagem:* ' + data.mensagem + '\n' : '');
       } else {
-        message = 'Olá! Contacto via formulário do site.';
+        message =
+          'Olá! Contacto via formulário do site (' + (type || 'form') + ').\n\n' +
+          Object.keys(data)
+            .filter((k) => data[k])
+            .map((k) => '*' + k + ':* ' + data[k])
+            .join('\n');
       }
 
-      openWhatsApp(message.trim());
+      const finalMessage = message.trim();
+
+      // Save to admin inbox (Worker + KV), then open WhatsApp
+      submitFormToAdmin({
+        type: type || 'form',
+        fields: data,
+        message: finalMessage,
+        page: location.pathname + location.search
+      }).finally(() => {
+        openWhatsApp(finalMessage);
+      });
     });
   });
 

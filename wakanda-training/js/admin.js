@@ -6,7 +6,8 @@
   'use strict';
 
   // ---------- CONFIG (edit after Worker deploy) ----------
-  const PUBLISH_URL = 'https://wakanda-publish.workersdevao.workers.dev/publish';
+  const API_BASE = 'https://wakanda-publish.workersdevao.workers.dev';
+  const PUBLISH_URL = API_BASE + '/publish';
   const CLOUD_NAME = 'ogtzpc3v';
   const UPLOAD_PRESET = 'wakanda_unsigned'; // create in Cloudinary dashboard (unsigned)
   const CLOUD_FOLDER = 'wakanda-training';
@@ -42,6 +43,8 @@
   let mediaLibrary = [];
   let editingId = null;
   let pickingSlot = null; // when choosing media for a site slot
+  let submissions = [];
+  let inboxFilter = 'open';
 
   // ---------- DOM helpers ----------
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -610,9 +613,160 @@
     const sp = $('#stat-products');
     const sz = $('#stat-zones');
     const sm = $('#stat-media');
+    const si = $('#stat-inbox');
     if (sp) sp.textContent = products.filter((p) => p.active !== false).length;
     if (sz) sz.textContent = zones.length;
     if (sm) sm.textContent = mediaLibrary.length;
+    if (si) si.textContent = submissions.filter((s) => !s.handled).length;
+  }
+
+  // ---------- Inbox (form submissions) ----------
+  function getAdminPassword() {
+    return sessionStorage.getItem('wt_publish_pwd') || '';
+  }
+
+  function ensureAdminPassword() {
+    let pwd = getAdminPassword();
+    if (!pwd) {
+      pwd = prompt('Password de admin (Worker):') || '';
+      if (pwd) sessionStorage.setItem('wt_publish_pwd', pwd);
+    }
+    return pwd;
+  }
+
+  async function loadInbox() {
+    const pwd = ensureAdminPassword();
+    if (!pwd) {
+      const list = $('#inbox-list');
+      if (list) list.innerHTML = '<p class="text-muted">Introduz a password do Worker para ver o inbox.</p>';
+      return;
+    }
+    try {
+      const res = await fetch(
+        API_BASE + '/submissions?password=' + encodeURIComponent(pwd) + '&filter=all',
+        { cache: 'no-store' }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
+        toast(data.error || 'Falha ao carregar inbox', 'error');
+        return;
+      }
+      submissions = data.submissions || [];
+      renderInbox();
+      renderDashboard();
+    } catch (e) {
+      toast('Erro de rede no inbox: ' + e.message, 'error');
+    }
+  }
+
+  function typeLabel(t) {
+    const map = {
+      inscricao: 'Inscrição',
+      'pergunta-modalidade': 'Pergunta · modalidade',
+      'pergunta-evento': 'Pergunta · evento',
+      contacto: 'Contacto',
+      contact: 'Contacto',
+      form: 'Formulário'
+    };
+    return map[t] || t || 'Formulário';
+  }
+
+  function normalizeAoPhone(phone) {
+    let d = String(phone || '').replace(/\D/g, '');
+    if (d.startsWith('244')) return d;
+    if (d.length === 9) return '244' + d;
+    return d;
+  }
+
+  function renderInbox() {
+    const list = $('#inbox-list');
+    const badge = $('#inbox-badge');
+    const openCount = submissions.filter((s) => !s.handled).length;
+    if (badge) {
+      if (openCount > 0) {
+        badge.hidden = false;
+        badge.textContent = String(openCount);
+      } else {
+        badge.hidden = true;
+      }
+    }
+    if (!list) return;
+
+    let rows = submissions;
+    if (inboxFilter === 'open') rows = rows.filter((s) => !s.handled);
+    if (inboxFilter === 'handled') rows = rows.filter((s) => s.handled);
+
+    if (!rows.length) {
+      list.innerHTML = '<p class="text-muted">Nenhuma mensagem neste filtro.</p>';
+      return;
+    }
+
+    list.innerHTML = rows
+      .map((s) => {
+        const f = s.fields || {};
+        const name = f.nome || f.name || '—';
+        const phone = f.telefone || f.phone || '';
+        const when = s.createdAt
+          ? new Date(s.createdAt).toLocaleString('pt-AO', { dateStyle: 'short', timeStyle: 'short' })
+          : '';
+        const fieldLines = Object.keys(f)
+          .filter((k) => f[k])
+          .slice(0, 12)
+          .map((k) => `<div><strong>${esc(k)}:</strong> ${esc(String(f[k]))}</div>`)
+          .join('');
+        return `
+        <article class="inbox-card ${s.handled ? 'is-handled' : 'is-open'}" data-id="${esc(s.id)}">
+          <div class="inbox-card-top">
+            <h3>${esc(typeLabel(s.type))} · ${esc(name)}</h3>
+            <span class="inbox-meta">${esc(when)} ${s.handled ? '· Tratada' : '· Aberta'}</span>
+          </div>
+          <div class="inbox-fields">${fieldLines}</div>
+          ${s.message ? `<div class="inbox-message">${esc(s.message)}</div>` : ''}
+          <div class="inbox-actions">
+            ${phone ? `<a class="btn btn-sm btn-solid" href="https://wa.me/${normalizeAoPhone(phone)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+            <button type="button" class="btn btn-sm btn-ghost" data-toggle-handled="${esc(s.id)}" data-handled="${s.handled ? '1' : '0'}">
+              ${s.handled ? 'Marcar por tratar' : 'Marcar tratada'}
+            </button>
+          </div>
+        </article>`;
+      })
+      .join('');
+
+    $$('[data-toggle-handled]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.toggleHandled;
+        const currently = btn.dataset.handled === '1';
+        setSubmissionHandled(id, !currently);
+      });
+    });
+  }
+
+  async function setSubmissionHandled(id, handled) {
+    const pwd = ensureAdminPassword();
+    if (!pwd) return;
+    try {
+      const res = await fetch(API_BASE + '/submissions/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd, id, handled })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast(data.error || 'Falha ao actualizar', 'error');
+        return;
+      }
+      const row = submissions.find((s) => s.id === id);
+      if (row) {
+        row.handled = handled;
+        row.handledAt = handled ? new Date().toISOString() : null;
+      }
+      renderInbox();
+      renderDashboard();
+      toast(handled ? 'Marcada como tratada' : 'Marcada como aberta', 'success');
+    } catch (e) {
+      toast('Erro: ' + e.message, 'error');
+    }
   }
 
   // ---------- Boot ----------
@@ -625,6 +779,7 @@
     renderMedia();
     renderSlots();
     renderDashboard();
+    loadInbox();
   }
 
   function init() {
@@ -663,6 +818,17 @@
     // Sticky bar mirrors
     $('#sticky-save')?.addEventListener('click', saveDrafts);
     $('#sticky-publish')?.addEventListener('click', publish);
+
+    // Inbox
+    $('#btn-refresh-inbox')?.addEventListener('click', loadInbox);
+    $$('.inbox-filter').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        $$('.inbox-filter').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        inboxFilter = btn.dataset.filter || 'open';
+        renderInbox();
+      });
+    });
   }
 
   if (document.readyState === 'loading') {
