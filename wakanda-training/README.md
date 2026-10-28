@@ -89,15 +89,23 @@ Full detail: **BLUEPRINT.md**.
 
 ### Staff workflow
 
-1. Open `/admin.html` → password  
-2. **Inbox** — inscrição / perguntas / contactos (mark treated or open). Client still gets WhatsApp.  
-3. Edit products / zones / site images / upload media  
-4. **Guardar rascunho** — only this browser (preview Loja on same device)  
-5. **Publicar na loja** — writes `catalog.json` via Worker; all visitors get new data on next load  
+1. Open `/admin.html` → password (show/hide toggle on the field)  
+2. **Inbox** — inscrição / perguntas / contactos (mark treated, delete, or convert to client). Client still gets WhatsApp.  
+3. **Clientes** — members with pack, validity dates, classes remaining, status  
+4. Edit products / zones / site images / upload media  
+5. **Guardar rascunho** — only this browser (preview Loja on same device)  
+6. **Publicar na loja** — writes `catalog.json` via Worker; all visitors get new data on next load  
+
+Layout: left sidebar on desktop, bottom icon nav on mobile.
 
 No site redeploy needed for price or product photo changes.
 
-Site forms (`wa-form`) POST to Worker `/submit` then open WhatsApp. Inbox requires KV namespace `SUBMISSIONS` — see `worker/README.md`.
+Site forms (`wa-form`) POST to Worker `/submit` then open WhatsApp. Inbox + members use KV namespace `SUBMISSIONS` — see `worker/README.md`.
+
+### Inscrição (public form)
+
+- **Aula experimental** is free: tax and payment fields are hidden; WhatsApp text asks to book a free trial.  
+- Payment options (other types): Numerário (no ginásio), BCI, BAI, Multicaixa Express, PayPay / WhatsApp.
 
 ### Data load order (public shop)
 

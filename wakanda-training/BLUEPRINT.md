@@ -61,10 +61,14 @@ const PUBLISH_URL = 'https://wakanda-publish.workersdevao.workers.dev/publish';
 
 ## Staff flow
 
-1. Open `/admin.html` → password
-2. Edit products / zones / site images / upload media
-3. **Guardar rascunho** → preview loja on same device
-4. **Publicar na loja** → all visitors get new catalog
+1. Open `/admin.html` → password (show/hide toggle on the field)
+2. **Inbox** — mark treated, delete, or convert inscrição to client
+3. **Clientes** — pack, validity, classes remaining, status
+4. Edit products / zones / site images / upload media
+5. **Guardar rascunho** → preview loja on same device
+6. **Publicar na loja** → all visitors get new catalog
+
+Layout: left sidebar (desktop), bottom icons (mobile).
 
 ## Public data load order
 
@@ -76,13 +80,14 @@ const PUBLISH_URL = 'https://wakanda-publish.workersdevao.workers.dev/publish';
 
 | File | Role |
 |------|------|
-| `admin.html` | Staff panel |
+| `admin.html` | Staff panel (sidebar, inbox, clients) |
 | `css/admin.css` | Admin UI |
-| `js/admin.js` | CRUD, media, publish |
+| `js/admin.js` | CRUD, media, publish, members, inbox |
 | `js/products.js` | Seed products + zones |
-| `js/main.js` | Cart + catalog fetch + shop render |
-| `worker/` | Publish API |
+| `js/main.js` | Cart + catalog fetch + shop + inscrição forms |
+| `worker/` | Publish + forms + members API |
 | `pages/loja.html` | Dynamic product grids `#shop-apparel` / `#shop-accessories` |
+| `pages/inscricao.html` | Enrollment / trial form |
 
 ## Security notes
 

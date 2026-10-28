@@ -189,11 +189,50 @@
     updateStatus('rascunho local');
   }
 
+  function formatStatusTime(iso) {
+    if (!iso || typeof iso !== 'string') return null;
+    if (/^\d{4}-\d{2}-\d{2}T/.test(iso)) {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString('pt-AO', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    return iso;
+  }
+
   function updateStatus(label) {
     const el = $('#admin-status-text');
-    if (el) el.innerHTML = label
-      ? `<strong>${label}</strong>`
-      : '<strong>—</strong>';
+    if (!el) return;
+    if (!label) {
+      el.innerHTML = '<strong>—</strong>';
+      return;
+    }
+    const formatted = formatStatusTime(label);
+    if (formatted && formatted !== label && /^\d{4}-\d{2}-\d{2}T/.test(label)) {
+      el.innerHTML =
+        '<span style="color:var(--admin-muted);font-size:0.65rem;">Catálogo</span><strong>' +
+        formatted +
+        '</strong>';
+      return;
+    }
+    if (label === 'rascunho local') {
+      el.innerHTML =
+        '<span style="color:var(--admin-muted);font-size:0.65rem;">Estado</span><strong>Rascunho local</strong>';
+      return;
+    }
+    if (label === 'publicado' || label === 'remoto') {
+      el.innerHTML =
+        '<span style="color:var(--admin-muted);font-size:0.65rem;">Catálogo</span><strong>' +
+        (label === 'publicado' ? 'Publicado agora' : 'Remoto') +
+        '</strong>';
+      return;
+    }
+    el.innerHTML = '<strong>' + (formatted || label) + '</strong>';
   }
 
   // ---------- Tabs / sidebar nav ----------
@@ -1074,6 +1113,19 @@
     $('#login-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       tryLogin();
+    });
+
+    $('#btn-toggle-password')?.addEventListener('click', () => {
+      const input = $('#login-password');
+      const btn = $('#btn-toggle-password');
+      if (!input || !btn) return;
+      const revealing = input.type === 'password';
+      input.type = revealing ? 'text' : 'password';
+      const eye = btn.querySelector('.pwd-show');
+      const hide = btn.querySelector('.pwd-hide');
+      if (eye) eye.hidden = revealing;
+      if (hide) hide.hidden = !revealing;
+      btn.setAttribute('aria-label', revealing ? 'Ocultar password' : 'Mostrar password');
     });
 
     initTabs();

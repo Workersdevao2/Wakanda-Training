@@ -20,7 +20,13 @@
       <p>Painel da equipa · High Performance</p>
       <form id="login-form">
         <div id="login-error" class="admin-login-error"></div>
-        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required />
+        <div class="admin-password-wrap">
+          <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required />
+          <button type="button" class="admin-password-toggle" id="btn-toggle-password" aria-label="Mostrar password" title="Mostrar / ocultar">
+            <span class="pwd-show" aria-hidden="true">👁</span>
+            <span class="pwd-hide" aria-hidden="true" hidden>🙈</span>
+          </button>
+        </div>
         <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--admin-muted);margin-bottom:1rem;cursor:pointer;">
           <input type="checkbox" id="login-remember" /> Manter sessão neste dispositivo
         </label>

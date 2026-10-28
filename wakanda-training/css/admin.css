@@ -920,3 +920,43 @@ body.admin-body {
 }
 
 .dash-stat .num.sm { font-size: 1.4rem; }
+
+/* ---- Login password show/hide ---- */
+.admin-password-wrap {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.admin-password-wrap input {
+  width: 100%;
+  padding: 0.85rem 2.75rem 0.85rem 1rem;
+  font-size: 16px;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  color: var(--admin-text);
+  margin-bottom: 0;
+}
+.admin-password-wrap input:focus {
+  outline: none;
+  border-color: var(--admin-gold);
+}
+.admin-password-toggle {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--admin-muted);
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 4px;
+  min-height: 36px;
+  min-width: 36px;
+}
+.admin-password-toggle:hover { color: var(--admin-text); }
+.admin-login-card .admin-password-wrap + label {
+  /* remember checkbox already has margin */
+}
