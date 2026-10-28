@@ -76,10 +76,26 @@
     if (remember) localStorage.setItem(AUTH_KEY, '1');
   }
 
+  const PUBLISH_PWD_KEY = 'wt_publish_pwd';
+
   function logout() {
     sessionStorage.removeItem(AUTH_KEY);
     localStorage.removeItem(AUTH_KEY);
+    sessionStorage.removeItem(PUBLISH_PWD_KEY);
+    localStorage.removeItem(PUBLISH_PWD_KEY);
     location.reload();
+  }
+
+  function setPublishPassword(pwd, remember) {
+    if (!pwd) return;
+    sessionStorage.setItem(PUBLISH_PWD_KEY, pwd);
+    if (remember) localStorage.setItem(PUBLISH_PWD_KEY, pwd);
+    else localStorage.removeItem(PUBLISH_PWD_KEY);
+  }
+
+  function clearPublishPassword() {
+    sessionStorage.removeItem(PUBLISH_PWD_KEY);
+    localStorage.removeItem(PUBLISH_PWD_KEY);
   }
 
   function tryLogin() {
@@ -91,9 +107,10 @@
       if (err) err.textContent = 'Introduz a password.';
       return;
     }
-    // Accept local fallback OR any non-empty if Worker will validate on publish
+    // One password: unlocks the UI and the API (inbox, clients, publish)
     if (pwd === LOCAL_FALLBACK_PASSWORD || pwd.length >= 6) {
       setAuthed(remember);
+      setPublishPassword(pwd, remember);
       showShell();
       loadAll();
     } else {
@@ -609,10 +626,8 @@
 
     // Prefer Worker
     if (PUBLISH_URL) {
-      const pwd = sessionStorage.getItem('wt_publish_pwd') ||
-        prompt('Password de admin (Worker):');
+      const pwd = ensureAdminPassword();
       if (!pwd) return;
-      sessionStorage.setItem('wt_publish_pwd', pwd);
 
       try {
         toast('A publicar…');
@@ -624,7 +639,7 @@
         const data = await res.json();
         if (!res.ok) {
           toast(data.error || 'Falha ao publicar', 'error');
-          if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
+          if (res.status === 401) clearPublishPassword();
           return;
         }
         // Clear drafts so next load uses remote; remember versioned CDN URL
@@ -685,14 +700,21 @@
 
   // ---------- Inbox (form submissions) ----------
   function getAdminPassword() {
-    return sessionStorage.getItem('wt_publish_pwd') || '';
+    return (
+      sessionStorage.getItem(PUBLISH_PWD_KEY) ||
+      localStorage.getItem(PUBLISH_PWD_KEY) ||
+      ''
+    );
   }
 
   function ensureAdminPassword() {
     let pwd = getAdminPassword();
     if (!pwd) {
-      pwd = prompt('Password de admin (Worker):') || '';
-      if (pwd) sessionStorage.setItem('wt_publish_pwd', pwd);
+      // Only if session was restored without a stored API password
+      pwd = prompt('Password de admin:') || '';
+      if (pwd) setPublishPassword(pwd, localStorage.getItem(AUTH_KEY) === '1');
+    } else if (!sessionStorage.getItem(PUBLISH_PWD_KEY)) {
+      sessionStorage.setItem(PUBLISH_PWD_KEY, pwd);
     }
     return pwd;
   }
@@ -711,7 +733,7 @@
       );
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
+        if (res.status === 401) clearPublishPassword();
         toast(data.error || 'Falha ao carregar inbox', 'error');
         return;
       }
@@ -886,7 +908,7 @@
       );
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
+        if (res.status === 401) clearPublishPassword();
         toast(data.error || 'Falha ao carregar clientes', 'error');
         return;
       }
