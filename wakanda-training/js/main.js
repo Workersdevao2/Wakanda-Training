@@ -558,13 +558,25 @@ function initWaForms() {
 
       form.querySelectorAll('input, select, textarea').forEach(el => {
         el.classList.remove('invalid');
-        const val = (el.value || '').trim();
-        data[el.name] = val;
+        // Checkboxes: only include value when checked; otherwise empty
+        let val = '';
+        if (el.type === 'checkbox') {
+          val = el.checked ? (el.value || '').trim() : '';
+        } else {
+          val = (el.value || '').trim();
+        }
+        if (el.name) data[el.name] = val;
         if (el.required && !val) {
           el.classList.add('invalid');
           valid = false;
         }
       });
+
+      // Trial class is free — never send tax or payment to admin/WhatsApp
+      if (type === 'inscricao' && data.tipo === 'Aula experimental') {
+        data.taxa_nova = '';
+        data.pagamento = '';
+      }
 
       if (!valid) {
         const first = form.querySelector('.invalid');
