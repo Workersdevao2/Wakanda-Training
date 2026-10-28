@@ -83,12 +83,12 @@
           <div class="staff-guide">
             <h3>Fluxo rápido</h3>
             <ol>
-              <li>Vê <strong>Inbox</strong> → responde no WhatsApp → marca tratada.</li>
-              <li><strong>Converter em cliente</strong> quando a inscrição for confirmada.</li>
-              <li>Edita <strong>Produtos</strong> / <strong>Imagens</strong> → Guardar rascunho → Publicar na loja.</li>
+              <li><strong>Inbox</strong> — responde no WhatsApp, marca tratada ou elimina.</li>
+              <li><strong>Clientes</strong> — converte uma inscrição ou cria o membro com pack e validade.</li>
+              <li><strong>Produtos / Imagens</strong> — Guardar rascunho → Publicar na loja.</li>
             </ol>
-            <h3>Password</h3>
-            <p>Default local: <code>wakanda2026</code>. Em produção usa só o segredo do Worker (<code>ADMIN_PASSWORD</code>).</p>
+            <h3>O que podes fazer aqui</h3>
+            <p>Gerir pedidos do site, membros activos, preços da loja, zonas de entrega e fotos — sem precisar de programador no dia a dia.</p>
           </div>
         </section>
 
@@ -170,7 +170,7 @@
       </div>
       <input type="file" id="media-file-input" class="sr-only" accept="image/*" multiple />
       <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
-        Upload directo para Cloudinary (preset unsigned). Apagar aqui só remove da lista local — não apaga o ficheiro no Cloudinary.
+        Carrega fotos para a biblioteca. Apagar aqui só remove da lista deste dispositivo — o ficheiro na cloud pode continuar disponível.
       </p>
       <div class="media-grid" id="media-grid"></div>
     </section>
@@ -191,30 +191,46 @@
     <section class="admin-panel" id="panel-guide">
       <div class="staff-guide">
         <h3>Guia da equipa</h3>
-        <p>Este painel controla a <strong>loja</strong>, zonas de entrega e algumas imagens do site. Não precisa de programador para preços ou fotos.</p>
+        <p>Este painel gere a <strong>loja</strong>, <strong>inbox</strong>, <strong>clientes</strong>, entrega e imagens do site. No dia a dia não precisas de programador.</p>
+
+        <h3>Inbox</h3>
+        <ul>
+          <li>Recebe inscrições, perguntas e contactos do site (o cliente também recebe no WhatsApp).</li>
+          <li><strong>Marcar tratada</strong> quando já respondeste.</li>
+          <li><strong>Eliminar</strong> mensagens antigas que já não precisas.</li>
+          <li><strong>Converter em cliente</strong> preenche o formulário de membros a partir da inscrição.</li>
+        </ul>
+
+        <h3>Clientes</h3>
+        <ul>
+          <li>Regista nome, contacto, pack, modalidade e datas de validade.</li>
+          <li>Aulas totais / usadas (útil para packs de PT ou créditos).</li>
+          <li>Filtros: activos, a expirar, expirados.</li>
+          <li>O estado actualiza-se com base nas datas e nas aulas restantes.</li>
+        </ul>
 
         <h3>Rascunho vs Publicar</h3>
         <ul>
           <li><strong>Guardar rascunho</strong> — fica só neste browser. Podes abrir a loja no mesmo telemóvel e ver as alterações.</li>
-          <li><strong>Publicar na loja</strong> — envia o catálogo para a cloud. Todos os clientes vêem os novos dados depois de atualizar a página.</li>
+          <li><strong>Publicar na loja</strong> — envia o catálogo online. Todos os visitantes vêem os novos dados depois de actualizar a página.</li>
         </ul>
 
         <h3>Produtos</h3>
         <ul>
-          <li>T-shirts: preenche o campo <em>Tamanhos</em> com S, M, L, XL, XXL.</li>
+          <li>T-shirts: preenche <em>Tamanhos</em> com S, M, L, XL, XXL.</li>
           <li>Acessórios: deixa tamanhos vazio.</li>
           <li>Desactiva um produto em vez de apagar se quiseres esconder temporariamente.</li>
         </ul>
 
-        <h3>Média</h3>
+        <h3>Média e imagens do site</h3>
         <ul>
-          <li>Carrega fotos → aparecem na grelha.</li>
-          <li>Botão <em>Usar</em> aplica a imagem a um produto aberto ou a um slot do site.</li>
-          <li>✕ remove só da lista deste telefone.</li>
+          <li>Carrega fotos → aparecem na biblioteca.</li>
+          <li>Botão <em>Usar</em> aplica a imagem a um produto ou a um slot do site.</li>
+          <li>✕ remove só da lista deste dispositivo.</li>
         </ul>
 
         <h3>Se algo falhar</h3>
-        <p>Contacta o programador. Não partilhes a password do admin nem as chaves do Cloudinary.</p>
+        <p>Contacta o programador. Não partilhes a password do admin com pessoas de fora da equipa.</p>
       </div>
     </section>
 
