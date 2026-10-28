@@ -584,8 +584,11 @@ function initWaForms() {
           data.detalhe ||
           '';
         if (en) {
+          const isTrial = data.tipo === 'Aula experimental';
           message =
-            'Hi! I want to *join* Wakanda Training.\n\n' +
+            (isTrial
+              ? 'Hi! I want to book a *free trial class* at Wakanda Training.\n\n'
+              : 'Hi! I want to *join* Wakanda Training.\n\n') +
             '*Name:* ' + data.nome + '\n' +
             '*Phone:* ' + data.telefone + '\n' +
             (data.email ? '*Email:* ' + data.email + '\n' : '') +
@@ -598,20 +601,23 @@ function initWaForms() {
             (data.pack_grupo ? '*Group pack:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*PT pack:* ' + data.pack_pt + '\n' : '') +
             (data.pack_avulsa ? '*Drop-in:* ' + data.pack_avulsa + '\n' : '') +
-            (data.taxa_nova ? '*Enrollment fee:* ' + data.taxa_nova + '\n' : '') +
-            (data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
+            (!isTrial && data.taxa_nova ? '*Enrollment fee:* ' + data.taxa_nova + '\n' : '') +
+            (!isTrial && data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Preferred time:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Goals / message:* ' + data.mensagem + '\n' : '') +
-            (data.tipo === 'Aula experimental'
-              ? '\n_I want to book a trial class and confirm the time._'
+            (isTrial
+              ? '\n_Please confirm a day and time for the trial class._'
               : data.tipo === 'Reinscrição'
               ? '\n_I want to *re-enroll* (fee 10.000 AKZ). I will send proof of payment next._'
               : data.tipo === 'Gordus Project'
               ? '\n_I will also send:_\n• ID document\n• Half-body photo (before)\n• A relative\'s contact'
               : '\n_I will also send in this chat:_\n• ID document (PDF or photo)\n• Half-body photo\n• A relative\'s contact');
         } else {
+          const isTrial = data.tipo === 'Aula experimental';
           message =
-            'Olá! Quero *inscrever-me* na Wakanda Training.\n\n' +
+            (isTrial
+              ? 'Olá! Quero marcar uma *aula experimental grátis* na Wakanda Training.\n\n'
+              : 'Olá! Quero *inscrever-me* na Wakanda Training.\n\n') +
             '*Nome:* ' + data.nome + '\n' +
             '*Telefone:* ' + data.telefone + '\n' +
             (data.email ? '*Email:* ' + data.email + '\n' : '') +
@@ -624,12 +630,12 @@ function initWaForms() {
             (data.pack_grupo ? '*Pack grupo:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*Pack PT:* ' + data.pack_pt + '\n' : '') +
             (data.pack_avulsa ? '*Avulsa:* ' + data.pack_avulsa + '\n' : '') +
-            (data.taxa_nova ? '*Taxa inscrição:* ' + data.taxa_nova + '\n' : '') +
-            (data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
+            (!isTrial && data.taxa_nova ? '*Taxa inscrição:* ' + data.taxa_nova + '\n' : '') +
+            (!isTrial && data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
             (data.horario ? '*Horário preferido:* ' + data.horario + '\n' : '') +
             (data.mensagem ? '*Objectivos / mensagem:* ' + data.mensagem + '\n' : '') +
-            (data.tipo === 'Aula experimental'
-              ? '\n_Quero marcar a aula experimental e confirmar horário._'
+            (isTrial
+              ? '\n_Por favor confirmem o dia e a hora da aula experimental._'
               : data.tipo === 'Reinscrição'
               ? '\n_Quero *reinscrever-me* (taxa 10.000 AKZ). Envio comprovativo em seguida._'
               : data.tipo === 'Gordus Project'
