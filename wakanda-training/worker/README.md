@@ -1,10 +1,11 @@
-# Wakanda Training — Publish + Forms Worker
+# Wakanda Training — Publish + Forms + Members Worker
 
 Cloudflare Worker that:
 
 1. Publishes `catalog.json` to Cloudinary (signed upload)
 2. Stores form submissions in **KV** (inscrição, perguntas, contacto)
-3. Serves admin inbox (list + mark handled)
+3. Serves admin inbox (list + mark handled + **delete**)
+4. Stores **members / clientes** in the same KV (`mem_*` keys)
 
 ## Endpoints
 
@@ -15,42 +16,16 @@ Cloudflare Worker that:
 | POST | `/submit` | public | Save form submission |
 | GET | `/submissions?password=&filter=` | admin | List inbox |
 | POST | `/submissions/status` | admin | Mark handled / open |
-
-## First-time: create KV
-
-```bash
-cd worker
-npx wrangler kv namespace create SUBMISSIONS
-```
-
-Copy the **id** from the output into `wrangler.toml`:
-
-```toml
-[[kv_namespaces]]
-binding = "SUBMISSIONS"
-id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-```
-
-Optional preview namespace:
-
-```bash
-npx wrangler kv namespace create SUBMISSIONS --preview
-```
+| POST | `/submissions/delete` | admin | Delete submission |
+| GET | `/members?password=` | admin | List members |
+| POST | `/members` | admin | Create / update member |
+| POST | `/members/delete` | admin | Delete member |
 
 ## Deploy
 
 ```bash
+cd worker
 npx wrangler deploy
-```
-
-## Secrets
-
-```bash
-npx wrangler secret put ADMIN_PASSWORD
-npx wrangler secret put CLOUDINARY_CLOUD_NAME
-npx wrangler secret put CLOUDINARY_API_KEY
-npx wrangler secret put CLOUDINARY_API_SECRET
 ```
 
 ## Live URL

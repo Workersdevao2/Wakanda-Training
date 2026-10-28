@@ -45,6 +45,9 @@
   let pickingSlot = null; // when choosing media for a site slot
   let submissions = [];
   let inboxFilter = 'open';
+  let members = [];
+  let clientFilter = 'all';
+  let editingMemberId = null;
 
   // ---------- DOM helpers ----------
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -103,7 +106,7 @@
     const shell = $('#admin-shell');
     if (shell) {
       shell.classList.add('is-open');
-      shell.style.display = 'block';
+      shell.style.display = 'flex';
     }
     $('#admin-login') && ($('#admin-login').style.display = 'none');
   }
@@ -193,16 +196,21 @@
       : '<strong>—</strong>';
   }
 
-  // ---------- Tabs ----------
+  // ---------- Tabs / sidebar nav ----------
+  function switchPanel(name) {
+    $$('.admin-nav-item[data-panel]').forEach((t) => {
+      t.classList.toggle('active', t.dataset.panel === name);
+    });
+    $$('.admin-panel').forEach((p) => p.classList.remove('active'));
+    const panel = $('#panel-' + name);
+    if (panel) panel.classList.add('active');
+    if (name === 'clients') loadMembers();
+    if (name === 'inbox') loadInbox();
+  }
+
   function initTabs() {
-    $$('.admin-tab').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        $$('.admin-tab').forEach((t) => t.classList.remove('active'));
-        $$('.admin-panel').forEach((p) => p.classList.remove('active'));
-        tab.classList.add('active');
-        const panel = $('#panel-' + tab.dataset.panel);
-        if (panel) panel.classList.add('active');
-      });
+    $$('.admin-nav-item[data-panel]').forEach((tab) => {
+      tab.addEventListener('click', () => switchPanel(tab.dataset.panel));
     });
   }
 
@@ -417,9 +425,7 @@
           pickingSlot = null;
           renderSlots();
           toast('Imagem atribuída ao slot', 'success');
-          // switch to images tab
-          $$('.admin-tab').forEach((t) => t.classList.toggle('active', t.dataset.panel === 'images'));
-          $$('.admin-panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-images'));
+          switchPanel('images');
         } else {
           const imgField = $('#f-image');
           if (imgField && $('#product-modal')?.classList.contains('open')) {
@@ -531,8 +537,7 @@
     $$('[data-slot-pick]').forEach((btn) => {
       btn.addEventListener('click', () => {
         pickingSlot = btn.dataset.slotPick;
-        $$('.admin-tab').forEach((t) => t.classList.toggle('active', t.dataset.panel === 'media'));
-        $$('.admin-panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-media'));
+        switchPanel('media');
         toast('Escolhe uma imagem da biblioteca (botão Usar)');
       });
     });
@@ -612,12 +617,31 @@
   function renderDashboard() {
     const sp = $('#stat-products');
     const sz = $('#stat-zones');
-    const sm = $('#stat-media');
     const si = $('#stat-inbox');
+    const sc = $('#stat-clients');
     if (sp) sp.textContent = products.filter((p) => p.active !== false).length;
     if (sz) sz.textContent = zones.length;
-    if (sm) sm.textContent = mediaLibrary.length;
     if (si) si.textContent = submissions.filter((s) => !s.handled).length;
+    if (sc) {
+      const active = members.filter((m) => {
+        const st = m.computedStatus || m.status;
+        return st === 'activo' || st === 'a_expirar';
+      }).length;
+      sc.textContent = active;
+    }
+  }
+
+  function updateInboxBadges(openCount) {
+    ['inbox-badge', 'inbox-badge-mobile'].forEach((id) => {
+      const badge = $('#' + id);
+      if (!badge) return;
+      if (openCount > 0) {
+        badge.hidden = false;
+        badge.textContent = String(openCount);
+      } else {
+        badge.hidden = true;
+      }
+    });
   }
 
   // ---------- Inbox (form submissions) ----------
@@ -681,16 +705,8 @@
 
   function renderInbox() {
     const list = $('#inbox-list');
-    const badge = $('#inbox-badge');
     const openCount = submissions.filter((s) => !s.handled).length;
-    if (badge) {
-      if (openCount > 0) {
-        badge.hidden = false;
-        badge.textContent = String(openCount);
-      } else {
-        badge.hidden = true;
-      }
-    }
+    updateInboxBadges(openCount);
     if (!list) return;
 
     let rows = submissions;
@@ -715,6 +731,7 @@
           .slice(0, 12)
           .map((k) => `<div><strong>${esc(k)}:</strong> ${esc(String(f[k]))}</div>`)
           .join('');
+        const canConvert = s.type === 'inscricao' || s.type === 'form';
         return `
         <article class="inbox-card ${s.handled ? 'is-handled' : 'is-open'}" data-id="${esc(s.id)}">
           <div class="inbox-card-top">
@@ -728,6 +745,8 @@
             <button type="button" class="btn btn-sm btn-ghost" data-toggle-handled="${esc(s.id)}" data-handled="${s.handled ? '1' : '0'}">
               ${s.handled ? 'Marcar por tratar' : 'Marcar tratada'}
             </button>
+            ${canConvert ? `<button type="button" class="btn btn-sm btn-ghost" data-convert-client="${esc(s.id)}">Converter em cliente</button>` : ''}
+            <button type="button" class="btn btn-sm btn-danger" data-delete-sub="${esc(s.id)}">Eliminar</button>
           </div>
         </article>`;
       })
@@ -739,6 +758,15 @@
         const currently = btn.dataset.handled === '1';
         setSubmissionHandled(id, !currently);
       });
+    });
+    $$('[data-delete-sub]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.deleteSub;
+        if (confirm('Eliminar esta mensagem permanentemente?')) deleteSubmission(id);
+      });
+    });
+    $$('[data-convert-client]').forEach((btn) => {
+      btn.addEventListener('click', () => convertSubmissionToClient(btn.dataset.convertClient));
     });
   }
 
@@ -769,6 +797,260 @@
     }
   }
 
+  async function deleteSubmission(id) {
+    const pwd = ensureAdminPassword();
+    if (!pwd) return;
+    try {
+      const res = await fetch(API_BASE + '/submissions/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd, id })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast(data.error || 'Falha ao eliminar', 'error');
+        return;
+      }
+      submissions = submissions.filter((s) => s.id !== id);
+      renderInbox();
+      renderDashboard();
+      toast('Mensagem eliminada', 'success');
+    } catch (e) {
+      toast('Erro: ' + e.message, 'error');
+    }
+  }
+
+  // ---------- Members / Clientes ----------
+  function statusLabel(st) {
+    const map = {
+      activo: 'Activo',
+      a_expirar: 'A expirar',
+      expirado: 'Expirado',
+      esgotado: 'Esgotado',
+      pausado: 'Pausado',
+      cancelado: 'Cancelado'
+    };
+    return map[st] || st || '—';
+  }
+
+  async function loadMembers() {
+    const pwd = ensureAdminPassword();
+    if (!pwd) {
+      const list = $('#clients-list');
+      if (list) list.innerHTML = '<p class="text-muted">Introduz a password do Worker para ver clientes.</p>';
+      return;
+    }
+    try {
+      const res = await fetch(
+        API_BASE + '/members?password=' + encodeURIComponent(pwd),
+        { cache: 'no-store' }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) sessionStorage.removeItem('wt_publish_pwd');
+        toast(data.error || 'Falha ao carregar clientes', 'error');
+        return;
+      }
+      members = data.members || [];
+      renderMembers();
+      renderDashboard();
+    } catch (e) {
+      toast('Erro de rede (clientes): ' + e.message, 'error');
+    }
+  }
+
+  function renderMembers() {
+    const list = $('#clients-list');
+    if (!list) return;
+
+    let rows = members;
+    if (clientFilter !== 'all') {
+      rows = rows.filter((m) => (m.computedStatus || m.status) === clientFilter);
+    }
+
+    if (!rows.length) {
+      list.innerHTML = '<p class="text-muted">Nenhum cliente neste filtro.</p>';
+      return;
+    }
+
+    list.innerHTML = rows
+      .map((m) => {
+        const st = m.computedStatus || m.status || 'activo';
+        const classesInfo =
+          m.classesTotal != null
+            ? `${m.classesUsed || 0} / ${m.classesTotal}`
+            : '—';
+        const period =
+          m.startDate || m.endDate
+            ? `${m.startDate || '?'} → ${m.endDate || '?'}`
+            : '—';
+        const phone = m.telefone || '';
+        return `
+        <article class="client-card" data-id="${esc(m.id)}">
+          <div class="client-card-top">
+            <h3>${esc(m.nome || '—')}</h3>
+            <span class="client-status ${esc(st)}">${esc(statusLabel(st))}</span>
+          </div>
+          <div class="client-fields">
+            ${phone ? `<div><strong>Tel:</strong> ${esc(phone)}</div>` : ''}
+            ${m.email ? `<div><strong>Email:</strong> ${esc(m.email)}</div>` : ''}
+            <div><strong>Tipo:</strong> ${esc(m.tipo || '—')} ${m.modalidade ? '· ' + esc(m.modalidade) : ''}</div>
+            ${m.pack ? `<div><strong>Pack:</strong> ${esc(m.pack)}</div>` : ''}
+            <div><strong>Validade:</strong> ${esc(period)}</div>
+            <div><strong>Aulas:</strong> ${esc(classesInfo)}</div>
+            ${m.taxaPaga ? '<div><strong>Taxa:</strong> paga</div>' : ''}
+            ${m.notes ? `<div><strong>Notas:</strong> ${esc(m.notes)}</div>` : ''}
+          </div>
+          <div class="client-actions">
+            ${phone ? `<a class="btn btn-sm btn-solid" href="https://wa.me/${normalizeAoPhone(phone)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+            <button type="button" class="btn btn-sm btn-ghost" data-edit-member="${esc(m.id)}">Editar</button>
+            <button type="button" class="btn btn-sm btn-danger" data-delete-member="${esc(m.id)}">Eliminar</button>
+          </div>
+        </article>`;
+      })
+      .join('');
+
+    $$('[data-edit-member]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const m = members.find((x) => x.id === btn.dataset.editMember);
+        if (m) openMemberModal(m);
+      });
+    });
+    $$('[data-delete-member]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (confirm('Eliminar este cliente?')) deleteMember(btn.dataset.deleteMember);
+      });
+    });
+  }
+
+  function openMemberModal(member) {
+    editingMemberId = member?.id || null;
+    const title = $('#modal-member-title');
+    if (title) title.textContent = member ? 'Editar cliente' : 'Novo cliente';
+    $('#m-id').value = member?.id || '';
+    $('#m-nome').value = member?.nome || '';
+    $('#m-telefone').value = member?.telefone || '';
+    $('#m-email').value = member?.email || '';
+    $('#m-tipo').value = member?.tipo || 'Modalidade';
+    $('#m-modalidade').value = member?.modalidade || '';
+    $('#m-pack').value = member?.pack || '';
+    $('#m-start').value = member?.startDate || '';
+    $('#m-end').value = member?.endDate || '';
+    $('#m-classes-total').value = member?.classesTotal != null ? member.classesTotal : '';
+    $('#m-classes-used').value = member?.classesUsed != null ? member.classesUsed : 0;
+    $('#m-status').value = member?.status || 'activo';
+    $('#m-taxa').checked = !!member?.taxaPaga;
+    $('#m-notes').value = member?.notes || '';
+    $('#member-modal')?.classList.add('open');
+  }
+
+  function closeMemberModal() {
+    editingMemberId = null;
+    $('#member-modal')?.classList.remove('open');
+  }
+
+  function memberFromForm() {
+    const totalVal = $('#m-classes-total').value.trim();
+    return {
+      id: $('#m-id').value || undefined,
+      nome: $('#m-nome').value.trim(),
+      telefone: $('#m-telefone').value.trim(),
+      email: $('#m-email').value.trim(),
+      tipo: $('#m-tipo').value,
+      modalidade: $('#m-modalidade').value.trim(),
+      pack: $('#m-pack').value.trim(),
+      startDate: $('#m-start').value,
+      endDate: $('#m-end').value,
+      classesTotal: totalVal === '' ? null : Number(totalVal),
+      classesUsed: Number($('#m-classes-used').value) || 0,
+      status: $('#m-status').value,
+      taxaPaga: $('#m-taxa').checked,
+      notes: $('#m-notes').value.trim()
+    };
+  }
+
+  async function saveMemberFromForm() {
+    const member = memberFromForm();
+    if (!member.nome) {
+      toast('Nome é obrigatório', 'error');
+      return;
+    }
+    const pwd = ensureAdminPassword();
+    if (!pwd) return;
+    try {
+      const res = await fetch(API_BASE + '/members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd, member })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast(data.error || 'Falha ao guardar', 'error');
+        return;
+      }
+      const saved = data.member;
+      const idx = members.findIndex((m) => m.id === saved.id);
+      if (idx >= 0) members[idx] = saved;
+      else members.unshift(saved);
+      closeMemberModal();
+      renderMembers();
+      renderDashboard();
+      toast('Cliente guardado', 'success');
+    } catch (e) {
+      toast('Erro: ' + e.message, 'error');
+    }
+  }
+
+  async function deleteMember(id) {
+    const pwd = ensureAdminPassword();
+    if (!pwd) return;
+    try {
+      const res = await fetch(API_BASE + '/members/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd, id })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast(data.error || 'Falha ao eliminar', 'error');
+        return;
+      }
+      members = members.filter((m) => m.id !== id);
+      renderMembers();
+      renderDashboard();
+      toast('Cliente eliminado', 'success');
+    } catch (e) {
+      toast('Erro: ' + e.message, 'error');
+    }
+  }
+
+  function convertSubmissionToClient(subId) {
+    const s = submissions.find((x) => x.id === subId);
+    if (!s) return;
+    const f = s.fields || {};
+    const today = new Date().toISOString().slice(0, 10);
+    const end = new Date();
+    end.setDate(end.getDate() + 30);
+    const endStr = end.toISOString().slice(0, 10);
+    const detalhe = f.detalhe_mod || f.detalhe_trial || f.detalhe || '';
+    const pack = f.pack_grupo || f.pack_pt || f.pack_avulsa || f.plano || '';
+    openMemberModal({
+      nome: f.nome || f.name || '',
+      telefone: f.telefone || f.phone || '',
+      email: f.email || '',
+      tipo: f.tipo || 'Modalidade',
+      modalidade: detalhe,
+      pack: pack,
+      startDate: today,
+      endDate: f.tipo === 'Aula experimental' ? today : endStr,
+      status: 'activo',
+      taxaPaga: !!(f.taxa_nova && String(f.taxa_nova).toLowerCase().includes('sim')),
+      notes: f.mensagem || '',
+      sourceSubmissionId: s.id
+    });
+    switchPanel('clients');
+  }
+
   // ---------- Boot ----------
   async function loadAll() {
     loadDrafts();
@@ -780,6 +1062,7 @@
     renderSlots();
     renderDashboard();
     loadInbox();
+    loadMembers();
   }
 
   function init() {
@@ -829,6 +1112,26 @@
         renderInbox();
       });
     });
+
+    // Clients
+    $('#btn-refresh-clients')?.addEventListener('click', loadMembers);
+    $('#btn-new-client')?.addEventListener('click', () => openMemberModal(null));
+    $('#btn-save-member')?.addEventListener('click', saveMemberFromForm);
+    $('#btn-close-member')?.addEventListener('click', closeMemberModal);
+    $('#btn-close-member-2')?.addEventListener('click', closeMemberModal);
+    $('#member-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'member-modal') closeMemberModal();
+    });
+    $$('.client-filter').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        $$('.client-filter').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        clientFilter = btn.dataset.filter || 'all';
+        renderMembers();
+      });
+    });
+
+    $('#btn-logout-side')?.addEventListener('click', logout);
   }
 
   if (document.readyState === 'loading') {

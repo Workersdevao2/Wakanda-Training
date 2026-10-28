@@ -31,60 +31,89 @@
 
   <!-- Shell -->
   <div class="admin-shell" id="admin-shell">
-    <header class="admin-header">
-      <h1>WT Admin</h1>
-      <div class="admin-header-actions">
-        <div class="admin-status" id="admin-status-text"><strong>—</strong></div>
-        <button type="button" class="btn btn-sm btn-ghost" id="btn-logout">Sair</button>
-      </div>
-    </header>
-
-    <nav class="admin-tabs" role="tablist">
-      <button type="button" class="admin-tab active" data-panel="dash">Dashboard</button>
-      <button type="button" class="admin-tab" data-panel="inbox">Inbox <span class="tab-badge" id="inbox-badge" hidden>0</span></button>
-      <button type="button" class="admin-tab" data-panel="products">Produtos</button>
-      <button type="button" class="admin-tab" data-panel="zones">Entrega</button>
-      <button type="button" class="admin-tab" data-panel="media">Média</button>
-      <button type="button" class="admin-tab" data-panel="images">Imagens site</button>
-      <button type="button" class="admin-tab" data-panel="guide">Guia</button>
-    </nav>
-
-    <!-- Dashboard -->
-    <section class="admin-panel active" id="panel-dash">
-      <div class="dash-stats">
-        <div class="dash-stat"><div class="num" id="stat-inbox">0</div><div class="lbl">Inbox abertas</div></div>
-        <div class="dash-stat"><div class="num" id="stat-products">0</div><div class="lbl">Produtos activos</div></div>
-        <div class="dash-stat"><div class="num" id="stat-zones">0</div><div class="lbl">Zonas entrega</div></div>
-        <div class="dash-stat"><div class="num" id="stat-media">0</div><div class="lbl">Média</div></div>
-      </div>
-      <div class="staff-guide">
-        <h3>Fluxo rápido</h3>
-        <ol>
-          <li>Edita <strong>Produtos</strong>, <strong>Entrega</strong> ou <strong>Imagens do site</strong>.</li>
-          <li><strong>Guardar rascunho</strong> — só neste telemóvel/browser (pré-visualiza a loja).</li>
-          <li><strong>Publicar na loja</strong> — todos os visitantes passam a ver os novos dados.</li>
-        </ol>
-        <h3>Password</h3>
-        <p>Default local: <code>wakanda2026</code>. Altera no Worker (<code>ADMIN_PASSWORD</code>) e deixa de usar a local em produção.</p>
-      </div>
-    </section>
-
-    <!-- Inbox -->
-    <section class="admin-panel" id="panel-inbox">
-      <div class="admin-panel-header">
-        <h2>Inbox</h2>
-        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
-          <button type="button" class="btn btn-sm btn-ghost inbox-filter active" data-filter="open">Abertas</button>
-          <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="handled">Tratadas</button>
-          <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="all">Todas</button>
-          <button type="button" class="btn btn-sm btn-solid" id="btn-refresh-inbox">Actualizar</button>
+    <div class="admin-layout">
+      <!-- Desktop left sidebar -->
+      <aside class="admin-sidebar" aria-label="Navegação">
+        <div class="admin-sidebar-brand">WT Admin</div>
+        <nav class="admin-sidebar-nav">
+          <button type="button" class="admin-nav-item active" data-panel="dash"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Dashboard</span></button>
+          <button type="button" class="admin-nav-item" data-panel="inbox"><span class="admin-nav-icon">✉</span><span class="admin-nav-label">Inbox</span><span class="admin-nav-badge" id="inbox-badge" hidden>0</span></button>
+          <button type="button" class="admin-nav-item" data-panel="clients"><span class="admin-nav-icon">◎</span><span class="admin-nav-label">Clientes</span></button>
+          <button type="button" class="admin-nav-item" data-panel="products"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Produtos</span></button>
+          <button type="button" class="admin-nav-item" data-panel="zones"><span class="admin-nav-icon">⇢</span><span class="admin-nav-label">Entrega</span></button>
+          <button type="button" class="admin-nav-item" data-panel="media"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Média</span></button>
+          <button type="button" class="admin-nav-item" data-panel="images"><span class="admin-nav-icon">⬡</span><span class="admin-nav-label">Imagens site</span></button>
+          <button type="button" class="admin-nav-item" data-panel="guide"><span class="admin-nav-icon">?</span><span class="admin-nav-label">Guia</span></button>
+        </nav>
+        <div class="admin-sidebar-footer">
+          <button type="button" class="admin-nav-item" id="btn-logout-side"><span class="admin-nav-icon">↩</span><span class="admin-nav-label">Sair</span></button>
         </div>
-      </div>
-      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
-        Inscrições, perguntas e contactos do site. O cliente também recebe a mensagem no WhatsApp.
-      </p>
-      <div id="inbox-list" class="inbox-list"></div>
-    </section>
+      </aside>
+
+      <div class="admin-main">
+        <header class="admin-header">
+          <h1>WT Admin</h1>
+          <div class="admin-header-actions">
+            <div class="admin-status" id="admin-status-text"><strong>—</strong></div>
+            <button type="button" class="btn btn-sm btn-ghost" id="btn-logout">Sair</button>
+          </div>
+        </header>
+
+        <!-- Dashboard -->
+        <section class="admin-panel active" id="panel-dash">
+          <div class="dash-stats">
+            <div class="dash-stat"><div class="num" id="stat-inbox">0</div><div class="lbl">Inbox abertas</div></div>
+            <div class="dash-stat"><div class="num" id="stat-clients">0</div><div class="lbl">Clientes activos</div></div>
+            <div class="dash-stat"><div class="num" id="stat-products">0</div><div class="lbl">Produtos activos</div></div>
+            <div class="dash-stat"><div class="num" id="stat-zones">0</div><div class="lbl">Zonas entrega</div></div>
+          </div>
+          <div class="staff-guide">
+            <h3>Fluxo rápido</h3>
+            <ol>
+              <li>Vê <strong>Inbox</strong> → responde no WhatsApp → marca tratada.</li>
+              <li><strong>Converter em cliente</strong> quando a inscrição for confirmada.</li>
+              <li>Edita <strong>Produtos</strong> / <strong>Imagens</strong> → Guardar rascunho → Publicar na loja.</li>
+            </ol>
+            <h3>Password</h3>
+            <p>Default local: <code>wakanda2026</code>. Em produção usa só o segredo do Worker (<code>ADMIN_PASSWORD</code>).</p>
+          </div>
+        </section>
+
+        <!-- Inbox -->
+        <section class="admin-panel" id="panel-inbox">
+          <div class="admin-panel-header">
+            <h2>Inbox</h2>
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm btn-ghost inbox-filter active" data-filter="open">Abertas</button>
+              <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="handled">Tratadas</button>
+              <button type="button" class="btn btn-sm btn-ghost inbox-filter" data-filter="all">Todas</button>
+              <button type="button" class="btn btn-sm btn-solid" id="btn-refresh-inbox">Actualizar</button>
+            </div>
+          </div>
+          <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+            Inscrições, perguntas e contactos do site. O cliente também recebe a mensagem no WhatsApp.
+          </p>
+          <div id="inbox-list" class="inbox-list"></div>
+        </section>
+
+        <!-- Clients -->
+        <section class="admin-panel" id="panel-clients">
+          <div class="admin-panel-header">
+            <h2>Clientes</h2>
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm btn-ghost client-filter active" data-filter="all">Todos</button>
+              <button type="button" class="btn btn-sm btn-ghost client-filter" data-filter="activo">Activos</button>
+              <button type="button" class="btn btn-sm btn-ghost client-filter" data-filter="a_expirar">A expirar</button>
+              <button type="button" class="btn btn-sm btn-ghost client-filter" data-filter="expirado">Expirados</button>
+              <button type="button" class="btn btn-sm btn-solid" id="btn-new-client">+ Cliente</button>
+              <button type="button" class="btn btn-sm btn-ghost" id="btn-refresh-clients">Actualizar</button>
+            </div>
+          </div>
+          <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+            Membros com pack, datas de validade e aulas restantes. Podes criar a partir do Inbox (“Converter em cliente”).
+          </p>
+          <div id="clients-list" class="client-list"></div>
+        </section>
 
     <!-- Products -->
     <section class="admin-panel" id="panel-products">
@@ -181,6 +210,17 @@
       <button type="button" class="btn btn-ghost" id="sticky-save">Guardar rascunho</button>
       <button type="button" class="btn btn-solid" id="sticky-publish">Publicar na loja</button>
     </div>
+      </div><!-- /.admin-main -->
+    </div><!-- /.admin-layout -->
+
+    <!-- Mobile bottom icon nav -->
+    <nav class="admin-bottom-nav" aria-label="Navegação móvel">
+      <button type="button" class="admin-nav-item active" data-panel="dash"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Home</span></button>
+      <button type="button" class="admin-nav-item" data-panel="inbox"><span class="admin-nav-icon">✉</span><span class="admin-nav-label">Inbox</span><span class="admin-nav-badge" id="inbox-badge-mobile" hidden>0</span></button>
+      <button type="button" class="admin-nav-item" data-panel="clients"><span class="admin-nav-icon">◎</span><span class="admin-nav-label">Clientes</span></button>
+      <button type="button" class="admin-nav-item" data-panel="products"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Loja</span></button>
+      <button type="button" class="admin-nav-item" data-panel="media"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Média</span></button>
+    </nav>
   </div>
 
   <!-- Product modal -->
@@ -241,6 +281,95 @@
       <div class="admin-modal-footer">
         <button type="button" class="btn btn-ghost" id="btn-close-product-2" onclick="document.getElementById('btn-close-product').click()">Cancelar</button>
         <button type="button" class="btn btn-solid" id="btn-save-product">Guardar produto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Member / client modal -->
+  <div class="admin-modal-overlay" id="member-modal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="modal-member-title">Cliente</h3>
+        <button type="button" class="admin-modal-close" id="btn-close-member" aria-label="Fechar">&times;</button>
+      </div>
+      <input type="hidden" id="m-id" />
+      <div class="form-row">
+        <label>Nome *</label>
+        <input type="text" id="m-nome" required />
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Telefone</label>
+          <input type="text" id="m-telefone" inputmode="tel" />
+        </div>
+        <div class="form-row">
+          <label>Email</label>
+          <input type="email" id="m-email" />
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Tipo</label>
+          <select id="m-tipo">
+            <option value="Modalidade">Modalidade</option>
+            <option value="Reinscrição">Reinscrição</option>
+            <option value="Gordus Project">Gordus Project</option>
+            <option value="Aula experimental">Aula experimental</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Modalidade</label>
+          <input type="text" id="m-modalidade" placeholder="CrossFit, Kickboxing…" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Pack / plano</label>
+        <input type="text" id="m-pack" placeholder="Ex: 3× / semana — 45.000 AKZ" />
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Início</label>
+          <input type="date" id="m-start" />
+        </div>
+        <div class="form-row">
+          <label>Fim (validade)</label>
+          <input type="date" id="m-end" />
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Aulas totais (opcional)</label>
+          <input type="number" id="m-classes-total" min="0" placeholder="Ex: 12" />
+        </div>
+        <div class="form-row">
+          <label>Aulas usadas</label>
+          <input type="number" id="m-classes-used" min="0" value="0" />
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Estado</label>
+          <select id="m-status">
+            <option value="activo">Activo</option>
+            <option value="pausado">Pausado</option>
+            <option value="expirado">Expirado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div class="form-row" style="display:flex;align-items:flex-end;padding-bottom:0.5rem;">
+          <label style="display:flex;align-items:center;gap:0.4rem;text-transform:none;letter-spacing:0;font-size:0.9rem;cursor:pointer;">
+            <input type="checkbox" id="m-taxa" /> Taxa de inscrição paga
+          </label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Notas</label>
+        <textarea id="m-notes" rows="2" placeholder="Observações da equipa…"></textarea>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" class="btn btn-ghost" id="btn-close-member-2">Cancelar</button>
+        <button type="button" class="btn btn-solid" id="btn-save-member">Guardar cliente</button>
       </div>
     </div>
   </div>
