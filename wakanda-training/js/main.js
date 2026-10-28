@@ -779,8 +779,17 @@ function initWaForms() {
       setReq(selTrial, isTrial);
       setReq(selPlano, isMod);
 
+      // Taxa de inscrição: only for Modalidade; clear if hidden
       const rowTaxa = document.getElementById('row-taxa-inscricao');
+      const chkTaxa = document.getElementById('ins-taxa');
       if (rowTaxa) rowTaxa.hidden = !isMod;
+      if (!isMod && chkTaxa) chkTaxa.checked = false;
+
+      // Pagamento: hide for free trial class; clear value so it cannot leak
+      const rowPag = document.getElementById('row-pagamento');
+      const selPag = document.getElementById('ins-pagamento');
+      if (rowPag) rowPag.hidden = isTrial;
+      if (isTrial && selPag) selPag.value = '';
 
       const labelMod = document.getElementById('label-detalhe-mod');
       const hintMod = document.getElementById('hint-detalhe-mod');
