@@ -1123,8 +1123,14 @@
       input.type = revealing ? 'text' : 'password';
       const eye = btn.querySelector('.pwd-show');
       const hide = btn.querySelector('.pwd-hide');
-      if (eye) eye.hidden = revealing;
-      if (hide) hide.hidden = !revealing;
+      if (eye) {
+        if (revealing) eye.setAttribute('hidden', '');
+        else eye.removeAttribute('hidden');
+      }
+      if (hide) {
+        if (revealing) hide.removeAttribute('hidden');
+        else hide.setAttribute('hidden', '');
+      }
       btn.setAttribute('aria-label', revealing ? 'Ocultar password' : 'Mostrar password');
     });
 
