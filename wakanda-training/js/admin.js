@@ -33,8 +33,16 @@
     { key: 'contacto-1', label: 'Contacto espaço 1', hint: 'Galeria contacto' },
     { key: 'contacto-2', label: 'Contacto espaço 2', hint: 'Galeria contacto' },
     { key: 'contacto-3', label: 'Contacto espaço 3', hint: 'Galeria contacto' },
-    /* Empresas / Corporate — G-Corporate & future cases */
+    { key: 'footer-bg', label: 'Footer · Fundo', hint: 'Imagem de fundo do rodapé (site inteiro)' },
+    /* Empresas / Corporate */
     { key: 'corp-hero', label: 'Empresas · Hero', hint: 'Banner da página Empresas' },
+    { key: 'corp-cta', label: 'Empresas · CTA', hint: 'Fundo da faixa CTA final' },
+    { key: 'corp-block-1', label: 'Empresas · Bloco 1', hint: 'Team Building (card com overlay)' },
+    { key: 'corp-block-2', label: 'Empresas · Bloco 2', hint: 'Eventos corporativos (card com overlay)' },
+    { key: 'corp-block-3', label: 'Empresas · Bloco 3', hint: 'Ginástica laboral (card com overlay)' },
+    { key: 'corp-block-4', label: 'Empresas · Bloco 4', hint: 'Palestras (card com overlay)' },
+    { key: 'corp-block-5', label: 'Empresas · Bloco 5', hint: 'Coaching (card com overlay)' },
+    { key: 'corp-block-6', label: 'Empresas · Bloco 6', hint: 'Formação SST (card com overlay)' },
     { key: 'corp-1', label: 'Empresas · Foto 1', hint: 'Galeria G-Corporate / team building' },
     { key: 'corp-2', label: 'Empresas · Foto 2', hint: 'Galeria G-Corporate / team building' },
     { key: 'corp-3', label: 'Empresas · Foto 3', hint: 'Galeria G-Corporate / team building' },
@@ -343,7 +351,17 @@
 
   function resolveImg(src) {
     if (!src) return '';
-    if (src.startsWith('http') || src.startsWith('data:')) return src;
+    if (src.startsWith('data:')) return src;
+    if (src.startsWith('http')) {
+      // Admin thumbs: light delivery transform so 4MB PNGs do not freeze the panel
+      const marker = '/image/upload/';
+      const idx = src.indexOf(marker);
+      if (idx === -1) return src;
+      const after = src.slice(idx + marker.length);
+      const firstSeg = (after.split('/')[0] || '');
+      if (firstSeg && !/^v\d+$/.test(firstSeg)) return src;
+      return src.slice(0, idx + marker.length) + 'f_auto,q_auto,c_limit,w_480/' + after;
+    }
     // admin is at /admin.html → images relative from root
     if (src.startsWith('images/')) return src;
     return src;
@@ -522,10 +540,16 @@
       toast('Configura CLOUD_NAME e UPLOAD_PRESET no admin.js', 'error');
       return null;
     }
+    // Soft client-side guard: warn on very large originals (delivery still optimizes)
+    if (file.size > 8 * 1024 * 1024) {
+      toast('Imagem grande (>8MB). Será optimizada no site; preferir JPEG/WebP ≤4MB.', 'error');
+    }
     const fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', UPLOAD_PRESET);
     fd.append('folder', CLOUD_FOLDER + '/media');
+    // Best-effort: many unsigned presets accept these; ignored if preset disallows
+    fd.append('quality', 'auto:good');
 
     toast('A carregar…');
     try {
@@ -538,6 +562,7 @@
         toast(data.error?.message || 'Falha no upload', 'error');
         return null;
       }
+      // Store canonical secure_url; public site applies f_auto/q_auto/c_limit on delivery
       return data.secure_url || data.url;
     } catch (e) {
       toast('Erro de rede no upload', 'error');

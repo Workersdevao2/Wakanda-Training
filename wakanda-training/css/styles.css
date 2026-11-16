@@ -875,9 +875,32 @@ a.card-overlay:hover .card-img {
 
 /* Footer */
 .footer {
+  position: relative;
   border-top: var(--line) solid var(--border);
   padding: var(--space-xl) 0 var(--space-lg);
   margin-top: var(--space-2xl);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.footer > .container {
+  position: relative;
+  z-index: 1;
+}
+.footer-bg-scrim {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.82) 0%,
+    rgba(10, 10, 10, 0.92) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.footer.has-site-img .footer-bg-scrim {
+  display: block;
 }
 
 .footer-grid {
@@ -3001,6 +3024,62 @@ body.has-sticky-cart {
   object-fit: contain;
 }
 
+/* Empresas service blocks — background image + dark overlay for readable text */
+.corp-block-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 16rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.corp-block-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #141414;
+}
+.corp-block-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.35) 0%,
+    rgba(10, 10, 10, 0.72) 55%,
+    rgba(10, 10, 10, 0.9) 100%
+  );
+  pointer-events: none;
+}
+.corp-block-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-end;
+}
+.corp-block-content h3 {
+  color: var(--text);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+.corp-block-content p {
+  color: rgba(245, 245, 245, 0.88);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+}
+.corp-block-card:not(:has(.corp-block-bg.has-site-img)) .corp-block-overlay {
+  background: transparent;
+}
+.corp-block-card:not(:has(.corp-block-bg.has-site-img)) .corp-block-content p {
+  color: var(--text-muted);
+  text-shadow: none;
+}
+
 /* Corporate gallery — blank until Admin publishes catalog.images corp-N */
 .corp-gallery {
   margin-top: 0.5rem;
@@ -3027,6 +3106,7 @@ body.has-sticky-cart {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: none;
   border: 0;
   vertical-align: middle;
@@ -3035,4 +3115,17 @@ body.has-sticky-cart {
 .corp-gallery .corp-gallery-img.has-site-img,
 .corp-gallery .corp-gallery-img[src]:not([src=""]) {
   display: block;
+}
+
+/* Mobile: prefer showing more of the full image */
+@media (max-width: 767px) {
+  .corp-gallery-item {
+    aspect-ratio: 3 / 4;
+  }
+  .corp-gallery .corp-gallery-img {
+    object-fit: cover;
+  }
+  .corp-block-card {
+    min-height: 14rem;
+  }
 }

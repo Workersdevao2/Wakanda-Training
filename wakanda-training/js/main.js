@@ -1027,18 +1027,41 @@ async function initCatalogAndShop() {
 function applySiteImages(images) {
   if (!images || typeof images !== 'object') return;
 
-  function resolveSiteUrl(url) {
+  /**
+   * Cloudinary delivery: keep full image (c_limit, no crop), auto format/quality.
+   * maxW defaults keep mobile sharp without multi-MB PNG downloads.
+   */
+  function cloudinaryDeliveryUrl(url, maxW) {
     if (!url || typeof url !== 'string') return '';
     const u = url.trim();
     if (!u) return '';
-    return u.startsWith('http') || u.startsWith('/') || u.startsWith('data:')
-      ? u
-      : '../' + u.replace(/^\.\.\//, '');
+    const marker = '/image/upload/';
+    const idx = u.indexOf(marker);
+    if (idx === -1) return u;
+    const after = u.slice(idx + marker.length);
+    const firstSeg = (after.split('/')[0] || '');
+    // Skip if transforms already present (not a pure version segment like v123456)
+    if (firstSeg && !/^v\d+$/.test(firstSeg)) return u;
+    const w = maxW || 1600;
+    const tx = 'f_auto,q_auto:good,c_limit,w_' + w;
+    return u.slice(0, idx + marker.length) + tx + '/' + after;
+  }
+
+  function resolveSiteUrl(url, maxW) {
+    if (!url || typeof url !== 'string') return '';
+    const u = url.trim();
+    if (!u) return '';
+    const absolute =
+      u.startsWith('http') || u.startsWith('/') || u.startsWith('data:')
+        ? u
+        : '../' + u.replace(/^\.\.\//, '');
+    return cloudinaryDeliveryUrl(absolute, maxW);
   }
 
   document.querySelectorAll('[data-site-img]').forEach((el) => {
     const key = el.getAttribute('data-site-img');
-    const resolved = resolveSiteUrl(images[key]);
+    const maxW = Number(el.getAttribute('data-img-w')) || 1200;
+    const resolved = resolveSiteUrl(images[key], maxW);
     if (!resolved) return;
     if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
       el.src = resolved;
@@ -1052,7 +1075,8 @@ function applySiteImages(images) {
   });
   document.querySelectorAll('[data-site-img-bg]').forEach((el) => {
     const key = el.getAttribute('data-site-img-bg');
-    const resolved = resolveSiteUrl(images[key]);
+    const maxW = Number(el.getAttribute('data-img-w')) || 1920;
+    const resolved = resolveSiteUrl(images[key], maxW);
     if (!resolved) return;
     el.style.backgroundImage = `url('${resolved}')`;
     el.classList.add('has-site-img');
