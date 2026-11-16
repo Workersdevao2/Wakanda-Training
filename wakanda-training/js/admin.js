@@ -511,8 +511,9 @@
         if (pickingSlot) {
           siteImages[pickingSlot] = url;
           pickingSlot = null;
+          saveDrafts();
           renderSlots();
-          toast('Imagem atribuída ao slot', 'success');
+          toast('Imagem atribuída — publique para o site ver', 'success');
           switchPanel('images');
         } else {
           const imgField = $('#f-image');
@@ -621,9 +622,10 @@
             siteImages[key] = url;
             mediaLibrary.unshift({ url, name: file.name, at: new Date().toISOString() });
             localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+            saveDrafts();
             renderSlots();
             renderMedia();
-            toast('Imagem do site actualizada', 'success');
+            toast('Imagem do site actualizada — publique para o site ver', 'success');
           }
         };
         input.click();
@@ -639,6 +641,7 @@
     $$('[data-slot-clear]').forEach((btn) => {
       btn.addEventListener('click', () => {
         delete siteImages[btn.dataset.slotClear];
+        saveDrafts();
         renderSlots();
         toast('Slot reposto (usa default do site)');
       });
