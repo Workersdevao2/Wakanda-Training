@@ -1,7 +1,8 @@
 /**
  * Wakanda Training — Publish + Forms + Members Worker
  *
- * POST /publish              — admin password + catalog → Cloudinary
+ * POST /publish              — admin password + catalog → Cloudinary + KV
+ * GET  /catalog              — public latest catalog (KV, no CDN cache)
  * POST /submit               — public form submission → KV
  * GET  /submissions          — admin password → list submissions
  * POST /submissions/status   — admin password + id + handled → update
@@ -12,7 +13,7 @@
  * GET  /health
  *
  * Secrets: ADMIN_PASSWORD, CLOUDINARY_*
- * KV binding: SUBMISSIONS  (also stores members under mem_* keys)
+ * KV binding: SUBMISSIONS  (also stores members under mem_* keys + catalog_latest)
  */
 
 const CORS_HEADERS = {
@@ -46,6 +47,11 @@ export default {
 
       if (request.method === 'POST' && path === '/publish') {
         return handlePublish(request, env);
+      }
+
+      // Public catalog — bypasses Cloudinary CDN 30-day cache on unversioned raw URL
+      if (request.method === 'GET' && path === '/catalog') {
+        return handleGetCatalog(env);
       }
 
       if (request.method === 'POST' && path === '/submit') {
@@ -368,6 +374,58 @@ async function handleDeleteMember(request, env) {
   return json({ ok: true, id, deleted: true });
 }
 
+/* ---------- Public catalog (KV — avoids Cloudinary raw CDN cache) ---------- */
+const CATALOG_KV_KEY = 'catalog_latest';
+
+async function handleGetCatalog(env) {
+  try {
+    if (env.SUBMISSIONS) {
+      const cached = await env.SUBMISSIONS.get(CATALOG_KV_KEY);
+      if (cached) {
+        return new Response(cached, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+            ...CORS_HEADERS
+          }
+        });
+      }
+    }
+
+    // Fallback: Cloudinary versioned raw (unversioned path is often stuck 30 days on CDN)
+    const cloudName = env.CLOUDINARY_CLOUD_NAME || 'ogtzpc3v';
+    const folder = env.CLOUDINARY_FOLDER || 'wakanda-training';
+    const fallbacks = [
+      `https://res.cloudinary.com/${cloudName}/raw/upload/v1/${folder}/catalog.json`,
+      `https://res.cloudinary.com/${cloudName}/raw/upload/${folder}/catalog.json`
+    ];
+    for (const u of fallbacks) {
+      try {
+        const res = await fetch(u, { cf: { cacheTtl: 30, cacheEverything: false } });
+        if (!res.ok) continue;
+        const text = await res.text();
+        JSON.parse(text); // validate
+        if (env.SUBMISSIONS) {
+          try { await env.SUBMISSIONS.put(CATALOG_KV_KEY, text); } catch (_) {}
+        }
+        return new Response(text, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+            ...CORS_HEADERS
+          }
+        });
+      } catch (_) {}
+    }
+
+    return json({ error: 'Catalog not available' }, 404);
+  } catch (err) {
+    return json({ error: err.message || 'Catalog failed' }, 500);
+  }
+}
+
 /* ---------- Catalog publish (admin) ---------- */
 async function handlePublish(request, env) {
   try {
@@ -427,19 +485,35 @@ async function handlePublish(request, env) {
       return json({ error: 'Cloudinary upload failed: ' + detail, detail }, 502);
     }
 
+    // Always store latest in KV so public GET /catalog is fresh (Cloudinary unversioned raw is CDN-cached ~30d)
+    if (env.SUBMISSIONS) {
+      try {
+        await env.SUBMISSIONS.put(CATALOG_KV_KEY, payload);
+      } catch (e) {
+        console.error('KV catalog put failed', e);
+      }
+    }
+
     const version = data.version;
     const versionedUrl = version
       ? `https://res.cloudinary.com/${cloudName}/raw/upload/v${version}/${data.public_id || publicId}`
       : data.secure_url || data.url;
 
+    // Prefer Worker catalog URL for clients (no CDN staleness)
+    const workerCatalogUrl = new URL(request.url);
+    workerCatalogUrl.pathname = '/catalog';
+    workerCatalogUrl.search = '';
+
     return json({
       ok: true,
       updatedAt: catalog.updatedAt,
-      url: versionedUrl,
+      url: workerCatalogUrl.toString(),
+      cloudinaryUrl: versionedUrl,
       version: version || null,
       public_id: data.public_id,
       products: catalog.products.length,
-      zones: catalog.zones.length
+      zones: catalog.zones.length,
+      images: Object.keys(catalog.images || {}).length
     });
   } catch (err) {
     console.error(err);

@@ -8,10 +8,12 @@
   // ---------- CONFIG (edit after Worker deploy) ----------
   const API_BASE = 'https://wakanda-publish.workersdevao.workers.dev';
   const PUBLISH_URL = API_BASE + '/publish';
+  const CATALOG_API = API_BASE + '/catalog'; // KV-backed (not Cloudinary CDN)
   const CLOUD_NAME = 'ogtzpc3v';
   const UPLOAD_PRESET = 'wakanda_unsigned'; // create in Cloudinary dashboard (unsigned)
   const CLOUD_FOLDER = 'wakanda-training';
   const CATALOG_URL = `https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/${CLOUD_FOLDER}/catalog.json`;
+  const CATALOG_V1 = `https://res.cloudinary.com/${CLOUD_NAME}/raw/upload/v1/${CLOUD_FOLDER}/catalog.json`;
 
   // Session / draft keys
   const AUTH_KEY = 'wt_admin_auth';
@@ -181,11 +183,16 @@
   }
 
   async function loadRemoteCatalog() {
-    // Prefer last published versioned URL (avoids 30-day CDN cache on unversioned path)
-    const urls = [];
+    // Worker /catalog first (fresh KV). Cloudinary unversioned raw is often CDN-stale for days.
+    const urls = [
+      CATALOG_API + '?t=' + Date.now(),
+      CATALOG_V1 + '?t=' + Date.now()
+    ];
     try {
       const last = localStorage.getItem('wt_catalog_url');
-      if (last) urls.push(last);
+      if (last && last.indexOf('/raw/upload/wakanda-training/catalog.json') === -1) {
+        urls.push(last);
+      }
     } catch (_) {}
     urls.push(CATALOG_URL + '?t=' + Date.now());
 

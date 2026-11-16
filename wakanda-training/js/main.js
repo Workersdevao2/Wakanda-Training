@@ -957,7 +957,11 @@ function initWaForms() {
    ===================================================== */
 const WT_CLOUD = 'ogtzpc3v';
 const WT_FOLDER = 'wakanda-training';
+const WT_WORKER = 'https://wakanda-publish.workersdevao.workers.dev';
+// Worker /catalog is source of truth (KV). Cloudinary unversioned raw is CDN-cached ~30 days.
+const WT_CATALOG_API = WT_WORKER + '/catalog';
 const WT_CATALOG_URL = `https://res.cloudinary.com/${WT_CLOUD}/raw/upload/${WT_FOLDER}/catalog.json`;
+const WT_CATALOG_V1 = `https://res.cloudinary.com/${WT_CLOUD}/raw/upload/v1/${WT_FOLDER}/catalog.json`;
 
 window.WT_CATALOG = null;
 
@@ -982,13 +986,15 @@ async function initCatalogAndShop() {
     if (di) catalog.images = { ...catalog.images, ...JSON.parse(di) };
   } catch (_) {}
 
-  // Remote catalog (wins over defaults, loses to drafts)
-  // Prefer versioned URL from last admin publish (avoids long CDN cache on unversioned path)
-  const catalogUrls = [];
+  // Order: Worker (fresh) → last publish URL → Cloudinary v1 → unversioned (often stale)
+  const catalogUrls = [WT_CATALOG_API + '?t=' + Date.now()];
   try {
     const last = localStorage.getItem('wt_catalog_url');
-    if (last) catalogUrls.push(last);
+    if (last && last.indexOf('/raw/upload/wakanda-training/catalog.json') === -1) {
+      catalogUrls.push(last);
+    }
   } catch (_) {}
+  catalogUrls.push(WT_CATALOG_V1 + '?t=' + Date.now());
   catalogUrls.push(WT_CATALOG_URL + '?t=' + Date.now());
 
   for (const url of catalogUrls) {
