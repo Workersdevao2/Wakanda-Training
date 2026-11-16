@@ -1026,22 +1026,36 @@ async function initCatalogAndShop() {
 
 function applySiteImages(images) {
   if (!images || typeof images !== 'object') return;
+
+  function resolveSiteUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    const u = url.trim();
+    if (!u) return '';
+    return u.startsWith('http') || u.startsWith('/') || u.startsWith('data:')
+      ? u
+      : '../' + u.replace(/^\.\.\//, '');
+  }
+
   document.querySelectorAll('[data-site-img]').forEach((el) => {
     const key = el.getAttribute('data-site-img');
-    const url = images[key];
-    if (!url) return;
+    const resolved = resolveSiteUrl(images[key]);
+    if (!resolved) return;
     if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
-      el.src = url.startsWith('http') || url.startsWith('/') ? url : '../' + url.replace(/^\.\.\//, '');
+      el.src = resolved;
+      el.removeAttribute('aria-hidden');
+      el.classList.add('has-site-img');
+      const item = el.closest('.corp-gallery-item, .slot-ph-item');
+      if (item) item.classList.add('is-filled');
     } else if (el.tagName === 'VIDEO') {
-      el.poster = url;
+      el.poster = resolved;
     }
   });
   document.querySelectorAll('[data-site-img-bg]').forEach((el) => {
     const key = el.getAttribute('data-site-img-bg');
-    const url = images[key];
-    if (!url) return;
-    const resolved = url.startsWith('http') || url.startsWith('/') ? url : '../' + url.replace(/^\.\.\//, '');
+    const resolved = resolveSiteUrl(images[key]);
+    if (!resolved) return;
     el.style.backgroundImage = `url('${resolved}')`;
+    el.classList.add('has-site-img');
   });
 }
 

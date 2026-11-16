@@ -12,6 +12,7 @@
     'nav.about': { pt: 'Sobre Nós', en: 'About' },
     'nav.modalities': { pt: 'Modalidades', en: 'Programs' },
     'nav.projects': { pt: 'Projetos', en: 'Projects' },
+    'nav.corporate': { pt: 'Empresas', en: 'Corporate' },
     'nav.schedule': { pt: 'Horários', en: 'Schedule' },
     'nav.pricing': { pt: 'Preçário', en: 'Pricing' },
     'nav.shop': { pt: 'Loja', en: 'Shop' },
@@ -983,6 +984,73 @@
     'day.fri': { pt: 'Sexta', en: 'Friday' },
     'day.sat': { pt: 'Sábado', en: 'Saturday' },
     'day.sun': { pt: 'Domingo', en: 'Sunday' },
+
+    /* ---------- Empresas / Corporate ---------- */
+    'corp.h1': { pt: 'Empresas', en: 'Corporate' },
+    'corp.lead': {
+      pt: 'Team building, eventos corporativos e bem-estar no local de trabalho, com a energia high performance da Wakanda.',
+      en: 'Team building, corporate events and workplace wellness, with Wakanda high-performance energy.'
+    },
+    'corp.intro.h2': { pt: 'Alto desempenho também na empresa', en: 'High performance at work too' },
+    'corp.intro.p': {
+      pt: 'A Wakanda Training leva disciplina, movimento e espírito de equipa às organizações. Desenhamos activações à medida, na box ou no vosso espaço, para reforçar cultura, saúde e coesão.',
+      en: 'Wakanda Training brings discipline, movement and team spirit to organizations. We design tailored activations, at the box or on your premises, to strengthen culture, health and cohesion.'
+    },
+    'corp.tb.h3': { pt: 'Team Building', en: 'Team Building' },
+    'corp.tb.p': {
+      pt: 'Desafios em equipa, workouts colaborativos e dinâmicas que unem departamentos. Energia, comunicação e resultados partilhados.',
+      en: 'Team challenges, collaborative workouts and dynamics that connect departments. Energy, communication and shared results.'
+    },
+    'corp.ev.h3': { pt: 'Eventos corporativos', en: 'Corporate events' },
+    'corp.ev.p': {
+      pt: 'Activação fechada para a vossa empresa: competições amigáveis, challenges, dias de box dedicados e experiências memoráveis para colaboradores e parceiros.',
+      en: 'Closed activation for your company: friendly competitions, challenges, dedicated box days and memorable experiences for staff and partners.'
+    },
+    'corp.gl.h3': { pt: 'Ginástica laboral', en: 'Workplace fitness' },
+    'corp.gl.p': {
+      pt: 'Sessões curtas no vosso local de trabalho para mobilidade, postura e energia. Menos sedentarismo, mais foco e bem-estar no dia a dia.',
+      en: 'Short sessions at your workplace for mobility, posture and energy. Less sedentary time, more focus and day-to-day well-being.'
+    },
+    'corp.extra.h2': { pt: 'Também podemos incluir', en: 'We can also include' },
+    'corp.extra.lead': {
+      pt: 'Complementos que reforçam saúde, liderança e conformidade.',
+      en: 'Add-ons that strengthen health, leadership and compliance.'
+    },
+    'corp.palestras.h3': { pt: 'Palestras de saúde e bem-estar', en: 'Health & wellness talks' },
+    'corp.palestras.p': {
+      pt: 'Temas práticos sobre movimento, hábitos, stress e performance, adaptados à vossa equipa.',
+      en: 'Practical topics on movement, habits, stress and performance, tailored to your team.'
+    },
+    'corp.coaching.h3': { pt: 'Coaching', en: 'Coaching' },
+    'corp.coaching.p': {
+      pt: 'Acompanhamento para líderes e colaboradores que querem disciplina, mentalidade e resultados consistentes.',
+      en: 'Support for leaders and staff who want discipline, mindset and consistent results.'
+    },
+    'corp.sst.h3': { pt: 'Formação para técnicos de segurança', en: 'Training for safety technicians' },
+    'corp.sst.p': {
+      pt: 'Formação alinhada com segurança no trabalho e bem-estar físico no ambiente profissional.',
+      en: 'Training aligned with workplace safety and physical well-being in the professional environment.'
+    },
+    'corp.case.tag': { pt: 'Caso recente', en: 'Recent case' },
+    'corp.case.h2': { pt: 'G-Corporate Investments', en: 'G-Corporate Investments' },
+    'corp.case.lead': {
+      pt: 'Team building e activação corporativa organizada pela Wakanda Training.',
+      en: 'Team building and corporate activation organized by Wakanda Training.'
+    },
+    'corp.case.p': {
+      pt: 'A Wakanda Training organizou uma experiência de team building para a G-Corporate Investments: movimento, desafios em equipa e o espírito high performance da box, num evento fechado para a empresa.',
+      en: 'Wakanda Training organized a team-building experience for G-Corporate Investments: movement, team challenges and the box high-performance spirit, in a closed event for the company.'
+    },
+    'corp.case.note': {
+      pt: 'Galeria do evento — carregue as fotos em Admin → Imagens do site (slots Empresas), depois publique.',
+      en: 'Event gallery — upload photos in Admin → Site images (Corporate slots), then publish.'
+    },
+    'corp.cta.h2': { pt: 'Leve a Wakanda à sua empresa', en: 'Bring Wakanda to your company' },
+    'corp.cta.p': {
+      pt: 'Conte-nos o objectivo, o número de pessoas e a data pretendida. Montamos a proposta de team building, evento ou ginástica laboral à medida.',
+      en: 'Tell us the goal, headcount and preferred date. We build a tailored proposal for team building, events or workplace fitness.'
+    },
+    'corp.cta.btn': { pt: 'Falar no WhatsApp', en: 'Chat on WhatsApp' },
   };
 
   function getLang() {

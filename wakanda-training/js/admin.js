@@ -32,7 +32,21 @@
     { key: 'gordus', label: 'Gordus Project', hint: 'Imagem do projeto Gordus' },
     { key: 'contacto-1', label: 'Contacto espaço 1', hint: 'Galeria contacto' },
     { key: 'contacto-2', label: 'Contacto espaço 2', hint: 'Galeria contacto' },
-    { key: 'contacto-3', label: 'Contacto espaço 3', hint: 'Galeria contacto' }
+    { key: 'contacto-3', label: 'Contacto espaço 3', hint: 'Galeria contacto' },
+    /* Empresas / Corporate — G-Corporate & future cases */
+    { key: 'corp-hero', label: 'Empresas · Hero', hint: 'Banner da página Empresas' },
+    { key: 'corp-1', label: 'Empresas · Foto 1', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-2', label: 'Empresas · Foto 2', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-3', label: 'Empresas · Foto 3', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-4', label: 'Empresas · Foto 4', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-5', label: 'Empresas · Foto 5', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-6', label: 'Empresas · Foto 6', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-7', label: 'Empresas · Foto 7', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-8', label: 'Empresas · Foto 8', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-9', label: 'Empresas · Foto 9', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-10', label: 'Empresas · Foto 10', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-11', label: 'Empresas · Foto 11', hint: 'Galeria G-Corporate / team building' },
+    { key: 'corp-12', label: 'Empresas · Foto 12', hint: 'Galeria G-Corporate / team building' }
   ];
 
   // ---------- State ----------

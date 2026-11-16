@@ -2981,3 +2981,58 @@ body.has-sticky-cart {
   margin: 0.5rem 0 1.25rem;
   line-height: 1.5;
 }
+
+/* ---------- Empresas / Corporate ---------- */
+.corp-case-logo-wrap {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+}
+
+.corp-case-logo {
+  display: block;
+  max-height: 72px;
+  width: auto;
+  max-width: min(320px, 100%);
+  object-fit: contain;
+}
+
+/* Corporate gallery — blank until Admin publishes catalog.images corp-N */
+.corp-gallery {
+  margin-top: 0.5rem;
+}
+
+.corp-gallery-item {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.corp-gallery-item.is-filled {
+  border-style: solid;
+  border-color: var(--border);
+  background: #0a0a0a;
+}
+
+/* Hide empty <img> (no src) so browsers do not show a broken-image icon */
+.corp-gallery .corp-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  border: 0;
+  vertical-align: middle;
+}
+
+.corp-gallery .corp-gallery-img.has-site-img,
+.corp-gallery .corp-gallery-img[src]:not([src=""]) {
+  display: block;
+}

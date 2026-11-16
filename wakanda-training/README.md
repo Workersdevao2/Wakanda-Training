@@ -63,6 +63,7 @@ Wakanda-Training/
 | Sobre Nós | `pages/sobre.html` |
 | Modalidades | `pages/modalidades.html` |
 | Projetos (Gordus) | `pages/projetos.html` |
+| Empresas (Corporate) | `pages/empresas.html` |
 | Horários | `pages/horarios.html` |
 | Preçário | `pages/precario.html` |
 | Loja | `pages/loja.html` |
