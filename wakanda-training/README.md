@@ -88,9 +88,14 @@ Full detail: **BLUEPRINT.md**.
 | Cloudinary cloud | `ogtzpc3v` |
 | Unsigned media preset | `wakanda_unsigned` (folder `wakanda-training/media`) |
 
-### Media CMS (planned / Phase 1 next)
+### Media CMS
 
-See **`HANDOFF-MEDIA-CMS.md`** for the full build contract (upload/delete images + videos, Cloudinary destroy, hero, dynamic section slots). Another engineer or AI can continue from that file without this chat.
+See **`HANDOFF-MEDIA-CMS.md`** for the build contract.
+
+- **Phase 1 (done code):** image upload to media library + Cloudinary destroy via Worker.
+- **Phase 2 (next):** home hero managed from admin (images).
+- **Phase 3:** dynamic sections (modalities, coaches, etc.).
+- Video upload to the media library is deferred.
 
 ### Staff workflow
 

@@ -21,6 +21,7 @@
   const DRAFT_ZONES = 'wt_zones_override';
   const DRAFT_TEXTS = 'wt_texts_override';
   const DRAFT_IMAGES = 'wt_images_override';
+  const DRAFT_HERO = 'wt_hero_override';
   const MEDIA_LIB = 'wt_media_library';
 
   // Default admin password — CHANGE after handoff (or use Worker secret only)
@@ -65,6 +66,7 @@
   let texts = { pt: {}, en: {} };
   let siteImages = {};
   let mediaLibrary = [];
+  let heroSlides = []; // [{ type:'photo', url, publicId?, alt? }]
   let editingId = null;
   let pickingSlot = null; // when choosing media for a site slot
   let submissions = [];
@@ -159,11 +161,13 @@
       const z = localStorage.getItem(DRAFT_ZONES);
       const t = localStorage.getItem(DRAFT_TEXTS);
       const i = localStorage.getItem(DRAFT_IMAGES);
+      const h = localStorage.getItem(DRAFT_HERO);
       const m = localStorage.getItem(MEDIA_LIB);
       if (p) products = JSON.parse(p);
       if (z) zones = JSON.parse(z);
       if (t) texts = JSON.parse(t);
       if (i) siteImages = JSON.parse(i);
+      if (h) heroSlides = JSON.parse(h);
       if (m) mediaLibrary = JSON.parse(m);
     } catch (e) {
       console.warn('Draft load error', e);
@@ -216,6 +220,9 @@
         if (!localStorage.getItem(DRAFT_IMAGES) && data.images) {
           siteImages = data.images;
         }
+        if (!localStorage.getItem(DRAFT_HERO) && Array.isArray(data.hero)) {
+          heroSlides = data.hero;
+        }
         updateStatus(data.updatedAt || 'remoto');
         return true;
       } catch (_) {
@@ -230,6 +237,7 @@
     localStorage.setItem(DRAFT_ZONES, JSON.stringify(zones));
     localStorage.setItem(DRAFT_TEXTS, JSON.stringify(texts));
     localStorage.setItem(DRAFT_IMAGES, JSON.stringify(siteImages));
+    localStorage.setItem(DRAFT_HERO, JSON.stringify(heroSlides));
     localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
     toast('Rascunho guardado neste dispositivo', 'success');
     updateStatus('rascunho local');
@@ -482,18 +490,8 @@
   }
 
   // ---------- Media ----------
-  function isVideoItem(m) {
-    if (!m) return false;
-    if (m.resourceType === 'video') return true;
-    const u = (m.url || '').toLowerCase();
-    return /\.(mp4|webm|mov)(\?|$)/.test(u) || u.includes('/video/upload/');
-  }
-
   function mediaThumbHtml(m) {
     const url = esc(m.url || '');
-    if (isVideoItem(m)) {
-      return `<video src="${url}" muted playsinline preload="metadata" class="media-thumb-video"></video><span class="media-badge">VIDEO</span>`;
-    }
     return `<img src="${url}" alt="" loading="lazy" />`;
   }
 
@@ -501,7 +499,7 @@
     const grid = $('#media-grid');
     if (!grid) return;
     grid.innerHTML = mediaLibrary.map((m, i) => `
-      <div class="media-item${isVideoItem(m) ? ' media-item--video' : ''}" data-media="${i}">
+      <div class="media-item" data-media="${i}">
         ${mediaThumbHtml(m)}
         <div class="media-actions">
           <button type="button" data-copy="${i}">URL</button>
@@ -509,7 +507,7 @@
           <button type="button" data-rm="${i}">✕</button>
         </div>
       </div>
-    `).join('') || '<p class="text-muted" style="grid-column:1/-1">Ainda sem média. Carrega imagens ou vídeos abaixo.</p>';
+    `).join('') || '<p class="text-muted" style="grid-column:1/-1">Ainda sem média. Carrega imagens abaixo.</p>';
 
     $$('[data-copy]').forEach((btn) => {
       btn.addEventListener('click', async (e) => {
@@ -531,11 +529,11 @@
         const item = mediaLibrary[+btn.dataset.use];
         const url = item?.url;
         if (!url) return;
-        if (isVideoItem(item) && pickingSlot) {
-          toast('Slots de imagem do site não aceitam vídeo — usa no hero (fase 2) ou cola o URL', 'error');
-          return;
-        }
-        if (pickingSlot) {
+        if (pickingSlot === '__hero__') {
+          addHeroFromUrl(url, item.publicId || '', item.name || '');
+          pickingSlot = null;
+          switchPanel('hero');
+        } else if (pickingSlot) {
           siteImages[pickingSlot] = url;
           pickingSlot = null;
           saveDrafts();
@@ -545,10 +543,6 @@
         } else {
           const imgField = $('#f-image');
           if (imgField && $('#product-modal')?.classList.contains('open')) {
-            if (isVideoItem(item)) {
-              toast('Produtos usam imagem — escolhe uma foto', 'error');
-              return;
-            }
             imgField.value = url;
             toast('URL aplicada ao produto');
           } else {
@@ -580,6 +574,9 @@
         n++;
       }
     });
+    const before = heroSlides.length;
+    heroSlides = heroSlides.filter((s) => s && s.url !== url);
+    n += before - heroSlides.length;
     return n;
   }
 
@@ -607,7 +604,7 @@
           body: JSON.stringify({
             password: pwd,
             publicId: item.publicId,
-            resourceType: item.resourceType || (isVideoItem(item) ? 'video' : 'image')
+            resourceType: item.resourceType || 'image'
           })
         });
         const data = await res.json().catch(() => ({}));
@@ -629,6 +626,7 @@
     localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
     saveDrafts();
     renderMedia();
+    renderHero();
     renderSlots();
     renderProducts?.();
     toast(
@@ -646,46 +644,35 @@
       return null;
     }
 
-    const isVideo =
-      (file.type && file.type.startsWith('video/')) ||
-      /\.(mp4|webm|mov)$/i.test(file.name || '');
     const isImage =
       (file.type && file.type.startsWith('image/')) ||
       /\.(jpe?g|png|gif|webp|avif)$/i.test(file.name || '');
 
-    if (!isVideo && !isImage) {
-      toast('Tipo não suportado: ' + (file.type || file.name), 'error');
+    if (!isImage) {
+      toast('Tipo não suportado: ' + (file.type || file.name) + ' (só imagens)', 'error');
       return null;
     }
 
-    if (isImage && file.size > 8 * 1024 * 1024) {
+    if (file.size > 8 * 1024 * 1024) {
       toast('Imagem grande (>8MB). Preferir JPEG/WebP ≤4MB.', 'error');
     }
-    if (isVideo && file.size > 40 * 1024 * 1024) {
-      toast('Vídeo grande (>40MB). Pode falhar ou demorar muito.', 'error');
-    }
 
-    const resourceType = isVideo ? 'video' : 'image';
     const fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', UPLOAD_PRESET);
     fd.append('folder', CLOUD_FOLDER + '/media');
-    if (!isVideo) fd.append('quality', 'auto:good');
+    fd.append('quality', 'auto:good');
 
-    toast(isVideo ? 'A carregar vídeo…' : 'A carregar imagem…');
+    toast('A carregar imagem…');
     try {
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`,
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         { method: 'POST', body: fd }
       );
       const data = await res.json();
       if (!res.ok) {
         const msg = data.error?.message || 'Falha no upload';
-        if (isVideo) {
-          toast(msg + ' — confirma que o preset wakanda_unsigned aceita vídeo no Cloudinary.', 'error');
-        } else {
-          toast(msg, 'error');
-        }
+        toast(msg, 'error');
         return null;
       }
       const url = data.secure_url || data.url;
@@ -696,7 +683,7 @@
       return {
         url,
         publicId: data.public_id || '',
-        resourceType: data.resource_type || resourceType
+        resourceType: data.resource_type || 'image'
       };
     } catch (e) {
       toast('Erro de rede no upload', 'error');
@@ -722,6 +709,76 @@
     }
     renderMedia();
     if (added) toast(added + ' ficheiro(s) na biblioteca', 'success');
+  }
+
+  // ---------- Hero slides ----------
+  function renderHero() {
+    const list = $('#hero-list');
+    if (!list) return;
+    if (!heroSlides.length) {
+      list.innerHTML = '<p class="text-muted">Nenhum slide configurado. O site usa os slides estáticos actuais até publicares uma lista.</p>';
+      return;
+    }
+    list.innerHTML = heroSlides.map((s, i) => `
+      <div class="hero-admin-item" data-hero="${i}">
+        <img src="${esc(s.url)}" alt="" loading="lazy" />
+        <div class="hero-admin-meta">
+          <input type="text" data-hero-alt="${i}" value="${esc(s.alt || '')}" placeholder="Texto alternativo (alt)" />
+        </div>
+        <div class="hero-admin-actions">
+          <button type="button" class="btn btn-sm btn-ghost" data-hero-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-hero-down="${i}" ${i === heroSlides.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="btn btn-sm btn-danger" data-hero-rm="${i}">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    $$('[data-hero-alt]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.heroAlt;
+        if (heroSlides[i]) heroSlides[i].alt = input.value.trim();
+      });
+    });
+    $$('[data-hero-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.heroUp;
+        if (i <= 0) return;
+        const t = heroSlides[i - 1];
+        heroSlides[i - 1] = heroSlides[i];
+        heroSlides[i] = t;
+        renderHero();
+      });
+    });
+    $$('[data-hero-down]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.heroDown;
+        if (i >= heroSlides.length - 1) return;
+        const t = heroSlides[i + 1];
+        heroSlides[i + 1] = heroSlides[i];
+        heroSlides[i] = t;
+        renderHero();
+      });
+    });
+    $$('[data-hero-rm]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.heroRm;
+        heroSlides.splice(i, 1);
+        renderHero();
+        toast('Slide removido do rascunho');
+      });
+    });
+  }
+
+  function addHeroFromUrl(url, publicId, alt) {
+    if (!url) return;
+    heroSlides.push({
+      type: 'photo',
+      url,
+      publicId: publicId || '',
+      alt: alt || ''
+    });
+    renderHero();
+    toast('Slide adicionado ao hero', 'success');
   }
 
   // ---------- Site image slots ----------
@@ -757,10 +814,6 @@
           const file = input.files?.[0];
           input.value = '';
           if (!file) return;
-          if (file.type && file.type.startsWith('video/')) {
-            toast('Slots do site são só imagem — usa a biblioteca de média para vídeos', 'error');
-            return;
-          }
           const result = await uploadToCloudinary(file);
           if (result) {
             siteImages[key] = result.url;
@@ -804,7 +857,8 @@
       'Publicar na loja?\n\n' +
       `Produtos: ${products.length}\n` +
       `Zonas: ${zones.length}\n` +
-      `Imagens de site: ${Object.keys(siteImages).length}\n\n` +
+      `Imagens de site: ${Object.keys(siteImages).length}\n` +
+      `Hero slides: ${heroSlides.length}\n\n` +
       'Todos os visitantes verão estes dados no próximo carregamento.'
     )) return;
 
@@ -813,7 +867,8 @@
       products,
       zones,
       texts,
-      images: siteImages
+      images: siteImages,
+      hero: heroSlides
     };
 
     // Prefer Worker
@@ -839,6 +894,7 @@
         localStorage.removeItem(DRAFT_ZONES);
         localStorage.removeItem(DRAFT_TEXTS);
         localStorage.removeItem(DRAFT_IMAGES);
+        localStorage.removeItem(DRAFT_HERO);
         if (data.url) {
           try { localStorage.setItem('wt_catalog_url', data.url); } catch (_) {}
         }
@@ -847,6 +903,7 @@
         // Re-render from in-memory catalog (already has new prices)
         renderProducts();
         renderZones();
+        renderHero();
         renderSlots();
         renderDashboard();
       } catch (e) {
@@ -1312,6 +1369,7 @@
     renderProducts();
     renderZones();
     renderMedia();
+    renderHero();
     renderSlots();
     renderDashboard();
     loadInbox();
@@ -1365,6 +1423,32 @@
       e.target.value = '';
     });
     $('#btn-upload-media')?.addEventListener('click', () => $('#media-file-input')?.click());
+
+    // Hero panel
+    $('#btn-hero-upload')?.addEventListener('click', () => $('#hero-file-input')?.click());
+    $('#hero-file-input')?.addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      e.target.value = '';
+      if (!file) return;
+      const result = await uploadToCloudinary(file);
+      if (result) {
+        mediaLibrary.unshift({
+          url: result.url,
+          publicId: result.publicId,
+          resourceType: result.resourceType,
+          name: file.name,
+          at: new Date().toISOString()
+        });
+        localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+        addHeroFromUrl(result.url, result.publicId, '');
+        renderMedia();
+      }
+    });
+    $('#btn-hero-from-media')?.addEventListener('click', () => {
+      pickingSlot = '__hero__';
+      switchPanel('media');
+      toast('Escolhe uma imagem da biblioteca (botão Usar)');
+    });
 
     $('#btn-save-draft')?.addEventListener('click', saveDrafts);
     $('#btn-publish')?.addEventListener('click', publish);

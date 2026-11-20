@@ -55,6 +55,7 @@
           <button type="button" class="admin-nav-item" data-panel="products"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Produtos</span></button>
           <button type="button" class="admin-nav-item" data-panel="zones"><span class="admin-nav-icon">⇢</span><span class="admin-nav-label">Entrega</span></button>
           <button type="button" class="admin-nav-item" data-panel="media"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Média</span></button>
+          <button type="button" class="admin-nav-item" data-panel="hero"><span class="admin-nav-icon">▶</span><span class="admin-nav-label">Hero</span></button>
           <button type="button" class="admin-nav-item" data-panel="images"><span class="admin-nav-icon">⬡</span><span class="admin-nav-label">Imagens site</span></button>
           <button type="button" class="admin-nav-item" data-panel="guide"><span class="admin-nav-icon">?</span><span class="admin-nav-label">Guia</span></button>
         </nav>
@@ -168,11 +169,27 @@
         <h2>Biblioteca de média</h2>
         <button type="button" class="btn btn-solid btn-sm" id="btn-upload-media">Carregar</button>
       </div>
-      <input type="file" id="media-file-input" class="sr-only" accept="image/*,video/mp4,video/webm,video/quicktime" multiple />
+      <input type="file" id="media-file-input" class="sr-only" accept="image/*" multiple />
       <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
-        Carrega imagens ou vídeos (MP4/WebM) para a biblioteca (Cloudinary). Apagar remove o ficheiro na cloud e limpa rascunhos locais — depois <strong>Publicar na loja</strong> para o site live.
+        Carrega imagens para a biblioteca (Cloudinary). Apagar remove o ficheiro na cloud e limpa rascunhos locais — depois <strong>Publicar na loja</strong> para o site live.
       </p>
       <div class="media-grid" id="media-grid"></div>
+    </section>
+
+    <!-- Hero slides -->
+    <section class="admin-panel" id="panel-hero">
+      <div class="admin-panel-header">
+        <h2>Hero (página inicial)</h2>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-hero-from-media">Da biblioteca</button>
+          <button type="button" class="btn btn-solid btn-sm" id="btn-hero-upload">Carregar</button>
+        </div>
+      </div>
+      <input type="file" id="hero-file-input" class="sr-only" accept="image/*" />
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+        Fotos do slider da home. Ordem = ordem no site. Lista vazia = usa os slides estáticos actuais. Guarda rascunho e <strong>Publicar na loja</strong> para o live.
+      </p>
+      <div id="hero-list" class="hero-admin-list"></div>
     </section>
 
     <!-- Site images -->

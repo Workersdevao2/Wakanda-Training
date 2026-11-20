@@ -96,11 +96,11 @@ Layout: left sidebar (desktop), bottom icons (mobile).
 - Change default admin password after go-live.
 - Optional: Cloudflare Access in front of `/admin.html`.
 
-## Media CMS (in progress)
+## Media CMS
 
-Full plan + Phase 1 build contract: **`HANDOFF-MEDIA-CMS.md`**.
+Full plan + build contract: **`HANDOFF-MEDIA-CMS.md`**.
 
-- Phase 1: image **and** video upload to media library; Cloudinary **destroy** via Worker `POST /media/delete`; clear draft refs; staff must **Publicar** after delete.
-- Phase 2: home hero managed from admin (strict V-I-V-I).
+- Phase 1 (code complete): image upload to media library; Cloudinary **destroy** via Worker `POST /media/delete`; clear draft refs; staff must **Publicar** after delete. Video upload deferred.
+- Phase 2 (next): home hero managed from admin (images).
 - Phase 3: dynamic sections (create modalities/coaches/etc. from admin).
 - Phase 4: remaining fixed image slots.

@@ -1,11 +1,11 @@
-# Handoff: Media CMS (images + videos) — Admin upload / delete
+# Handoff: Media CMS — Admin upload / delete
 
-**Status:** Phase 1 **code complete** (2026-11-19) — deploy Worker + verify · Phases 2–4 not started  
-**Date:** 2026-11-19  
+**Status:** Phase 1 **code complete** (image-only) · Video upload **deferred** · Phase 2 **code complete** (2026-11-20)  
+**Date:** 2026-11-20  
 **Project:** Wakanda Training static site + admin (`wakanda-training/`)  
 **Stack:** Pure HTML/CSS/JS · Cloudflare Pages · Worker `wakanda-publish` · Cloudinary `ogtzpc3v`
 
-Phase 1 source changes are in-repo. Finish **Ops** checkboxes under Phase 1 acceptance, then Phase 2.
+Phase 1 (images + Cloudinary destroy) + Phase 2 (hero photos from admin) are in-repo. Next: Phase 3 or ops verification.
 
 ---
 
@@ -13,13 +13,12 @@ Phase 1 source changes are in-repo. Finish **Ops** checkboxes under Phase 1 acce
 
 | ID | Decision |
 |----|----------|
-| Scope | Full media CMS eventually: library + all site images/videos + hero + **create new section slots** from admin |
-| Phase order | **1 → 2 → 3 → 4** (below). User chose start with **Phase 1 only**. |
+| Scope | Full media CMS eventually: library + all site images + hero + **create new section slots** from admin |
+| Phase order | **1 → 2 → 3 → 4** (below). |
 | Delete | Remove from admin library **and** destroy on **Cloudinary**. Clean draft references (slots/products). **Do not** auto-republish — staff must hit **Publicar na loja**. |
-| Videos | Uploadable to media library; later usable on hero and any video-capable slots (Phase 2+). |
-| Hero alternation | Keep strict **video → image → video → image** when Phase 2 lands. |
+| Videos | **Deferred.** Media library is image-only for now. Static hero `*.mp4` files under `images/` remain untouched. |
+| Hero (Phase 2) | Admin-managed list of **photos** only for now. |
 | Publish | Same flow everywhere: **Guardar rascunho** → **Publicar na loja** (catalog.json via Worker → KV + Cloudinary). |
-| Cloudinary video preset | **Unknown** whether `wakanda_unsigned` allows video. Code for `/video/upload`; document dashboard requirement. |
 | Phase 3 section order | `home_modalities` → `coaches` → `resultados` → `eventos` |
 
 ---
@@ -30,17 +29,17 @@ Phase 1 source changes are in-repo. Finish **Ops** checkboxes under Phase 1 acce
 - `admin.html` — panels: media (`#panel-media`), site images (`#panel-images`)
 - `js/admin.js` — drafts, media library, site slots, upload, publish
 - `js/main.js` — public catalog load, hero slider, shop
-- `worker/src/index.js` — `/publish`, `/catalog`, submissions, members (no media delete yet)
+- `worker/src/index.js` — `/publish`, `/catalog`, `/media/delete`, submissions, members
 - `worker/wrangler.toml` — secrets: `ADMIN_PASSWORD`, `CLOUDINARY_*`
 - `BLUEPRINT.md` / `README.md` — high-level; this file is the build contract
 
-### Existing media behaviour
+### Existing media behaviour (Phase 1 complete)
 - Upload: unsigned Cloudinary **`/image/upload`** only (`accept="image/*"`).
-- Library: `localStorage` key `wt_media_library` — array of `{ url, name, at }`.
-- Delete (✕): **local array only** — does **not** call Cloudinary destroy.
+- Library: `localStorage` key `wt_media_library` — array of `{ url, publicId, resourceType, name, at }`.
+- Delete (✕): calls Worker `POST /media/delete` → Cloudinary destroy; clears matching draft URLs.
 - Site slots: `SITE_IMAGE_SLOTS` + `siteImages` map → published as `catalog.images`.
-- Hero: **hardcoded** slides in `index.html`; random V-I sequence in `initHeroSlider()` (main.js).
-- Homepage modalities / many section images: **static HTML**, not catalog-driven.
+- Hero: still **hardcoded** slides in `index.html` (Phase 2 will make it catalog-driven).
+- Homepage modalities / many section images: **static HTML**, not catalog-driven (Phase 3).
 
 ### Cloudinary
 - Cloud name: `ogtzpc3v`
@@ -65,7 +64,7 @@ Phase 1 source changes are in-repo. Finish **Ops** checkboxes under Phase 1 acce
   texts: { pt: {}, en: {} },
   images: { /* existing fixed slot keys → url */ },
   hero: [
-    { type: 'video' | 'photo', url: string, publicId?: string, alt?: string }
+    { type: 'photo', url: string, publicId?: string, alt?: string }
   ],
   sections: {
     home_modalities: [
@@ -78,7 +77,7 @@ Phase 1 source changes are in-repo. Finish **Ops** checkboxes under Phase 1 acce
   },
   // optional published mirror of library (not required for Phase 1)
   media: [
-    { url, publicId, resourceType: 'image' | 'video', name, at }
+    { url, publicId, resourceType: 'image', name, at }
   ],
   updatedAt: string
 }
@@ -88,28 +87,29 @@ Phase 1 only **requires** richer media library records + Worker delete. Catalog 
 
 ---
 
-## Phase 1 — Media foundation (IMPLEMENT THIS)
+## Phase 1 — Media foundation (DONE — image only)
 
 ### Goals
-1. Upload **images and videos** into the media library.
+1. Upload **images** into the media library.
 2. Store `publicId` + `resourceType` on each library item (needed for Cloudinary destroy).
 3. Delete: Worker destroys Cloudinary asset; client removes from library and clears draft URLs that matched that asset.
 4. No auto-publish after delete.
 5. Update docs (this file + short notes in BLUEPRINT/README).
 
+**Video upload was deferred** (2026-11-20). Admin is image-only.
+
 ### 1.1 Admin UI (`admin.html`)
-- `#media-file-input`: change `accept` to allow images **and** videos, e.g.  
-  `accept="image/*,video/mp4,video/webm,video/quicktime"`
-- Media grid: show video items with a `<video>` thumb or placeholder icon (not only `<img>`).
+- `#media-file-input`: `accept="image/*"`
+- Media grid: `<img>` thumbs only.
 - Keep buttons: URL · Usar · ✕
 
 ### 1.2 `js/admin.js`
-**Library item shape (new):**
+**Library item shape:**
 ```js
 {
   url: string,           // secure_url
   publicId: string,      // Cloudinary public_id (required for destroy)
-  resourceType: 'image' | 'video',
+  resourceType: 'image',
   name: string,
   at: string             // ISO
 }
@@ -117,14 +117,10 @@ Phase 1 only **requires** richer media library records + Worker delete. Catalog 
 Migrate old items: if `publicId` missing, still list them; delete may only remove locally and toast that Cloudinary destroy was skipped.
 
 **Upload:**
-- Detect type from `file.type` (or extension).
-- Images → `POST https://api.cloudinary.com/v1_1/{CLOUD}/image/upload`
-- Videos → `POST https://api.cloudinary.com/v1_1/{CLOUD}/video/upload`
+- Images only → `POST https://api.cloudinary.com/v1_1/{CLOUD}/image/upload`
 - Same unsigned preset + folder `wakanda-training/media`
 - On success save `secure_url`, `public_id`, `resource_type` from response.
-- Soft size warnings: images >8MB; videos >40MB (adjust if needed). Toast progress.
-
-**Cloudinary preset note:** If video upload returns 400, staff must enable video for preset `wakanda_unsigned` (or create a second unsigned video preset and document the name in admin.js).
+- Soft size warning: images >8MB. Toast progress.
 
 **Delete flow (✕):**
 1. Confirm dialog (PT): warn that file is removed from Cloudinary and must **Publicar** to update live site references.
@@ -139,7 +135,7 @@ Migrate old items: if `publicId` missing, still list them; delete may only remov
    - `renderMedia()` (+ slots/products if visible)
 4. On failure: toast error; do not remove from library.
 
-**Usar / copy:** unchanged behaviour; videos can set product image field only if that makes sense — or toast “use on hero/slots when available” for pure video URLs until Phase 2.
+**Usar / copy:** unchanged behaviour for images.
 
 ### 1.3 Worker (`worker/src/index.js`)
 Add route:
@@ -169,29 +165,29 @@ Deploy: `cd worker && npx wrangler deploy` after change.
 - Deleting static files under `images/` on GitHub (those remain until replaced by catalog URLs)
 
 ### Phase 1 acceptance criteria
-- [x] Code: JPEG/PNG/WebP + video upload path in admin library
-- [x] Code: store `publicId` + `resourceType`; video thumbs in grid
+- [x] Code: JPEG/PNG/WebP image upload path in admin library
+- [x] Code: store `publicId` + `resourceType`
 - [x] Code: ✕ → `POST /media/delete` → clear draft slot/product URLs
 - [x] Code: failed Cloudinary delete does not drop local item
-- [ ] **Ops:** `cd worker && npx wrangler deploy`
+- [x] Code: video upload path removed (deferred)
 - [ ] **Ops:** confirm image upload works on live admin
-- [ ] **Ops:** confirm MP4 upload (enable video on `wakanda_unsigned` if 400)
 - [ ] **Ops:** confirm ✕ destroys asset + Publicar updates live
 
 ### Phase 1 verification
 1. Open `/admin.html` → Média → upload image → confirm Cloudinary URL in library.
-2. Upload small MP4; if error, fix preset then retry.
-3. Assign image to a site slot → Guardar rascunho → Publicar → confirm live page.
-4. ✕ that media → confirm 200 from `/media/delete` → library empty of item → slot draft cleared → live still old until Publicar again.
-5. Publicar → live no longer references deleted URL.
+2. Assign image to a site slot → Guardar rascunho → Publicar → confirm live page.
+3. ✕ that media → confirm 200 from `/media/delete` → library empty of item → slot draft cleared → live still old until Publicar again.
+4. Publicar → live no longer references deleted URL.
 
 ---
 
-## Phase 2 — Hero from admin (NOT STARTED)
+## Phase 2 — Hero from admin (DONE — images only)
 
-1. Extend catalog with `hero: [{ type, url, publicId?, alt? }]`.
-2. Admin panel section: ordered list, add from library or upload, delete, reorder.
-3. Enforce strict V-I-V-I in UI and on publish validation.
+1. Catalog includes `hero: [{ type: 'photo', url, publicId?, alt? }]`.
+2. Admin panel **Hero**: ordered list, add from library or upload, ↑↓, delete, alt text.
+3. Photos only (video slides deferred).
+4. Public: `applyCatalogHero()` rebuilds `#hero-media` when catalog.hero is non-empty; empty → static fallback.
+5. Draft key: `wt_hero_override`. Included in publish payload.
 4. `index.html`: keep a noscript/fallback static set optional; `initHeroSlider()` prefer `catalog.hero` when non-empty.
 5. Blur-layer + mobile contain rules already in CSS/JS — keep working with dynamic slides.
 
@@ -226,15 +222,15 @@ Expand `SITE_IMAGE_SLOTS` / `images{}` for any leftover single hardcoded backgro
 
 ---
 
-## Quick file touch list — Phase 1 only
+## Quick file touch list — Phase 1 (done)
 
 | File | Change |
 |------|--------|
-| `admin.html` | `accept` on media input; optional video thumb markup hooks |
-| `js/admin.js` | upload image\|video; library shape; delete → Worker; clear drafts |
+| `admin.html` | `accept="image/*"`; image-only help text |
+| `js/admin.js` | image upload only; library shape with publicId; delete → Worker; clear drafts |
 | `worker/src/index.js` | `POST /media/delete` signed destroy |
-| `css/admin.css` | minor: video thumb in `.media-item` if needed |
-| `BLUEPRINT.md` | short pointer + media delete note |
+| `css/admin.css` | media grid styles (image only) |
+| `BLUEPRINT.md` | short pointer |
 | `README.md` | short pointer to this handoff |
 | `HANDOFF-MEDIA-CMS.md` | this file |
 
@@ -249,4 +245,4 @@ No new secrets for Phase 1 if those exist.
 
 ---
 
-*End of handoff. Next action: implement Phase 1 checklist.*
+*End of handoff. Next action: Phase  2 (Hero from admin — images only).*

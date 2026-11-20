@@ -101,13 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------- Cart ----------
   initCart();
 
-  // ---------- Hero slider ----------
+  // ---------- Hero slider (fallback first; catalog may rebuild) ----------
   initHeroSlider();
 
   // ---------- WhatsApp forms ----------
   initWaForms();
 
-  // ---------- Live catalog + dynamic shop ----------
+  // ---------- Live catalog + dynamic shop (may rebuild hero) ----------
   initCatalogAndShop();
 });
 
@@ -375,49 +375,96 @@ function addTshirt(colorKey, baseName, price) {
 }
 
 /* =====================================================
-   HERO MEDIA SLIDER (photos + videos alternating)
+   HERO MEDIA SLIDER (photos + videos alternating, or catalog photos)
    ===================================================== */
+
+/** Replace hero slides from catalog.hero (photos only). Re-inits slider. */
+function applyCatalogHero(heroItems) {
+  const mediaRoot = document.getElementById('hero-media');
+  if (!mediaRoot || !Array.isArray(heroItems) || !heroItems.length) return;
+
+  const overlay = mediaRoot.querySelector('.hero-overlay');
+  // Remove existing slides
+  Array.from(mediaRoot.querySelectorAll('.hero-slide')).forEach((el) => el.remove());
+
+  heroItems.forEach((item, idx) => {
+    if (!item || !item.url) return;
+    const slide = document.createElement('div');
+    slide.className = 'hero-slide' + (idx === 0 ? ' active' : '');
+    slide.setAttribute('data-type', 'photo');
+    slide.setAttribute('data-from-catalog', '1');
+    const img = document.createElement('img');
+    img.src = item.url;
+    img.alt = item.alt || 'Wakanda Training';
+    img.loading = idx === 0 ? 'eager' : 'lazy';
+    img.decoding = 'async';
+    slide.appendChild(img);
+    mediaRoot.insertBefore(slide, overlay || null);
+  });
+
+  // Re-run slider in photo-only mode
+  initHeroSlider();
+}
+
 function initHeroSlider() {
   const mediaRoot = document.getElementById('hero-media');
   const allSlides = Array.from(document.querySelectorAll('.hero-slide'));
   const dotsContainer = document.getElementById('hero-dots');
   if (!allSlides.length || !mediaRoot) return;
 
-  // Random strict V-I-V-I sequence (always starts with video, pure alternation)
-  function shuffle(arr) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const t = a[i]; a[i] = a[j]; a[j] = t;
-    }
-    return a;
+  // Cleanup previous instance (catalog rebuild)
+  if (mediaRoot._heroCleanup) {
+    try { mediaRoot._heroCleanup(); } catch (_) {}
+    mediaRoot._heroCleanup = null;
   }
 
-  const videoPool = allSlides.filter(s => s.getAttribute('data-type') === 'video');
+  const fromCatalog = allSlides.some(s => s.getAttribute('data-from-catalog') === '1');
   const photoPool = allSlides.filter(s => s.getAttribute('data-type') === 'photo');
-  const pairCount = Math.min(videoPool.length, photoPool.length);
+  const videoPool = allSlides.filter(s => s.getAttribute('data-type') === 'video');
 
-  const videos = shuffle(videoPool).slice(0, pairCount);
-  const photos = shuffle(photoPool).slice(0, pairCount);
+  let ordered;
 
-  const ordered = [];
-  for (let i = 0; i < pairCount; i++) {
-    ordered.push(videos[i], photos[i]);
-  }
-
-  // Hide unused slides (extra videos beyond pairCount)
-  allSlides.forEach(s => {
-    if (!ordered.includes(s)) {
-      s.classList.remove('active');
-      s.style.display = 'none';
-      s.setAttribute('aria-hidden', 'true');
-    } else {
+  if (fromCatalog || (photoPool.length && !videoPool.length)) {
+    // Catalog-driven or photo-only: use DOM order as-is
+    ordered = allSlides.filter(s => s.style.display !== 'none');
+    allSlides.forEach(s => {
       s.style.display = '';
       s.removeAttribute('aria-hidden');
+    });
+  } else {
+    // Legacy: random strict V-I-V-I sequence
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
     }
-  });
 
-  // Re-append in alternating order so DOM matches sequence
+    const pairCount = Math.min(videoPool.length, photoPool.length);
+    const videos = shuffle(videoPool).slice(0, pairCount);
+    const photos = shuffle(photoPool).slice(0, pairCount);
+
+    ordered = [];
+    for (let i = 0; i < pairCount; i++) {
+      ordered.push(videos[i], photos[i]);
+    }
+
+    // Hide unused slides
+    allSlides.forEach(s => {
+      if (!ordered.includes(s)) {
+        s.classList.remove('active');
+        s.style.display = 'none';
+        s.setAttribute('aria-hidden', 'true');
+      } else {
+        s.style.display = '';
+        s.removeAttribute('aria-hidden');
+      }
+    });
+  }
+
+  // Re-append in order
   const overlay = mediaRoot.querySelector('.hero-overlay');
   ordered.forEach(s => mediaRoot.appendChild(s));
   if (overlay) mediaRoot.appendChild(overlay);
@@ -571,7 +618,7 @@ function initHeroSlider() {
   playActiveVideo(slides[0]);
   scheduleNext();
 
-  document.addEventListener('visibilitychange', () => {
+  function onVisibility() {
     if (document.hidden) {
       clearSchedule();
       pauseAllVideos();
@@ -579,7 +626,14 @@ function initHeroSlider() {
       playActiveVideo(slides[current]);
       scheduleNext();
     }
-  });
+  }
+  document.addEventListener('visibilitychange', onVisibility);
+
+  mediaRoot._heroCleanup = () => {
+    clearSchedule();
+    pauseAllVideos();
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
 }
 
 
@@ -1023,7 +1077,8 @@ async function initCatalogAndShop() {
     products: (window.WT_DEFAULTS && window.WT_DEFAULTS.products) || window.PRODUCTS || [],
     zones: (window.WT_DEFAULTS && window.WT_DEFAULTS.zones) || window.DELIVERY_ZONES || [],
     texts: (window.WT_DEFAULTS && window.WT_DEFAULTS.texts) || { pt: {}, en: {} },
-    images: (window.WT_DEFAULTS && window.WT_DEFAULTS.images) || {}
+    images: (window.WT_DEFAULTS && window.WT_DEFAULTS.images) || {},
+    hero: null
   };
 
   // Drafts (same browser as admin)
@@ -1032,10 +1087,12 @@ async function initCatalogAndShop() {
     const dz = localStorage.getItem('wt_zones_override');
     const dt = localStorage.getItem('wt_texts_override');
     const di = localStorage.getItem('wt_images_override');
+    const dh = localStorage.getItem('wt_hero_override');
     if (dp) catalog.products = JSON.parse(dp);
     if (dz) catalog.zones = JSON.parse(dz);
     if (dt) catalog.texts = JSON.parse(dt);
     if (di) catalog.images = { ...catalog.images, ...JSON.parse(di) };
+    if (dh) catalog.hero = JSON.parse(dh);
   } catch (_) {}
 
   // Order: Worker (fresh) → last publish URL → Cloudinary v1 → unversioned (often stale)
@@ -1067,6 +1124,9 @@ async function initCatalogAndShop() {
       if (!localStorage.getItem('wt_images_override') && remote.images) {
         catalog.images = { ...catalog.images, ...remote.images };
       }
+      if (!localStorage.getItem('wt_hero_override') && Array.isArray(remote.hero)) {
+        catalog.hero = remote.hero;
+      }
       catalog.updatedAt = remote.updatedAt;
       break;
     } catch (_) {
@@ -1080,6 +1140,9 @@ async function initCatalogAndShop() {
 
   applySiteImages(catalog.images);
   renderShopFromCatalog(catalog.products);
+  if (Array.isArray(catalog.hero) && catalog.hero.length) {
+    applyCatalogHero(catalog.hero);
+  }
 }
 
 function applySiteImages(images) {
