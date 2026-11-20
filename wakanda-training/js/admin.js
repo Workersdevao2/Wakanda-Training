@@ -482,19 +482,34 @@
   }
 
   // ---------- Media ----------
+  function isVideoItem(m) {
+    if (!m) return false;
+    if (m.resourceType === 'video') return true;
+    const u = (m.url || '').toLowerCase();
+    return /\.(mp4|webm|mov)(\?|$)/.test(u) || u.includes('/video/upload/');
+  }
+
+  function mediaThumbHtml(m) {
+    const url = esc(m.url || '');
+    if (isVideoItem(m)) {
+      return `<video src="${url}" muted playsinline preload="metadata" class="media-thumb-video"></video><span class="media-badge">VIDEO</span>`;
+    }
+    return `<img src="${url}" alt="" loading="lazy" />`;
+  }
+
   function renderMedia() {
     const grid = $('#media-grid');
     if (!grid) return;
     grid.innerHTML = mediaLibrary.map((m, i) => `
-      <div class="media-item" data-media="${i}">
-        <img src="${m.url}" alt="" loading="lazy" />
+      <div class="media-item${isVideoItem(m) ? ' media-item--video' : ''}" data-media="${i}">
+        ${mediaThumbHtml(m)}
         <div class="media-actions">
           <button type="button" data-copy="${i}">URL</button>
           <button type="button" data-use="${i}">Usar</button>
           <button type="button" data-rm="${i}">✕</button>
         </div>
       </div>
-    `).join('') || '<p class="text-muted" style="grid-column:1/-1">Ainda sem média. Carrega imagens abaixo.</p>';
+    `).join('') || '<p class="text-muted" style="grid-column:1/-1">Ainda sem média. Carrega imagens ou vídeos abaixo.</p>';
 
     $$('[data-copy]').forEach((btn) => {
       btn.addEventListener('click', async (e) => {
@@ -513,8 +528,13 @@
     $$('[data-use]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const url = mediaLibrary[+btn.dataset.use]?.url;
+        const item = mediaLibrary[+btn.dataset.use];
+        const url = item?.url;
         if (!url) return;
+        if (isVideoItem(item) && pickingSlot) {
+          toast('Slots de imagem do site não aceitam vídeo — usa no hero (fase 2) ou cola o URL', 'error');
+          return;
+        }
         if (pickingSlot) {
           siteImages[pickingSlot] = url;
           pickingSlot = null;
@@ -525,10 +545,14 @@
         } else {
           const imgField = $('#f-image');
           if (imgField && $('#product-modal')?.classList.contains('open')) {
+            if (isVideoItem(item)) {
+              toast('Produtos usam imagem — escolhe uma foto', 'error');
+              return;
+            }
             imgField.value = url;
             toast('URL aplicada ao produto');
           } else {
-            toast('Abre um produto ou slot para usar a imagem');
+            toast('Abre um produto ou slot para usar a média');
           }
         }
       });
@@ -536,42 +560,144 @@
     $$('[data-rm]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        mediaLibrary.splice(+btn.dataset.rm, 1);
-        localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
-        renderMedia();
+        deleteMediaAt(+btn.dataset.rm);
       });
     });
   }
 
+  function clearDraftRefsToUrl(url) {
+    if (!url) return 0;
+    let n = 0;
+    Object.keys(siteImages).forEach((k) => {
+      if (siteImages[k] === url) {
+        delete siteImages[k];
+        n++;
+      }
+    });
+    products.forEach((p) => {
+      if (p && p.image === url) {
+        p.image = '';
+        n++;
+      }
+    });
+    return n;
+  }
+
+  async function deleteMediaAt(index) {
+    const item = mediaLibrary[index];
+    if (!item) return;
+    const ok = confirm(
+      'Apagar este ficheiro da Cloudinary e da biblioteca?\n\n' +
+      'Rascunhos locais que usam este URL serão limpos. O site live só muda depois de Publicar na loja.'
+    );
+    if (!ok) return;
+
+    const pwd = ensureAdminPassword();
+    if (!pwd) {
+      toast('Password de admin necessária para apagar na cloud', 'error');
+      return;
+    }
+
+    if (item.publicId) {
+      toast('A apagar na Cloudinary…');
+      try {
+        const res = await fetch(API_BASE + '/media/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: pwd,
+            publicId: item.publicId,
+            resourceType: item.resourceType || (isVideoItem(item) ? 'video' : 'image')
+          })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          toast(data.error || 'Falha ao apagar na Cloudinary', 'error');
+          return;
+        }
+      } catch (err) {
+        toast('Erro de rede ao apagar', 'error');
+        return;
+      }
+    } else {
+      toast('Sem publicId — só remove da lista local (ficheiro cloud pode ficar)', 'error');
+    }
+
+    const url = item.url;
+    mediaLibrary.splice(index, 1);
+    const cleared = clearDraftRefsToUrl(url);
+    localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+    saveDrafts();
+    renderMedia();
+    renderSlots();
+    renderProducts?.();
+    toast(
+      cleared
+        ? 'Apagado. ' + cleared + ' ref(s) em rascunho limpas — Publicar para o site live.'
+        : 'Apagado da biblioteca' + (item.publicId ? ' e Cloudinary' : '') + '. Publicar se estava no site.',
+      'success'
+    );
+  }
+
+  /** @returns {Promise<{url, publicId, resourceType}|null>} */
   async function uploadToCloudinary(file) {
     if (!CLOUD_NAME || !UPLOAD_PRESET) {
       toast('Configura CLOUD_NAME e UPLOAD_PRESET no admin.js', 'error');
       return null;
     }
-    // Soft client-side guard: warn on very large originals (delivery still optimizes)
-    if (file.size > 8 * 1024 * 1024) {
-      toast('Imagem grande (>8MB). Será optimizada no site; preferir JPEG/WebP ≤4MB.', 'error');
+
+    const isVideo =
+      (file.type && file.type.startsWith('video/')) ||
+      /\.(mp4|webm|mov)$/i.test(file.name || '');
+    const isImage =
+      (file.type && file.type.startsWith('image/')) ||
+      /\.(jpe?g|png|gif|webp|avif)$/i.test(file.name || '');
+
+    if (!isVideo && !isImage) {
+      toast('Tipo não suportado: ' + (file.type || file.name), 'error');
+      return null;
     }
+
+    if (isImage && file.size > 8 * 1024 * 1024) {
+      toast('Imagem grande (>8MB). Preferir JPEG/WebP ≤4MB.', 'error');
+    }
+    if (isVideo && file.size > 40 * 1024 * 1024) {
+      toast('Vídeo grande (>40MB). Pode falhar ou demorar muito.', 'error');
+    }
+
+    const resourceType = isVideo ? 'video' : 'image';
     const fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', UPLOAD_PRESET);
     fd.append('folder', CLOUD_FOLDER + '/media');
-    // Best-effort: many unsigned presets accept these; ignored if preset disallows
-    fd.append('quality', 'auto:good');
+    if (!isVideo) fd.append('quality', 'auto:good');
 
-    toast('A carregar…');
+    toast(isVideo ? 'A carregar vídeo…' : 'A carregar imagem…');
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-        method: 'POST',
-        body: fd
-      });
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`,
+        { method: 'POST', body: fd }
+      );
       const data = await res.json();
       if (!res.ok) {
-        toast(data.error?.message || 'Falha no upload', 'error');
+        const msg = data.error?.message || 'Falha no upload';
+        if (isVideo) {
+          toast(msg + ' — confirma que o preset wakanda_unsigned aceita vídeo no Cloudinary.', 'error');
+        } else {
+          toast(msg, 'error');
+        }
         return null;
       }
-      // Store canonical secure_url; public site applies f_auto/q_auto/c_limit on delivery
-      return data.secure_url || data.url;
+      const url = data.secure_url || data.url;
+      if (!url) {
+        toast('Upload sem URL', 'error');
+        return null;
+      }
+      return {
+        url,
+        publicId: data.public_id || '',
+        resourceType: data.resource_type || resourceType
+      };
     } catch (e) {
       toast('Erro de rede no upload', 'error');
       return null;
@@ -579,16 +705,23 @@
   }
 
   async function onMediaFiles(files) {
+    let added = 0;
     for (const file of files) {
-      if (!file.type.startsWith('image/')) continue;
-      const url = await uploadToCloudinary(file);
-      if (url) {
-        mediaLibrary.unshift({ url, name: file.name, at: new Date().toISOString() });
+      const result = await uploadToCloudinary(file);
+      if (result) {
+        mediaLibrary.unshift({
+          url: result.url,
+          publicId: result.publicId,
+          resourceType: result.resourceType,
+          name: file.name,
+          at: new Date().toISOString()
+        });
         localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+        added++;
       }
     }
     renderMedia();
-    toast('Média actualizada', 'success');
+    if (added) toast(added + ' ficheiro(s) na biblioteca', 'success');
   }
 
   // ---------- Site image slots ----------
@@ -624,10 +757,20 @@
           const file = input.files?.[0];
           input.value = '';
           if (!file) return;
-          const url = await uploadToCloudinary(file);
-          if (url) {
-            siteImages[key] = url;
-            mediaLibrary.unshift({ url, name: file.name, at: new Date().toISOString() });
+          if (file.type && file.type.startsWith('video/')) {
+            toast('Slots do site são só imagem — usa a biblioteca de média para vídeos', 'error');
+            return;
+          }
+          const result = await uploadToCloudinary(file);
+          if (result) {
+            siteImages[key] = result.url;
+            mediaLibrary.unshift({
+              url: result.url,
+              publicId: result.publicId,
+              resourceType: result.resourceType,
+              name: file.name,
+              at: new Date().toISOString()
+            });
             localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
             saveDrafts();
             renderSlots();

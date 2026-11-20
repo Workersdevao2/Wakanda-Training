@@ -88,6 +88,10 @@ Full detail: **BLUEPRINT.md**.
 | Cloudinary cloud | `ogtzpc3v` |
 | Unsigned media preset | `wakanda_unsigned` (folder `wakanda-training/media`) |
 
+### Media CMS (planned / Phase 1 next)
+
+See **`HANDOFF-MEDIA-CMS.md`** for the full build contract (upload/delete images + videos, Cloudinary destroy, hero, dynamic section slots). Another engineer or AI can continue from that file without this chat.
+
 ### Staff workflow
 
 1. Open `/admin.html` → password (show/hide toggle on the field)  

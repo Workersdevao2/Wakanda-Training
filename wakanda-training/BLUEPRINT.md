@@ -95,3 +95,12 @@ Layout: left sidebar (desktop), bottom icons (mobile).
 - Unsigned preset cannot list or delete assets; cannot touch catalog.
 - Change default admin password after go-live.
 - Optional: Cloudflare Access in front of `/admin.html`.
+
+## Media CMS (in progress)
+
+Full plan + Phase 1 build contract: **`HANDOFF-MEDIA-CMS.md`**.
+
+- Phase 1: image **and** video upload to media library; Cloudinary **destroy** via Worker `POST /media/delete`; clear draft refs; staff must **Publicar** after delete.
+- Phase 2: home hero managed from admin (strict V-I-V-I).
+- Phase 3: dynamic sections (create modalities/coaches/etc. from admin).
+- Phase 4: remaining fixed image slots.

@@ -378,14 +378,72 @@ function addTshirt(colorKey, baseName, price) {
    HERO MEDIA SLIDER (photos + videos alternating)
    ===================================================== */
 function initHeroSlider() {
-  const slides = document.querySelectorAll('.hero-slide');
+  const mediaRoot = document.getElementById('hero-media');
+  const allSlides = Array.from(document.querySelectorAll('.hero-slide'));
   const dotsContainer = document.getElementById('hero-dots');
-  if (!slides.length) return;
+  if (!allSlides.length || !mediaRoot) return;
 
+  // Random strict V-I-V-I sequence (always starts with video, pure alternation)
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  const videoPool = allSlides.filter(s => s.getAttribute('data-type') === 'video');
+  const photoPool = allSlides.filter(s => s.getAttribute('data-type') === 'photo');
+  const pairCount = Math.min(videoPool.length, photoPool.length);
+
+  const videos = shuffle(videoPool).slice(0, pairCount);
+  const photos = shuffle(photoPool).slice(0, pairCount);
+
+  const ordered = [];
+  for (let i = 0; i < pairCount; i++) {
+    ordered.push(videos[i], photos[i]);
+  }
+
+  // Hide unused slides (extra videos beyond pairCount)
+  allSlides.forEach(s => {
+    if (!ordered.includes(s)) {
+      s.classList.remove('active');
+      s.style.display = 'none';
+      s.setAttribute('aria-hidden', 'true');
+    } else {
+      s.style.display = '';
+      s.removeAttribute('aria-hidden');
+    }
+  });
+
+  // Re-append in alternating order so DOM matches sequence
+  const overlay = mediaRoot.querySelector('.hero-overlay');
+  ordered.forEach(s => mediaRoot.appendChild(s));
+  if (overlay) mediaRoot.appendChild(overlay);
+
+  // Blurred cover fill behind photo slides (no crop on the main image)
+  ordered.forEach(slide => {
+    if (slide.getAttribute('data-type') !== 'photo') return;
+    if (slide.querySelector('.hero-slide-blur')) return;
+    const main = slide.querySelector('img');
+    if (!main || !main.src) return;
+    const blur = main.cloneNode(false);
+    blur.className = 'hero-slide-blur';
+    blur.removeAttribute('loading');
+    blur.removeAttribute('decoding');
+    blur.setAttribute('aria-hidden', 'true');
+    blur.alt = '';
+    slide.insertBefore(blur, main);
+  });
+
+  const slides = ordered;
   let current = 0;
   let timer = null;
   let onEndedHandler = null;
   const PHOTO_MS = 5000;
+
+  slides.forEach((s, i) => s.classList.toggle('active', i === 0));
 
   if (dotsContainer) {
     dotsContainer.innerHTML = '';
@@ -437,7 +495,6 @@ function initHeroSlider() {
     if (!v) return;
     forceMuteInline(v);
     v.loop = false;
-    // Only fetch media for the active slide
     if (v.getAttribute('preload') !== 'auto') {
       v.setAttribute('preload', 'auto');
     }
@@ -446,7 +503,6 @@ function initHeroSlider() {
       const p = v.play();
       if (p && typeof p.then === 'function') {
         p.catch(() => {
-          // Safari may block until a user gesture, retry on first interaction
           const resume = () => {
             forceMuteInline(v);
             v.play().catch(() => {});
@@ -458,7 +514,6 @@ function initHeroSlider() {
         });
       }
     };
-    // If metadata not ready yet, wait then play (helps Safari)
     if (v.readyState >= 2) {
       tryPlay();
     } else {
@@ -500,16 +555,13 @@ function initHeroSlider() {
     const video = slide.querySelector('video');
 
     if (video) {
-      // Advance only when the video finishes playing
       onEndedHandler = () => next();
       video.addEventListener('ended', onEndedHandler);
-      // Fallback if metadata fails or video never fires ended (e.g. missing file)
       const fallbackMs = (video.duration && isFinite(video.duration))
         ? (video.duration * 1000) + 500
         : 20000;
       timer = setTimeout(next, fallbackMs);
     } else {
-      // Photos stay for a fixed time
       timer = setTimeout(next, PHOTO_MS);
     }
   }

@@ -692,6 +692,8 @@ a.card-overlay:hover .card-img {
   opacity: 0;
   transition: opacity 1.1s ease;
   pointer-events: none;
+  background: #0a0a0a;
+  overflow: hidden;
 }
 
 .hero-slide.active {
@@ -708,11 +710,28 @@ a.card-overlay:hover .card-img {
   display: block;
 }
 
-/* Full poster visible (events / graphics) — no crop */
-.hero-slide[data-type="photo"] img {
+/* Blurred fill behind contain media (injected by JS for photos) */
+.hero-slide-blur {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: blur(28px) saturate(1.1);
+  transform: scale(1.12);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Full poster visible — no crop; sits above blur layer */
+.hero-slide[data-type="photo"] img:not(.hero-slide-blur) {
+  position: relative;
+  z-index: 1;
   object-fit: contain;
   object-position: center center;
-  background: #0a0a0a;
+  background: transparent;
 }
 
 .hero-overlay {
@@ -790,9 +809,13 @@ a.card-overlay:hover .card-img {
   .hero {
     min-height: 85vh;
   }
-  .hero-slide img,
+  /* Videos: show full frame on mobile (letterbox); photos already contain */
   .hero-slide video {
-    object-position: center 20%;
+    object-fit: contain;
+    object-position: center center;
+  }
+  .hero-slide img:not(.hero-slide-blur) {
+    object-position: center center;
   }
   .hero-overlay {
     background: linear-gradient(

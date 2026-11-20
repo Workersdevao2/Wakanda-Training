@@ -10,6 +10,7 @@
  * GET  /members              — admin password → list members
  * POST /members              — admin password + member → create/update
  * POST /members/delete       — admin password + id → delete
+ * POST /media/delete         — admin password + publicId + resourceType → Cloudinary destroy
  * GET  /health
  *
  * Secrets: ADMIN_PASSWORD, CLOUDINARY_*
@@ -80,6 +81,10 @@ export default {
 
       if (request.method === 'POST' && path === '/members/delete') {
         return handleDeleteMember(request, env);
+      }
+
+      if (request.method === 'POST' && path === '/media/delete') {
+        return handleMediaDelete(request, env);
       }
 
       return json({ error: 'Not found' }, 404);
@@ -372,6 +377,77 @@ async function handleDeleteMember(request, env) {
 
   await env.SUBMISSIONS.delete(id);
   return json({ ok: true, id, deleted: true });
+}
+
+/* ---------- Media delete (Cloudinary destroy) ---------- */
+async function handleMediaDelete(request, env) {
+  try {
+    const body = await request.json().catch(() => null);
+    if (!body) return json({ error: 'Invalid body' }, 400);
+
+    const auth = checkPassword(env, (body.password || '').trim());
+    if (!auth.ok) return json({ error: auth.error }, auth.status);
+
+    let publicId = String(body.publicId || body.public_id || '').trim();
+    if (!publicId || publicId.length > 500) {
+      return json({ error: 'Missing or invalid publicId' }, 400);
+    }
+    // Reject path tricks / empty segments
+    if (publicId.includes('..') || publicId.startsWith('/')) {
+      return json({ error: 'Invalid publicId' }, 400);
+    }
+
+    let resourceType = String(body.resourceType || body.resource_type || 'image').trim().toLowerCase();
+    if (resourceType !== 'image' && resourceType !== 'video' && resourceType !== 'raw') {
+      resourceType = 'image';
+    }
+
+    const cloudName = env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = env.CLOUDINARY_API_KEY;
+    const apiSecret = env.CLOUDINARY_API_SECRET;
+    if (!cloudName || !apiKey || !apiSecret) {
+      return json({ error: 'Server misconfigured: Cloudinary secrets missing' }, 500);
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    const paramsToSign = {
+      public_id: publicId,
+      timestamp: String(timestamp)
+    };
+    const signature = await signParams(paramsToSign, apiSecret);
+
+    const form = new FormData();
+    form.append('public_id', publicId);
+    form.append('api_key', apiKey);
+    form.append('timestamp', String(timestamp));
+    form.append('signature', signature);
+
+    const destroyUrl = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/destroy`;
+    const res = await fetch(destroyUrl, { method: 'POST', body: form });
+    const data = await res.json().catch(() => ({}));
+
+    // Cloudinary returns { result: 'ok' } or { result: 'not found' }
+    if (!res.ok) {
+      const detail = data.error?.message || data.message || JSON.stringify(data);
+      return json({ error: 'Cloudinary destroy failed: ' + detail, detail }, 502);
+    }
+
+    const result = data.result || 'ok';
+    if (result !== 'ok' && result !== 'not found') {
+      return json({ error: 'Cloudinary destroy unexpected result: ' + result, data }, 502);
+    }
+
+    return json({
+      ok: true,
+      publicId,
+      resourceType,
+      result,
+      deleted: result === 'ok'
+    });
+  } catch (err) {
+    console.error(err);
+    return json({ error: err.message || 'Media delete failed' }, 500);
+  }
 }
 
 /* ---------- Public catalog (KV — avoids Cloudinary raw CDN cache) ---------- */
