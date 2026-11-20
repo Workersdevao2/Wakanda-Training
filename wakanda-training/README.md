@@ -168,13 +168,14 @@ Notable:
 1. `hero-1.mp4`  
 2. `hero-2.jpg`  
 3. `hero-3.mp4`  
-4. `hero-4.jpg`  
-5. `hero-5.mp4` (manual upload)  
+4. `hero-11.jpg`  
+5. `hero-5.mp4`  
 6. `hero-6.jpg`  
 7. `hero-7.mp4`  
-8. `hero-8.mp4` — Judo / BJJ training  
-9. `hero-9.mp4` — Corporate / team activation  
-10. `hero-10.mp4`  
+8. `hero-12.jpg`  
+9. `hero-8.mp4` — Judo / BJJ training  
+10. `hero-9.mp4` — Corporate / team activation  
+11. `hero-10.mp4`  
 
 ## Folder map (what to edit where)
 
