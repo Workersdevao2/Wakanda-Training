@@ -1078,7 +1078,8 @@ async function initCatalogAndShop() {
     zones: (window.WT_DEFAULTS && window.WT_DEFAULTS.zones) || window.DELIVERY_ZONES || [],
     texts: (window.WT_DEFAULTS && window.WT_DEFAULTS.texts) || { pt: {}, en: {} },
     images: (window.WT_DEFAULTS && window.WT_DEFAULTS.images) || {},
-    hero: null
+    hero: null,
+    sections: null
   };
 
   // Drafts (same browser as admin)
@@ -1088,11 +1089,13 @@ async function initCatalogAndShop() {
     const dt = localStorage.getItem('wt_texts_override');
     const di = localStorage.getItem('wt_images_override');
     const dh = localStorage.getItem('wt_hero_override');
+    const ds = localStorage.getItem('wt_sections_override');
     if (dp) catalog.products = JSON.parse(dp);
     if (dz) catalog.zones = JSON.parse(dz);
     if (dt) catalog.texts = JSON.parse(dt);
     if (di) catalog.images = { ...catalog.images, ...JSON.parse(di) };
     if (dh) catalog.hero = JSON.parse(dh);
+    if (ds) catalog.sections = JSON.parse(ds);
   } catch (_) {}
 
   // Order: Worker (fresh) → last publish URL → Cloudinary v1 → unversioned (often stale)
@@ -1127,6 +1130,9 @@ async function initCatalogAndShop() {
       if (!localStorage.getItem('wt_hero_override') && Array.isArray(remote.hero)) {
         catalog.hero = remote.hero;
       }
+      if (!localStorage.getItem('wt_sections_override') && remote.sections) {
+        catalog.sections = remote.sections;
+      }
       catalog.updatedAt = remote.updatedAt;
       break;
     } catch (_) {
@@ -1143,6 +1149,87 @@ async function initCatalogAndShop() {
   if (Array.isArray(catalog.hero) && catalog.hero.length) {
     applyCatalogHero(catalog.hero);
   }
+  applyHomeModalities(catalog.sections);
+  applyCoaches(catalog.sections);
+}
+
+/** Render home modalities from catalog.sections.home_modalities; else keep static HTML. */
+function applyHomeModalities(sections) {
+  const dynamic = document.getElementById('home-modalities-dynamic');
+  const staticEl = document.getElementById('home-modalities-static');
+  if (!dynamic || !staticEl) return;
+
+  const items = sections && Array.isArray(sections.home_modalities)
+    ? sections.home_modalities.slice().sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
+
+  if (!items.length) {
+    dynamic.hidden = true;
+    dynamic.innerHTML = '';
+    staticEl.hidden = false;
+    return;
+  }
+
+  dynamic.innerHTML = items.map((m) => {
+    const href = (m.href || 'pages/modalidades.html').replace(/"/g, '');
+    const title = (m.title || '').replace(/</g, '&lt;');
+    const sub = (m.subtitle || '').replace(/</g, '&lt;');
+    const img = (m.image || '').replace(/"/g, '');
+    const alt = title || 'Modalidade';
+    return (
+      '<a href="' + href + '" class="card card-overlay">' +
+        (img
+          ? '<img src="' + img + '" alt="' + alt + '" class="card-img" loading="lazy" decoding="async" />'
+          : '<div class="card-img" style="background:#1a1a1a;min-height:180px;"></div>') +
+        '<div class="card-overlay-content">' +
+          '<h3>' + title + '</h3>' +
+          (sub ? '<p>' + sub + '</p>' : '') +
+        '</div>' +
+      '</a>'
+    );
+  }).join('');
+
+  dynamic.hidden = false;
+  staticEl.hidden = true;
+}
+
+/** Render coaches on Sobre Nós from catalog.sections.coaches; else keep static HTML. */
+function applyCoaches(sections) {
+  const dynamic = document.getElementById('coaches-dynamic');
+  const staticEl = document.getElementById('coaches-static');
+  if (!dynamic || !staticEl) return;
+
+  const items = sections && Array.isArray(sections.coaches)
+    ? sections.coaches.slice().sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
+
+  if (!items.length) {
+    dynamic.hidden = true;
+    dynamic.innerHTML = '';
+    staticEl.hidden = false;
+    return;
+  }
+
+  dynamic.innerHTML = items.map((c) => {
+    const name = (c.name || '').replace(/</g, '&lt;');
+    const role = (c.role || '').replace(/</g, '&lt;');
+    const img = (c.image || '').replace(/"/g, '');
+    const alt = name || 'Coach Wakanda Training';
+    return (
+      '<div class="card" style="overflow: hidden;">' +
+        (img
+          ? '<img src="' + img + '" alt="' + alt + '" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top;" loading="lazy" decoding="async" />'
+          : '<div style="width:100%;aspect-ratio:3/4;background:#1a1a1a;"></div>') +
+        '<div class="card-body" style="text-align: center;">' +
+          '<h3 style="font-size: 1rem; margin-bottom: 0.2rem;">' + name + '</h3>' +
+          (role ? '<p style="font-size: 0.85rem; color: var(--text-muted);">' + role + '</p>' : '') +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  dynamic.hidden = false;
+  staticEl.hidden = true;
 }
 
 function applySiteImages(images) {

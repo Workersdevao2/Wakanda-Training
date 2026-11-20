@@ -22,6 +22,7 @@
   const DRAFT_TEXTS = 'wt_texts_override';
   const DRAFT_IMAGES = 'wt_images_override';
   const DRAFT_HERO = 'wt_hero_override';
+  const DRAFT_SECTIONS = 'wt_sections_override';
   const MEDIA_LIB = 'wt_media_library';
 
   // Default admin password — CHANGE after handoff (or use Worker secret only)
@@ -67,6 +68,9 @@
   let siteImages = {};
   let mediaLibrary = [];
   let heroSlides = []; // [{ type:'photo', url, publicId?, alt? }]
+  let sections = { home_modalities: [], coaches: [] }; // Phase 3
+  let pickingModIndex = null; // media pick target for modality image
+  let pickingCoachIndex = null;
   let editingId = null;
   let pickingSlot = null; // when choosing media for a site slot
   let submissions = [];
@@ -162,12 +166,14 @@
       const t = localStorage.getItem(DRAFT_TEXTS);
       const i = localStorage.getItem(DRAFT_IMAGES);
       const h = localStorage.getItem(DRAFT_HERO);
+      const s = localStorage.getItem(DRAFT_SECTIONS);
       const m = localStorage.getItem(MEDIA_LIB);
       if (p) products = JSON.parse(p);
       if (z) zones = JSON.parse(z);
       if (t) texts = JSON.parse(t);
       if (i) siteImages = JSON.parse(i);
       if (h) heroSlides = JSON.parse(h);
+      if (s) sections = JSON.parse(s);
       if (m) mediaLibrary = JSON.parse(m);
     } catch (e) {
       console.warn('Draft load error', e);
@@ -223,6 +229,9 @@
         if (!localStorage.getItem(DRAFT_HERO) && Array.isArray(data.hero)) {
           heroSlides = data.hero;
         }
+        if (!localStorage.getItem(DRAFT_SECTIONS) && data.sections) {
+          sections = data.sections;
+        }
         updateStatus(data.updatedAt || 'remoto');
         return true;
       } catch (_) {
@@ -238,6 +247,7 @@
     localStorage.setItem(DRAFT_TEXTS, JSON.stringify(texts));
     localStorage.setItem(DRAFT_IMAGES, JSON.stringify(siteImages));
     localStorage.setItem(DRAFT_HERO, JSON.stringify(heroSlides));
+    localStorage.setItem(DRAFT_SECTIONS, JSON.stringify(sections));
     localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
     toast('Rascunho guardado neste dispositivo', 'success');
     updateStatus('rascunho local');
@@ -533,6 +543,24 @@
           addHeroFromUrl(url, item.publicId || '', item.name || '');
           pickingSlot = null;
           switchPanel('hero');
+        } else if (pickingModIndex !== null && pickingModIndex !== undefined) {
+          const mods = ensureMods();
+          if (mods[pickingModIndex]) {
+            mods[pickingModIndex].image = url;
+            renderSections();
+            toast('Imagem da modalidade actualizada', 'success');
+          }
+          pickingModIndex = null;
+          switchPanel('sections');
+        } else if (pickingCoachIndex !== null && pickingCoachIndex !== undefined) {
+          const coaches = ensureCoaches();
+          if (coaches[pickingCoachIndex]) {
+            coaches[pickingCoachIndex].image = url;
+            renderCoaches();
+            toast('Imagem do coach actualizada', 'success');
+          }
+          pickingCoachIndex = null;
+          switchPanel('sections');
         } else if (pickingSlot) {
           siteImages[pickingSlot] = url;
           pickingSlot = null;
@@ -577,6 +605,20 @@
     const before = heroSlides.length;
     heroSlides = heroSlides.filter((s) => s && s.url !== url);
     n += before - heroSlides.length;
+    const mods = sections.home_modalities || [];
+    mods.forEach((m) => {
+      if (m && m.image === url) {
+        m.image = '';
+        n++;
+      }
+    });
+    const coaches = sections.coaches || [];
+    coaches.forEach((c) => {
+      if (c && c.image === url) {
+        c.image = '';
+        n++;
+      }
+    });
     return n;
   }
 
@@ -627,6 +669,8 @@
     saveDrafts();
     renderMedia();
     renderHero();
+    renderSections();
+    renderCoaches();
     renderSlots();
     renderProducts?.();
     toast(
@@ -781,6 +825,259 @@
     toast('Slide adicionado ao hero', 'success');
   }
 
+  // ---------- Sections: home_modalities + coaches ----------
+  function ensureSectionsRoot() {
+    if (!sections || typeof sections !== 'object') {
+      sections = { home_modalities: [], coaches: [] };
+    }
+    if (!Array.isArray(sections.home_modalities)) sections.home_modalities = [];
+    if (!Array.isArray(sections.coaches)) sections.coaches = [];
+    return sections;
+  }
+
+  function ensureMods() {
+    return ensureSectionsRoot().home_modalities;
+  }
+
+  function ensureCoaches() {
+    return ensureSectionsRoot().coaches;
+  }
+
+  function newModId() {
+    return 'mod_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function newCoachId() {
+    return 'coach_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function renderSections() {
+    const list = $('#mod-list');
+    if (!list) return;
+    const mods = ensureMods();
+    if (!mods.length) {
+      list.innerHTML = '<p class="text-muted">Nenhuma modalidade configurada. O site mantém o HTML estático até publicares uma lista.</p>';
+      return;
+    }
+    // keep order field in sync with array index
+    mods.forEach((m, i) => { m.order = i; });
+    list.innerHTML = mods.map((m, i) => `
+      <div class="hero-admin-item" data-mod="${i}" style="align-items:flex-start;">
+        <div style="width:72px;flex-shrink:0;">
+          ${m.image
+            ? `<img src="${esc(m.image)}" alt="" loading="lazy" style="width:72px;height:48px;object-fit:cover;border-radius:4px;" />`
+            : `<div class="slot-placeholder" style="width:72px;height:48px;font-size:0.65rem;">Sem img</div>`}
+          <div style="display:flex;gap:0.2rem;margin-top:0.25rem;">
+            <button type="button" class="btn btn-sm btn-ghost" data-mod-img-up="${i}" title="Upload">↑</button>
+            <button type="button" class="btn btn-sm btn-ghost" data-mod-img-lib="${i}" title="Biblioteca">▣</button>
+          </div>
+        </div>
+        <div class="hero-admin-meta">
+          <input type="text" data-mod-title="${i}" value="${esc(m.title || '')}" placeholder="Título" />
+          <input type="text" data-mod-sub="${i}" value="${esc(m.subtitle || '')}" placeholder="Subtítulo" />
+          <input type="text" data-mod-href="${i}" value="${esc(m.href || '')}" placeholder="Link (ex: pages/modalidades.html#crossfit)" />
+        </div>
+        <div class="hero-admin-actions">
+          <button type="button" class="btn btn-sm btn-ghost" data-mod-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-mod-down="${i}" ${i === mods.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="btn btn-sm btn-danger" data-mod-rm="${i}">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    const bindInput = (sel, field) => {
+      $$(sel).forEach((input) => {
+        input.addEventListener('change', () => {
+          const i = +input.dataset[field === 'title' ? 'modTitle' : field === 'subtitle' ? 'modSub' : 'modHref'];
+          if (mods[i]) mods[i][field] = input.value.trim();
+        });
+      });
+    };
+    // dataset keys are camelCased from data-mod-title → modTitle
+    $$('[data-mod-title]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.modTitle;
+        if (mods[i]) mods[i].title = input.value.trim();
+      });
+    });
+    $$('[data-mod-sub]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.modSub;
+        if (mods[i]) mods[i].subtitle = input.value.trim();
+      });
+    });
+    $$('[data-mod-href]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.modHref;
+        if (mods[i]) mods[i].href = input.value.trim();
+      });
+    });
+    $$('[data-mod-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.modUp;
+        if (i <= 0) return;
+        const t = mods[i - 1]; mods[i - 1] = mods[i]; mods[i] = t;
+        renderSections();
+      });
+    });
+    $$('[data-mod-down]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.modDown;
+        if (i >= mods.length - 1) return;
+        const t = mods[i + 1]; mods[i + 1] = mods[i]; mods[i] = t;
+        renderSections();
+      });
+    });
+    $$('[data-mod-rm]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        mods.splice(+btn.dataset.modRm, 1);
+        renderSections();
+        toast('Modalidade removida do rascunho');
+      });
+    });
+    $$('[data-mod-img-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.modImgUp;
+        const input = $('#mod-file-input');
+        if (!input) return;
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          input.value = '';
+          if (!file) return;
+          const result = await uploadToCloudinary(file);
+          if (result && mods[i]) {
+            mods[i].image = result.url;
+            mediaLibrary.unshift({
+              url: result.url,
+              publicId: result.publicId,
+              resourceType: result.resourceType,
+              name: file.name,
+              at: new Date().toISOString()
+            });
+            localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+            renderMedia();
+            renderSections();
+            toast('Imagem da modalidade actualizada', 'success');
+          }
+        };
+        input.click();
+      });
+    });
+    $$('[data-mod-img-lib]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pickingModIndex = +btn.dataset.modImgLib;
+        pickingCoachIndex = null;
+        switchPanel('media');
+        toast('Escolhe uma imagem da biblioteca (botão Usar)');
+      });
+    });
+  }
+
+  function renderCoaches() {
+    const list = $('#coach-list');
+    if (!list) return;
+    const coaches = ensureCoaches();
+    if (!coaches.length) {
+      list.innerHTML = '<p class="text-muted">Nenhum coach configurado. A página Sobre Nós mantém o HTML estático até publicares uma lista.</p>';
+      return;
+    }
+    coaches.forEach((c, i) => { c.order = i; });
+    list.innerHTML = coaches.map((c, i) => `
+      <div class="hero-admin-item" data-coach="${i}" style="align-items:flex-start;">
+        <div style="width:72px;flex-shrink:0;">
+          ${c.image
+            ? `<img src="${esc(c.image)}" alt="" loading="lazy" style="width:72px;height:48px;object-fit:cover;border-radius:4px;" />`
+            : `<div class="slot-placeholder" style="width:72px;height:48px;font-size:0.65rem;">Sem img</div>`}
+          <div style="display:flex;gap:0.2rem;margin-top:0.25rem;">
+            <button type="button" class="btn btn-sm btn-ghost" data-coach-img-up="${i}" title="Upload">↑</button>
+            <button type="button" class="btn btn-sm btn-ghost" data-coach-img-lib="${i}" title="Biblioteca">▣</button>
+          </div>
+        </div>
+        <div class="hero-admin-meta">
+          <input type="text" data-coach-name="${i}" value="${esc(c.name || '')}" placeholder="Nome" />
+          <input type="text" data-coach-role="${i}" value="${esc(c.role || '')}" placeholder="Função (ex: Head Coach)" />
+        </div>
+        <div class="hero-admin-actions">
+          <button type="button" class="btn btn-sm btn-ghost" data-coach-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-coach-down="${i}" ${i === coaches.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="btn btn-sm btn-danger" data-coach-rm="${i}">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    $$('[data-coach-name]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.coachName;
+        if (coaches[i]) coaches[i].name = input.value.trim();
+      });
+    });
+    $$('[data-coach-role]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.coachRole;
+        if (coaches[i]) coaches[i].role = input.value.trim();
+      });
+    });
+    $$('[data-coach-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.coachUp;
+        if (i <= 0) return;
+        const t = coaches[i - 1]; coaches[i - 1] = coaches[i]; coaches[i] = t;
+        renderCoaches();
+      });
+    });
+    $$('[data-coach-down]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.coachDown;
+        if (i >= coaches.length - 1) return;
+        const t = coaches[i + 1]; coaches[i + 1] = coaches[i]; coaches[i] = t;
+        renderCoaches();
+      });
+    });
+    $$('[data-coach-rm]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        coaches.splice(+btn.dataset.coachRm, 1);
+        renderCoaches();
+        toast('Coach removido do rascunho');
+      });
+    });
+    $$('[data-coach-img-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.coachImgUp;
+        const input = $('#coach-file-input');
+        if (!input) return;
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          input.value = '';
+          if (!file) return;
+          const result = await uploadToCloudinary(file);
+          if (result && coaches[i]) {
+            coaches[i].image = result.url;
+            mediaLibrary.unshift({
+              url: result.url,
+              publicId: result.publicId,
+              resourceType: result.resourceType,
+              name: file.name,
+              at: new Date().toISOString()
+            });
+            localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+            renderMedia();
+            renderCoaches();
+            toast('Imagem do coach actualizada', 'success');
+          }
+        };
+        input.click();
+      });
+    });
+    $$('[data-coach-img-lib]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pickingCoachIndex = +btn.dataset.coachImgLib;
+        pickingModIndex = null;
+        switchPanel('media');
+        toast('Escolhe uma imagem da biblioteca (botão Usar)');
+      });
+    });
+  }
+
   // ---------- Site image slots ----------
   function renderSlots() {
     const grid = $('#slot-grid');
@@ -868,7 +1165,8 @@
       zones,
       texts,
       images: siteImages,
-      hero: heroSlides
+      hero: heroSlides,
+      sections
     };
 
     // Prefer Worker
@@ -895,6 +1193,7 @@
         localStorage.removeItem(DRAFT_TEXTS);
         localStorage.removeItem(DRAFT_IMAGES);
         localStorage.removeItem(DRAFT_HERO);
+        localStorage.removeItem(DRAFT_SECTIONS);
         if (data.url) {
           try { localStorage.setItem('wt_catalog_url', data.url); } catch (_) {}
         }
@@ -904,6 +1203,8 @@
         renderProducts();
         renderZones();
         renderHero();
+        renderSections();
+        renderCoaches();
         renderSlots();
         renderDashboard();
       } catch (e) {
@@ -1370,6 +1671,8 @@
     renderZones();
     renderMedia();
     renderHero();
+    renderSections();
+    renderCoaches();
     renderSlots();
     renderDashboard();
     loadInbox();
@@ -1448,6 +1751,31 @@
       pickingSlot = '__hero__';
       switchPanel('media');
       toast('Escolhe uma imagem da biblioteca (botão Usar)');
+    });
+
+    $('#btn-mod-add')?.addEventListener('click', () => {
+      ensureMods().push({
+        id: newModId(),
+        title: 'Nova modalidade',
+        subtitle: '',
+        image: '',
+        href: 'pages/modalidades.html',
+        order: ensureMods().length
+      });
+      renderSections();
+      toast('Modalidade adicionada — preenche os campos');
+    });
+
+    $('#btn-coach-add')?.addEventListener('click', () => {
+      ensureCoaches().push({
+        id: newCoachId(),
+        name: 'Novo coach',
+        role: 'Coach',
+        image: '',
+        order: ensureCoaches().length
+      });
+      renderCoaches();
+      toast('Coach adicionado — preenche os campos');
     });
 
     $('#btn-save-draft')?.addEventListener('click', saveDrafts);

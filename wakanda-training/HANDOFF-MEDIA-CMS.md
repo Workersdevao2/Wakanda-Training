@@ -1,11 +1,11 @@
 # Handoff: Media CMS — Admin upload / delete
 
-**Status:** Phase 1 **code complete** (image-only) · Video upload **deferred** · Phase 2 **code complete** (2026-11-20)  
+**Status:** Phase 1–2 done · Phase 3 `home_modalities` + `coaches` **code complete** (2026-11-20) · resultados/eventos not started · Video deferred  
 **Date:** 2026-11-20  
 **Project:** Wakanda Training static site + admin (`wakanda-training/`)  
 **Stack:** Pure HTML/CSS/JS · Cloudflare Pages · Worker `wakanda-publish` · Cloudinary `ogtzpc3v`
 
-Phase 1 (images + Cloudinary destroy) + Phase 2 (hero photos from admin) are in-repo. Next: Phase 3 or ops verification.
+Phase 1–2 + Phase 3 (`home_modalities`, `coaches`) in-repo. Next: resultados/eventos or ops verification.
 
 ---
 
@@ -39,7 +39,7 @@ Phase 1 (images + Cloudinary destroy) + Phase 2 (hero photos from admin) are in-
 - Delete (✕): calls Worker `POST /media/delete` → Cloudinary destroy; clears matching draft URLs.
 - Site slots: `SITE_IMAGE_SLOTS` + `siteImages` map → published as `catalog.images`.
 - Hero: still **hardcoded** slides in `index.html` (Phase 2 will make it catalog-driven).
-- Homepage modalities / many section images: **static HTML**, not catalog-driven (Phase 3).
+- Homepage modalities: catalog-driven when `sections.home_modalities` non-empty; static HTML fallback otherwise. Coaches/resultados/eventos still static.
 
 ### Cloudinary
 - Cloud name: `ogtzpc3v`
@@ -193,15 +193,23 @@ Deploy: `cd worker && npx wrangler deploy` after change.
 
 ---
 
-## Phase 3 — Dynamic sections / create new slots (NOT STARTED)
+## Phase 3 — Dynamic sections / create new slots
 
 Priority: `home_modalities` → `coaches` → `resultados` → `eventos`.
 
-For each section:
-1. Add `catalog.sections.<key>[]` with id, fields, order, image/video url.
-2. Admin CRUD + “Adicionar”.
-3. Public page: empty container `#…` + renderer in `main.js`; fallback to current hardcoded HTML if array missing/empty so first deploy is safe.
-4. Publish via existing catalog pipeline.
+### home_modalities — DONE (2026-11-20)
+- Catalog: `sections.home_modalities[]` = `{ id, title, subtitle, image, href, order }`
+- Admin: panel **Secções** — add / edit / reorder / delete / image from upload or library
+- Public: `#home-modalities-dynamic` filled when array non-empty; `#home-modalities-static` kept as fallback
+- Draft key: `wt_sections_override`
+
+### coaches — DONE (2026-11-20)
+- Catalog: `sections.coaches[]` = `{ id, name, role, image, order }`
+- Admin: same **Secções** panel — second list
+- Public (Sobre Nós): `#coaches-dynamic` / `#coaches-static` fallback
+
+### Remaining (not started)
+`resultados` · `eventos` — same pattern.
 
 ---
 

@@ -56,6 +56,7 @@
           <button type="button" class="admin-nav-item" data-panel="zones"><span class="admin-nav-icon">⇢</span><span class="admin-nav-label">Entrega</span></button>
           <button type="button" class="admin-nav-item" data-panel="media"><span class="admin-nav-icon">▣</span><span class="admin-nav-label">Média</span></button>
           <button type="button" class="admin-nav-item" data-panel="hero"><span class="admin-nav-icon">▶</span><span class="admin-nav-label">Hero</span></button>
+          <button type="button" class="admin-nav-item" data-panel="sections"><span class="admin-nav-icon">☰</span><span class="admin-nav-label">Secções</span></button>
           <button type="button" class="admin-nav-item" data-panel="images"><span class="admin-nav-icon">⬡</span><span class="admin-nav-label">Imagens site</span></button>
           <button type="button" class="admin-nav-item" data-panel="guide"><span class="admin-nav-icon">?</span><span class="admin-nav-label">Guia</span></button>
         </nav>
@@ -190,6 +191,30 @@
         Fotos do slider da home. Ordem = ordem no site. Lista vazia = usa os slides estáticos actuais. Guarda rascunho e <strong>Publicar na loja</strong> para o live.
       </p>
       <div id="hero-list" class="hero-admin-list"></div>
+    </section>
+
+    <!-- Dynamic sections -->
+    <section class="admin-panel" id="panel-sections">
+      <div class="admin-panel-header">
+        <h2>Secções</h2>
+      </div>
+      <p class="text-muted" style="margin-bottom:1rem;font-size:0.85rem;">
+        Listas vazias = o site mantém o HTML estático. Guarda rascunho e <strong>Publicar na loja</strong> para o live.
+      </p>
+
+      <h3 style="font-size:0.95rem;margin:1rem 0 0.5rem;">Modalidades (home)</h3>
+      <div style="margin-bottom:0.5rem;">
+        <button type="button" class="btn btn-solid btn-sm" id="btn-mod-add">Adicionar modalidade</button>
+      </div>
+      <input type="file" id="mod-file-input" class="sr-only" accept="image/*" />
+      <div id="mod-list" class="hero-admin-list"></div>
+
+      <h3 style="font-size:0.95rem;margin:1.5rem 0 0.5rem;">Coaches (Sobre Nós)</h3>
+      <div style="margin-bottom:0.5rem;">
+        <button type="button" class="btn btn-solid btn-sm" id="btn-coach-add">Adicionar coach</button>
+      </div>
+      <input type="file" id="coach-file-input" class="sr-only" accept="image/*" />
+      <div id="coach-list" class="hero-admin-list"></div>
     </section>
 
     <!-- Site images -->
