@@ -1350,28 +1350,70 @@ function applySiteImages(images) {
     return cloudinaryDeliveryUrl(absolute, maxW);
   }
 
+  const HIDDEN = '__hidden__';
+
+  function hideSiteEl(el) {
+    if (!el) return;
+    el.classList.add('site-img-hidden');
+    el.setAttribute('aria-hidden', 'true');
+    if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
+      el.removeAttribute('src');
+      el.style.display = 'none';
+    } else {
+      el.style.backgroundImage = 'none';
+      el.style.display = 'none';
+    }
+    const item = el.closest('.corp-gallery-item, .slot-ph-item, .contacto-espaco-img, .grid-2 > *');
+    // Prefer hiding the image itself; for gallery items hide the wrapper when present
+    const wrap = el.closest('.corp-gallery-item, .slot-ph-item');
+    if (wrap) {
+      wrap.classList.add('site-img-hidden');
+      wrap.style.display = 'none';
+    }
+  }
+
   document.querySelectorAll('[data-site-img]').forEach((el) => {
     const key = el.getAttribute('data-site-img');
+    if (!key || !Object.prototype.hasOwnProperty.call(images, key)) return;
+    const raw = images[key];
+    if (raw === HIDDEN || raw === '' || raw == null) {
+      hideSiteEl(el);
+      return;
+    }
     const maxW = Number(el.getAttribute('data-img-w')) || 1200;
-    const resolved = resolveSiteUrl(images[key], maxW);
+    const resolved = resolveSiteUrl(raw, maxW);
     if (!resolved) return;
     if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
+      el.style.display = '';
       el.src = resolved;
       el.removeAttribute('aria-hidden');
       el.classList.add('has-site-img');
+      el.classList.remove('site-img-hidden');
       const item = el.closest('.corp-gallery-item, .slot-ph-item');
-      if (item) item.classList.add('is-filled');
+      if (item) {
+        item.classList.add('is-filled');
+        item.classList.remove('site-img-hidden');
+        item.style.display = '';
+      }
     } else if (el.tagName === 'VIDEO') {
       el.poster = resolved;
     }
   });
   document.querySelectorAll('[data-site-img-bg]').forEach((el) => {
     const key = el.getAttribute('data-site-img-bg');
+    if (!key || !Object.prototype.hasOwnProperty.call(images, key)) return;
+    const raw = images[key];
+    if (raw === HIDDEN || raw === '' || raw == null) {
+      hideSiteEl(el);
+      return;
+    }
     const maxW = Number(el.getAttribute('data-img-w')) || 1920;
-    const resolved = resolveSiteUrl(images[key], maxW);
+    const resolved = resolveSiteUrl(raw, maxW);
     if (!resolved) return;
+    el.style.display = '';
     el.style.backgroundImage = `url('${resolved}')`;
     el.classList.add('has-site-img');
+    el.classList.remove('site-img-hidden');
   });
 }
 

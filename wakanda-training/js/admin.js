@@ -124,22 +124,47 @@
   }
 
   // ---------- Auth ----------
+  // AUTH_KEY alone is not enough — a stored API password is required (set only after Worker accepts it).
+  const PUBLISH_PWD_KEY = 'wt_publish_pwd';
+
+  function getAdminPassword() {
+    return (
+      sessionStorage.getItem(PUBLISH_PWD_KEY) ||
+      localStorage.getItem(PUBLISH_PWD_KEY) ||
+      ''
+    );
+  }
+
   function isAuthed() {
-    return sessionStorage.getItem(AUTH_KEY) === '1' || localStorage.getItem(AUTH_KEY) === '1';
+    const flag =
+      sessionStorage.getItem(AUTH_KEY) === '1' ||
+      localStorage.getItem(AUTH_KEY) === '1';
+    return flag && !!getAdminPassword();
   }
 
   function setAuthed(remember) {
     sessionStorage.setItem(AUTH_KEY, '1');
     if (remember) localStorage.setItem(AUTH_KEY, '1');
+    else localStorage.removeItem(AUTH_KEY);
   }
 
-  const PUBLISH_PWD_KEY = 'wt_publish_pwd';
-
-  function logout() {
+  function clearAuthFlags() {
     sessionStorage.removeItem(AUTH_KEY);
     localStorage.removeItem(AUTH_KEY);
+  }
+
+  function clearPublishPassword() {
     sessionStorage.removeItem(PUBLISH_PWD_KEY);
     localStorage.removeItem(PUBLISH_PWD_KEY);
+  }
+
+  function clearAllAuth() {
+    clearAuthFlags();
+    clearPublishPassword();
+  }
+
+  function logout() {
+    clearAllAuth();
     location.reload();
   }
 
@@ -150,39 +175,128 @@
     else localStorage.removeItem(PUBLISH_PWD_KEY);
   }
 
-  function clearPublishPassword() {
-    sessionStorage.removeItem(PUBLISH_PWD_KEY);
-    localStorage.removeItem(PUBLISH_PWD_KEY);
+  /** Worker rejected password — kick back to login (no stale session). */
+  function forceReLogin(message) {
+    clearAllAuth();
+    const shell = $('#admin-shell');
+    if (shell) {
+      shell.classList.remove('is-open');
+      shell.style.display = 'none';
+    }
+    const login = $('#admin-login');
+    if (login) {
+      login.classList.remove('hidden');
+      login.style.display = '';
+    }
+    const err = $('#login-error');
+    if (err && message) err.textContent = message;
+    toast(message || 'Sessão inválida — entra de novo', 'error');
   }
 
-  function tryLogin() {
+  /**
+   * Verify password with Worker (GET /submissions).
+   * Returns { ok: true } | { ok: false, reason: 'invalid'|'network'|'server' }
+   */
+  async function verifyPasswordWithWorker(pwd) {
+    try {
+      const res = await fetch(
+        API_BASE +
+          '/submissions?password=' +
+          encodeURIComponent(pwd) +
+          '&filter=all',
+        { cache: 'no-store' }
+      );
+      if (res.status === 401) return { ok: false, reason: 'invalid' };
+      if (!res.ok) return { ok: false, reason: 'server', status: res.status };
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, reason: 'network', error: e };
+    }
+  }
+
+  async function tryLogin() {
     const input = $('#login-password');
     const err = $('#login-error');
+    const btn = $('#login-form button[type="submit"]');
     const remember = $('#login-remember')?.checked;
     const pwd = (input?.value || '').trim();
+    if (err) err.textContent = '';
     if (!pwd) {
       if (err) err.textContent = 'Introduz a password.';
       return;
     }
-    // One password: unlocks the UI and the API (inbox, clients, publish)
-    if (pwd === LOCAL_FALLBACK_PASSWORD || pwd.length >= 6) {
-      setAuthed(remember);
-      setPublishPassword(pwd, remember);
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'A validar…';
+    }
+
+    const result = await verifyPasswordWithWorker(pwd);
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+
+    if (result.ok) {
+      setAuthed(!!remember);
+      setPublishPassword(pwd, !!remember);
       showShell();
       loadAll();
-    } else {
-      if (err) err.textContent = 'Password incorrecta.';
+      return;
     }
+
+    // Worker unreachable: allow exact local emergency password only (not any long string)
+    if (result.reason === 'network' || result.reason === 'server') {
+      if (pwd === LOCAL_FALLBACK_PASSWORD) {
+        setAuthed(!!remember);
+        setPublishPassword(pwd, !!remember);
+        showShell();
+        loadAll();
+        if (err) {
+          err.textContent =
+            'Servidor indisponível — sessão local de emergência. API (inbox/publicar) pode falhar.';
+        }
+        return;
+      }
+      if (err) {
+        err.textContent =
+          result.reason === 'network'
+            ? 'Sem ligação ao servidor. Tenta de novo.'
+            : 'Servidor indisponível. Tenta de novo.';
+      }
+      return;
+    }
+
+    // Invalid password
+    clearAllAuth();
+    if (err) err.textContent = 'Password incorrecta.';
   }
 
   function showShell() {
-    $('#admin-login')?.classList.add('hidden');
+    const login = $('#admin-login');
+    if (login) {
+      login.classList.add('hidden');
+      login.style.display = 'none';
+    }
     const shell = $('#admin-shell');
     if (shell) {
       shell.classList.add('is-open');
       shell.style.display = 'flex';
     }
-    $('#admin-login') && ($('#admin-login').style.display = 'none');
+  }
+
+  function showLoginOnly() {
+    const shell = $('#admin-shell');
+    if (shell) {
+      shell.classList.remove('is-open');
+      shell.style.display = 'none';
+    }
+    const login = $('#admin-login');
+    if (login) {
+      login.classList.remove('hidden');
+      login.style.display = '';
+    }
   }
 
   // ---------- Storage ----------
@@ -694,6 +808,10 @@
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
+          if (res.status === 401) {
+            forceReLogin('Password incorrecta — entra de novo.');
+            return;
+          }
           toast(data.error || 'Falha ao apagar na Cloudinary', 'error');
           return;
         }
@@ -1232,6 +1350,69 @@
     });
   }
 
+  // Sentinel: slot intentionally removed from public site (not the static HTML default)
+  const SLOT_HIDDEN = '__hidden__';
+
+  function isSlotHidden(val) {
+    return val === SLOT_HIDDEN || val === '';
+  }
+
+  // ---------- Confirm modal (replaces window.confirm) ----------
+  let _confirmResolve = null;
+
+  function closeConfirmModal() {
+    const modal = $('#confirm-modal');
+    if (modal) modal.classList.remove('open');
+    if (_confirmResolve) {
+      const r = _confirmResolve;
+      _confirmResolve = null;
+      r(false);
+    }
+  }
+
+  /**
+   * @param {string} title
+   * @param {string} bodyHtml
+   * @param {{ okLabel?: string, danger?: boolean }} [opts]
+   * @returns {Promise<boolean>}
+   */
+  function adminConfirm(title, bodyHtml, opts) {
+    const modal = $('#confirm-modal');
+    const titleEl = $('#confirm-title');
+    const bodyEl = $('#confirm-body');
+    const okBtn = $('#btn-confirm-ok');
+    if (!modal || !bodyEl) {
+      return Promise.resolve(window.confirm(title + '\n\n' + bodyEl?.textContent));
+    }
+    if (titleEl) titleEl.textContent = title || 'Confirmar';
+    bodyEl.innerHTML = bodyHtml || '';
+    if (okBtn) {
+      okBtn.textContent = (opts && opts.okLabel) || 'Confirmar';
+      okBtn.className = 'btn ' + ((opts && opts.danger) ? 'btn-danger' : 'btn-solid');
+    }
+    modal.classList.add('open');
+    return new Promise((resolve) => {
+      _confirmResolve = resolve;
+    });
+  }
+
+  function bindConfirmModal() {
+    $('#btn-confirm-cancel')?.addEventListener('click', closeConfirmModal);
+    $('#btn-confirm-close')?.addEventListener('click', closeConfirmModal);
+    $('#confirm-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'confirm-modal') closeConfirmModal();
+    });
+    $('#btn-confirm-ok')?.addEventListener('click', () => {
+      const modal = $('#confirm-modal');
+      if (modal) modal.classList.remove('open');
+      if (_confirmResolve) {
+        const r = _confirmResolve;
+        _confirmResolve = null;
+        r(true);
+      }
+    });
+  }
+
   // ---------- Site image slots (grouped by page) ----------
   function renderSlots() {
     const grid = $('#slot-grid');
@@ -1250,19 +1431,32 @@
 
     grid.innerHTML = groups.map((g) => {
       const cards = g.slots.map((slot) => {
-        const url = siteImages[slot.key] || '';
+        const raw = Object.prototype.hasOwnProperty.call(siteImages, slot.key)
+          ? siteImages[slot.key]
+          : null;
+        const hidden = raw !== null && isSlotHidden(raw);
+        const url = raw && !hidden ? raw : '';
+        const thumb = hidden
+          ? `<div class="slot-placeholder">Removida</div>`
+          : url
+            ? `<img src="${resolveImg(url)}" alt="" />`
+            : `<div class="slot-placeholder">Default do site</div>`;
+        const stateLine = hidden
+          ? `<p class="slot-state-hidden">Oculta no site público (após publicar)</p>`
+          : url
+            ? `<p>${esc(slot.hint)}<br>${esc(String(url).slice(0, 48))}…</p>`
+            : `<p>${esc(slot.hint)}<br><em>A usar a imagem original do HTML</em></p>`;
         return `
-          <div class="slot-card" data-slot="${slot.key}">
-            ${url
-              ? `<img src="${resolveImg(url)}" alt="" />`
-              : `<div class="slot-placeholder">Sem imagem</div>`}
+          <div class="slot-card${hidden ? ' is-hidden-slot' : ''}" data-slot="${slot.key}">
+            ${thumb}
             <div class="slot-info">
               <h3>${esc(slot.label)}</h3>
-              <p>${esc(slot.hint)}${url ? '<br>' + esc(url.slice(0, 48)) + '…' : ''}</p>
+              ${stateLine}
               <div class="slot-actions">
                 <button type="button" class="btn btn-sm btn-ghost" data-slot-upload="${slot.key}">Carregar</button>
                 <button type="button" class="btn btn-sm btn-ghost" data-slot-pick="${slot.key}">Da média</button>
-                <button type="button" class="btn btn-sm btn-danger" data-slot-clear="${slot.key}">Original</button>
+                <button type="button" class="btn btn-sm btn-ghost" data-slot-clear="${slot.key}" title="Voltar à imagem original do HTML">Original</button>
+                <button type="button" class="btn btn-sm btn-danger" data-slot-hide="${slot.key}" title="Ocultar no site público">Remover</button>
               </div>
             </div>
           </div>`;
@@ -1270,7 +1464,7 @@
       return `
         <div class="slot-page-group" data-page="${esc(g.page)}">
           <h3 class="slot-page-title">${esc(g.page)}</h3>
-          <p class="slot-page-hint">Imagens desta página — carregar, escolher da média ou repor original.</p>
+          <p class="slot-page-hint">Carregar / da média · <strong>Original</strong> = default do HTML · <strong>Remover</strong> = ocultar no site (publicar a seguir).</p>
           <div class="slot-page-grid">${cards}</div>
         </div>`;
     }).join('');
@@ -1316,21 +1510,42 @@
         delete siteImages[btn.dataset.slotClear];
         saveDrafts();
         renderSlots();
-        toast('Slot reposto (usa default do site)');
+        toast('Slot reposto (imagem original do HTML)');
+      });
+    });
+    $$('[data-slot-hide]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.slotHide;
+        siteImages[key] = SLOT_HIDDEN;
+        saveDrafts();
+        renderSlots();
+        toast('Imagem marcada para remover do site — publique para aplicar', 'success');
       });
     });
   }
 
   // ---------- Publish ----------
   async function publish() {
-    if (!confirm(
-      'Publicar na loja?\n\n' +
-      `Produtos: ${products.length}\n` +
-      `Zonas: ${zones.length}\n` +
-      `Imagens de site: ${Object.keys(siteImages).length}\n` +
-      `Hero slides: ${heroSlides.length}\n\n` +
-      'Todos os visitantes verão estes dados no próximo carregamento.'
-    )) return;
+    const visibleImgs = Object.keys(siteImages).filter(
+      (k) => siteImages[k] && !isSlotHidden(siteImages[k])
+    ).length;
+    const hiddenImgs = Object.keys(siteImages).filter((k) =>
+      isSlotHidden(siteImages[k])
+    ).length;
+    const ok = await adminConfirm(
+      'Publicar na loja?',
+      `<p>Os visitantes passam a ver estes dados no próximo carregamento da página.</p>
+       <div class="confirm-stats">
+         <div><span>Produtos</span><span>${products.length}</span></div>
+         <div><span>Zonas de entrega</span><span>${zones.length}</span></div>
+         <div><span>Imagens activas</span><span>${visibleImgs}</span></div>
+         <div><span>Imagens ocultas</span><span>${hiddenImgs}</span></div>
+         <div><span>Hero slides</span><span>${heroSlides.length}</span></div>
+       </div>
+       <p>Confirma que queres <strong>publicar</strong> agora?</p>`,
+      { okLabel: 'Publicar' }
+    );
+    if (!ok) return;
 
     const catalog = {
       updatedAt: new Date().toISOString(),
@@ -1356,8 +1571,11 @@
         });
         const data = await res.json();
         if (!res.ok) {
+          if (res.status === 401) {
+            forceReLogin('Password incorrecta — entra de novo.');
+            return;
+          }
           toast(data.error || 'Falha ao publicar', 'error');
-          if (res.status === 401) clearPublishPassword();
           return;
         }
         // Clear drafts so next load uses remote; remember versioned CDN URL
@@ -1423,21 +1641,14 @@
   }
 
   // ---------- Inbox (form submissions) ----------
-  function getAdminPassword() {
-    return (
-      sessionStorage.getItem(PUBLISH_PWD_KEY) ||
-      localStorage.getItem(PUBLISH_PWD_KEY) ||
-      ''
-    );
-  }
-
   function ensureAdminPassword() {
     let pwd = getAdminPassword();
     if (!pwd) {
-      // Only if session was restored without a stored API password
-      pwd = prompt('Password de admin:') || '';
-      if (pwd) setPublishPassword(pwd, localStorage.getItem(AUTH_KEY) === '1');
-    } else if (!sessionStorage.getItem(PUBLISH_PWD_KEY)) {
+      // Session flag without password → force login screen, do not prompt mid-action
+      forceReLogin('Sessão expirada — introduz a password.');
+      return '';
+    }
+    if (!sessionStorage.getItem(PUBLISH_PWD_KEY)) {
       sessionStorage.setItem(PUBLISH_PWD_KEY, pwd);
     }
     return pwd;
@@ -1457,7 +1668,10 @@
       );
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 401) clearPublishPassword();
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao carregar inbox', 'error');
         return;
       }
@@ -1566,6 +1780,10 @@
       });
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao actualizar', 'error');
         return;
       }
@@ -1593,6 +1811,10 @@
       });
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao eliminar', 'error');
         return;
       }
@@ -1632,7 +1854,10 @@
       );
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 401) clearPublishPassword();
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao carregar clientes', 'error');
         return;
       }
@@ -1770,6 +1995,10 @@
       });
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao guardar', 'error');
         return;
       }
@@ -1797,6 +2026,10 @@
       });
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 401) {
+          forceReLogin('Password incorrecta — entra de novo.');
+          return;
+        }
         toast(data.error || 'Falha ao eliminar', 'error');
         return;
       }
@@ -1854,11 +2087,54 @@
     loadMembers();
   }
 
-  function init() {
-    if (isAuthed()) {
+  async function restoreSessionOrLogin() {
+    // Stale flag without password (old “any 6+ char” sessions) → force login
+    const hadFlag =
+      sessionStorage.getItem(AUTH_KEY) === '1' ||
+      localStorage.getItem(AUTH_KEY) === '1';
+    if (hadFlag && !getAdminPassword()) {
+      clearAllAuth();
+    }
+
+    if (!isAuthed()) {
+      clearAuthFlags();
+      showLoginOnly();
+      return;
+    }
+
+    // Re-check password with Worker so a wrong saved password cannot keep the panel open
+    const pwd = getAdminPassword();
+    const check = await verifyPasswordWithWorker(pwd);
+    if (check.ok) {
       showShell();
       loadAll();
+      return;
     }
+    if (check.reason === 'invalid') {
+      clearAllAuth();
+      showLoginOnly();
+      const err = $('#login-error');
+      if (err) err.textContent = 'Sessão inválida — introduz a password correcta.';
+      return;
+    }
+    // Network/server down: keep local emergency session only if password matches fallback
+    if (pwd === LOCAL_FALLBACK_PASSWORD) {
+      showShell();
+      loadAll();
+      return;
+    }
+    clearAllAuth();
+    showLoginOnly();
+    const err = $('#login-error');
+    if (err) {
+      err.textContent =
+        'Não foi possível validar a sessão. Entra de novo quando houver ligação.';
+    }
+  }
+
+  function init() {
+    bindConfirmModal();
+    restoreSessionOrLogin();
 
     $('#login-form')?.addEventListener('submit', (e) => {
       e.preventDefault();

@@ -595,6 +595,47 @@ body.admin-body {
   flex-wrap: wrap;
 }
 .admin-modal-footer .btn { flex: 1; min-width: 120px; }
+.admin-modal--confirm {
+  max-width: 420px;
+}
+.admin-modal-body {
+  padding: 0 0 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--admin-muted);
+}
+.admin-modal-body strong {
+  color: #fff;
+  font-weight: 500;
+}
+.admin-modal-body .confirm-stats {
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.85rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #ddd;
+}
+.admin-modal-body .confirm-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.15rem 0;
+}
+.admin-modal-body .confirm-stats span:last-child {
+  color: var(--admin-gold);
+  font-variant-numeric: tabular-nums;
+}
+.slot-card.is-hidden-slot .slot-placeholder {
+  border: 1px dashed var(--admin-danger, #c44);
+  color: var(--admin-danger, #c44);
+}
+.slot-card .slot-state-hidden {
+  color: var(--admin-danger, #c44);
+  font-size: 0.72rem;
+  margin-bottom: 0.35rem;
+}
 
 /* ---- Sticky bottom bar (mobile) ---- */
 .admin-sticky-bar {
