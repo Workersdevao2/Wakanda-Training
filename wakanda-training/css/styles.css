@@ -1060,6 +1060,35 @@ a.card-overlay:hover .card-img {
   gap: 1rem;
 }
 
+/* Hidden site-image slots (admin “Remover”) — no empty frames / broken icons */
+.site-img-hidden,
+[data-site-img].site-img-hidden,
+img.site-img-hidden {
+  display: none !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  aspect-ratio: auto !important;
+  overflow: hidden !important;
+}
+
+.corp-gallery-item.site-img-hidden,
+.slot-ph-item.site-img-hidden {
+  display: none !important;
+}
+
+/* One remaining photo in a 2-col gallery → full width */
+.contacto-espaco-grid.site-img-grid--single,
+.grid-2.site-img-grid--single {
+  grid-template-columns: 1fr;
+}
+.site-img-solo {
+  max-width: 100%;
+  width: 100%;
+}
+
 /* Product card specific */
 .product-card img {
   aspect-ratio: 1;

@@ -1352,23 +1352,43 @@ function applySiteImages(images) {
 
   const HIDDEN = '__hidden__';
 
+  function isHiddenSlot(val) {
+    if (val == null) return true;
+    if (typeof val !== 'string') return true;
+    const v = val.trim();
+    return !v || v === HIDDEN || v.startsWith('__');
+  }
+
+  function isUsableImageUrl(val) {
+    if (!val || typeof val !== 'string') return false;
+    const v = val.trim();
+    if (!v || isHiddenSlot(v)) return false;
+    // Real paths / CDN only — never treat sentinel as a file path
+    return (
+      v.startsWith('http') ||
+      v.startsWith('/') ||
+      v.startsWith('images/') ||
+      v.startsWith('../images/') ||
+      v.startsWith('data:')
+    );
+  }
+
   function hideSiteEl(el) {
     if (!el) return;
     el.classList.add('site-img-hidden');
     el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('hidden', '');
     if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
       el.removeAttribute('src');
-      el.style.display = 'none';
+      el.removeAttribute('srcset');
+      el.alt = '';
     } else {
       el.style.backgroundImage = 'none';
-      el.style.display = 'none';
     }
-    const item = el.closest('.corp-gallery-item, .slot-ph-item, .contacto-espaco-img, .grid-2 > *');
-    // Prefer hiding the image itself; for gallery items hide the wrapper when present
     const wrap = el.closest('.corp-gallery-item, .slot-ph-item');
     if (wrap) {
       wrap.classList.add('site-img-hidden');
-      wrap.style.display = 'none';
+      wrap.setAttribute('hidden', '');
     }
   }
 
@@ -1376,24 +1396,27 @@ function applySiteImages(images) {
     const key = el.getAttribute('data-site-img');
     if (!key || !Object.prototype.hasOwnProperty.call(images, key)) return;
     const raw = images[key];
-    if (raw === HIDDEN || raw === '' || raw == null) {
+    if (isHiddenSlot(raw) || !isUsableImageUrl(raw)) {
       hideSiteEl(el);
       return;
     }
     const maxW = Number(el.getAttribute('data-img-w')) || 1200;
     const resolved = resolveSiteUrl(raw, maxW);
-    if (!resolved) return;
+    if (!resolved) {
+      hideSiteEl(el);
+      return;
+    }
     if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
-      el.style.display = '';
+      el.removeAttribute('hidden');
+      el.classList.remove('site-img-hidden');
       el.src = resolved;
       el.removeAttribute('aria-hidden');
       el.classList.add('has-site-img');
-      el.classList.remove('site-img-hidden');
       const item = el.closest('.corp-gallery-item, .slot-ph-item');
       if (item) {
         item.classList.add('is-filled');
         item.classList.remove('site-img-hidden');
-        item.style.display = '';
+        item.removeAttribute('hidden');
       }
     } else if (el.tagName === 'VIDEO') {
       el.poster = resolved;
@@ -1403,17 +1426,34 @@ function applySiteImages(images) {
     const key = el.getAttribute('data-site-img-bg');
     if (!key || !Object.prototype.hasOwnProperty.call(images, key)) return;
     const raw = images[key];
-    if (raw === HIDDEN || raw === '' || raw == null) {
+    if (isHiddenSlot(raw) || !isUsableImageUrl(raw)) {
       hideSiteEl(el);
       return;
     }
     const maxW = Number(el.getAttribute('data-img-w')) || 1920;
     const resolved = resolveSiteUrl(raw, maxW);
-    if (!resolved) return;
-    el.style.display = '';
+    if (!resolved) {
+      hideSiteEl(el);
+      return;
+    }
+    el.removeAttribute('hidden');
+    el.classList.remove('site-img-hidden');
     el.style.backgroundImage = `url('${resolved}')`;
     el.classList.add('has-site-img');
-    el.classList.remove('site-img-hidden');
+  });
+
+  // Collapse contact / grid galleries when only one image remains visible
+  document.querySelectorAll('.contacto-espaco-grid, .grid-2').forEach((grid) => {
+    const imgs = [...grid.querySelectorAll('[data-site-img], img')].filter(
+      (img) => !img.classList.contains('site-img-hidden') && !img.hasAttribute('hidden')
+    );
+    if (imgs.length === 1) {
+      grid.classList.add('site-img-grid--single');
+      imgs[0].classList.add('site-img-solo');
+    } else {
+      grid.classList.remove('site-img-grid--single');
+      imgs.forEach((img) => img.classList.remove('site-img-solo'));
+    }
   });
 }
 
