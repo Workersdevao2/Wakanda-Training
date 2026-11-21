@@ -1151,6 +1151,7 @@ async function initCatalogAndShop() {
   }
   applyHomeModalities(catalog.sections);
   applyCoaches(catalog.sections);
+  applyResultados(catalog.sections);
 }
 
 /** Render home modalities from catalog.sections.home_modalities; else keep static HTML. */
@@ -1225,6 +1226,38 @@ function applyCoaches(sections) {
           (role ? '<p style="font-size: 0.85rem; color: var(--text-muted);">' + role + '</p>' : '') +
         '</div>' +
       '</div>'
+    );
+  }).join('');
+
+  dynamic.hidden = false;
+  staticEl.hidden = true;
+}
+
+/** Render resultados gallery from catalog.sections.resultados; else keep static HTML. */
+function applyResultados(sections) {
+  const dynamic = document.getElementById('resultados-dynamic');
+  const staticEl = document.getElementById('resultados-static');
+  if (!dynamic || !staticEl) return;
+
+  const items = sections && Array.isArray(sections.resultados)
+    ? sections.resultados.slice().sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
+
+  if (!items.length) {
+    dynamic.hidden = true;
+    dynamic.innerHTML = '';
+    staticEl.hidden = false;
+    return;
+  }
+
+  dynamic.innerHTML = items.map((r) => {
+    const img = (r.image || '').replace(/"/g, '');
+    const alt = ((r.alt || 'Transformação, antes e depois')).replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    if (!img) {
+      return '<div class="resultado-poster" style="background:#1a1a1a;min-height:200px;"></div>';
+    }
+    return (
+      '<img src="' + img + '" alt="' + alt + '" class="resultado-poster" loading="lazy" decoding="async" />'
     );
   }).join('');
 

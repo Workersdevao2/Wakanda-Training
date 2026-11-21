@@ -90,7 +90,7 @@
 
 
   <section class="page-hero page-hero--image">
-    <div class="page-hero-bg" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-label="Wakanda Training"></div>
+    <div class="page-hero-bg" data-site-img-bg="modalidades-hero" data-img-w="1920" style="background-image: url('../images/modalidades-hero.jpg');" role="img" aria-label="Wakanda Training"></div>
     <div class="page-hero-scrim"></div>
     <div class="container page-hero-content">
       <h1 data-i18n="res.h1">Resultados & Transformações</h1>
@@ -106,7 +106,8 @@
         <p data-i18n="res.real.lead">Antes e depois de membros da tribo. Disciplina, acompanhamento e comunidade.</p>
       </div>
 
-      <div class="grid-2 resultados-gallery">
+      <div id="resultados-dynamic" class="grid-2 resultados-gallery" hidden></div>
+      <div id="resultados-static" class="grid-2 resultados-gallery">
         <img src="../images/resultado-01.jpg" alt="Transformação, antes e depois" class="resultado-poster" loading="lazy" decoding="async" />
         <img src="../images/resultado-02.jpg" alt="Transformação, antes e depois" class="resultado-poster" loading="lazy" decoding="async" />
         <img src="../images/resultado-03.jpg" alt="Transformação, antes e depois" class="resultado-poster" loading="lazy" decoding="async" />

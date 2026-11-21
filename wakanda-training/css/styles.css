@@ -1250,26 +1250,6 @@ a.card-overlay:hover .card-img {
   }
 }
 
-/* Eventos hero — community group (landscape) */
-.eventos-hero-img {
-  width: 100%;
-  height: auto;
-  max-height: 420px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: var(--radius);
-  display: block;
-  border: var(--line) solid var(--border);
-  background: #0a0a0a;
-}
-
-@media (min-width: 768px) {
-  .eventos-hero-img {
-    max-height: 480px;
-    aspect-ratio: 21 / 9;
-  }
-}
-
 /* Card image variants for square campaign / poster flyers */
 .card-img--square {
   aspect-ratio: 1 / 1;

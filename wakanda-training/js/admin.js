@@ -68,9 +68,10 @@
   let siteImages = {};
   let mediaLibrary = [];
   let heroSlides = []; // [{ type:'photo', url, publicId?, alt? }]
-  let sections = { home_modalities: [], coaches: [] }; // Phase 3
+  let sections = { home_modalities: [], coaches: [], resultados: [] }; // Phase 3
   let pickingModIndex = null; // media pick target for modality image
   let pickingCoachIndex = null;
+  let pickingResIndex = null;
   let editingId = null;
   let pickingSlot = null; // when choosing media for a site slot
   let submissions = [];
@@ -561,6 +562,15 @@
           }
           pickingCoachIndex = null;
           switchPanel('sections');
+        } else if (pickingResIndex !== null && pickingResIndex !== undefined) {
+          const resItems = ensureResultados();
+          if (resItems[pickingResIndex]) {
+            resItems[pickingResIndex].image = url;
+            renderResultados();
+            toast('Imagem do resultado actualizada', 'success');
+          }
+          pickingResIndex = null;
+          switchPanel('sections');
         } else if (pickingSlot) {
           siteImages[pickingSlot] = url;
           pickingSlot = null;
@@ -619,6 +629,13 @@
         n++;
       }
     });
+    const resItems = sections.resultados || [];
+    resItems.forEach((r) => {
+      if (r && r.image === url) {
+        r.image = '';
+        n++;
+      }
+    });
     return n;
   }
 
@@ -671,6 +688,7 @@
     renderHero();
     renderSections();
     renderCoaches();
+    renderResultados();
     renderSlots();
     renderProducts?.();
     toast(
@@ -825,13 +843,14 @@
     toast('Slide adicionado ao hero', 'success');
   }
 
-  // ---------- Sections: home_modalities + coaches ----------
+  // ---------- Sections: home_modalities + coaches + resultados ----------
   function ensureSectionsRoot() {
     if (!sections || typeof sections !== 'object') {
-      sections = { home_modalities: [], coaches: [] };
+      sections = { home_modalities: [], coaches: [], resultados: [] };
     }
     if (!Array.isArray(sections.home_modalities)) sections.home_modalities = [];
     if (!Array.isArray(sections.coaches)) sections.coaches = [];
+    if (!Array.isArray(sections.resultados)) sections.resultados = [];
     return sections;
   }
 
@@ -843,12 +862,20 @@
     return ensureSectionsRoot().coaches;
   }
 
+  function ensureResultados() {
+    return ensureSectionsRoot().resultados;
+  }
+
   function newModId() {
     return 'mod_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
   function newCoachId() {
     return 'coach_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  function newResId() {
+    return 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
   function renderSections() {
@@ -967,6 +994,7 @@
       btn.addEventListener('click', () => {
         pickingModIndex = +btn.dataset.modImgLib;
         pickingCoachIndex = null;
+        pickingResIndex = null;
         switchPanel('media');
         toast('Escolhe uma imagem da biblioteca (botão Usar)');
       });
@@ -1072,6 +1100,106 @@
       btn.addEventListener('click', () => {
         pickingCoachIndex = +btn.dataset.coachImgLib;
         pickingModIndex = null;
+        pickingResIndex = null;
+        switchPanel('media');
+        toast('Escolhe uma imagem da biblioteca (botão Usar)');
+      });
+    });
+  }
+
+  function renderResultados() {
+    const list = $('#res-list');
+    if (!list) return;
+    const items = ensureResultados();
+    if (!items.length) {
+      list.innerHTML = '<p class="text-muted">Nenhum resultado configurado. A página Resultados mantém o HTML estático até publicares uma lista.</p>';
+      return;
+    }
+    items.forEach((r, i) => { r.order = i; });
+    list.innerHTML = items.map((r, i) => `
+      <div class="hero-admin-item" data-res="${i}" style="align-items:flex-start;">
+        <div style="width:72px;flex-shrink:0;">
+          ${r.image
+            ? `<img src="${esc(r.image)}" alt="" loading="lazy" style="width:72px;height:48px;object-fit:cover;border-radius:4px;" />`
+            : `<div class="slot-placeholder" style="width:72px;height:48px;font-size:0.65rem;">Sem img</div>`}
+          <div style="display:flex;gap:0.2rem;margin-top:0.25rem;">
+            <button type="button" class="btn btn-sm btn-ghost" data-res-img-up="${i}" title="Upload">↑</button>
+            <button type="button" class="btn btn-sm btn-ghost" data-res-img-lib="${i}" title="Biblioteca">▣</button>
+          </div>
+        </div>
+        <div class="hero-admin-meta">
+          <input type="text" data-res-alt="${i}" value="${esc(r.alt || '')}" placeholder="Alt (ex: Transformação, antes e depois)" />
+        </div>
+        <div class="hero-admin-actions">
+          <button type="button" class="btn btn-sm btn-ghost" data-res-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-res-down="${i}" ${i === items.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="btn btn-sm btn-danger" data-res-rm="${i}">✕</button>
+        </div>
+      </div>
+    `).join('');
+
+    $$('[data-res-alt]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const i = +input.dataset.resAlt;
+        if (items[i]) items[i].alt = input.value.trim();
+      });
+    });
+    $$('[data-res-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.resUp;
+        if (i <= 0) return;
+        const t = items[i - 1]; items[i - 1] = items[i]; items[i] = t;
+        renderResultados();
+      });
+    });
+    $$('[data-res-down]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.resDown;
+        if (i >= items.length - 1) return;
+        const t = items[i + 1]; items[i + 1] = items[i]; items[i] = t;
+        renderResultados();
+      });
+    });
+    $$('[data-res-rm]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        items.splice(+btn.dataset.resRm, 1);
+        renderResultados();
+        toast('Resultado removido do rascunho');
+      });
+    });
+    $$('[data-res-img-up]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = +btn.dataset.resImgUp;
+        const input = $('#res-file-input');
+        if (!input) return;
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          input.value = '';
+          if (!file) return;
+          const result = await uploadToCloudinary(file);
+          if (result && items[i]) {
+            items[i].image = result.url;
+            mediaLibrary.unshift({
+              url: result.url,
+              publicId: result.publicId,
+              resourceType: result.resourceType,
+              name: file.name,
+              at: new Date().toISOString()
+            });
+            localStorage.setItem(MEDIA_LIB, JSON.stringify(mediaLibrary));
+            renderMedia();
+            renderResultados();
+            toast('Imagem do resultado actualizada', 'success');
+          }
+        };
+        input.click();
+      });
+    });
+    $$('[data-res-img-lib]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        pickingResIndex = +btn.dataset.resImgLib;
+        pickingModIndex = null;
+        pickingCoachIndex = null;
         switchPanel('media');
         toast('Escolhe uma imagem da biblioteca (botão Usar)');
       });
@@ -1205,6 +1333,7 @@
         renderHero();
         renderSections();
         renderCoaches();
+        renderResultados();
         renderSlots();
         renderDashboard();
       } catch (e) {
@@ -1673,6 +1802,7 @@
     renderHero();
     renderSections();
     renderCoaches();
+    renderResultados();
     renderSlots();
     renderDashboard();
     loadInbox();
@@ -1776,6 +1906,17 @@
       });
       renderCoaches();
       toast('Coach adicionado — preenche os campos');
+    });
+
+    $('#btn-res-add')?.addEventListener('click', () => {
+      ensureResultados().push({
+        id: newResId(),
+        image: '',
+        alt: 'Transformação, antes e depois',
+        order: ensureResultados().length
+      });
+      renderResultados();
+      toast('Resultado adicionado — carrega uma imagem');
     });
 
     $('#btn-save-draft')?.addEventListener('click', saveDrafts);

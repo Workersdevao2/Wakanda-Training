@@ -1,11 +1,11 @@
 # Handoff: Media CMS — Admin upload / delete
 
-**Status:** Phase 1–2 done · Phase 3 `home_modalities` + `coaches` **code complete** (2026-11-20) · resultados/eventos not started · Video deferred  
-**Date:** 2026-11-20  
+**Status:** Phase 1–4 **code complete** (2026-11-21) · Eventos page removed (Instagram/social only) · Video deferred  
+**Date:** 2026-11-21  
 **Project:** Wakanda Training static site + admin (`wakanda-training/`)  
 **Stack:** Pure HTML/CSS/JS · Cloudflare Pages · Worker `wakanda-publish` · Cloudinary `ogtzpc3v`
 
-Phase 1–2 + Phase 3 (`home_modalities`, `coaches`) in-repo. Next: resultados/eventos or ops verification.
+Phase 1–4 in-repo. Public Eventos page deleted (announcements via Instagram / social only). Next: ops verification.
 
 ---
 
@@ -19,7 +19,7 @@ Phase 1–2 + Phase 3 (`home_modalities`, `coaches`) in-repo. Next: resultados/e
 | Videos | **Deferred.** Media library is image-only for now. Static hero `*.mp4` files under `images/` remain untouched. |
 | Hero (Phase 2) | Admin-managed list of **photos** only for now. |
 | Publish | Same flow everywhere: **Guardar rascunho** → **Publicar na loja** (catalog.json via Worker → KV + Cloudinary). |
-| Phase 3 section order | `home_modalities` → `coaches` → `resultados` → `eventos` |
+| Phase 3 section order | `home_modalities` → `coaches` → `resultados` (Eventos page removed) |
 
 ---
 
@@ -39,7 +39,7 @@ Phase 1–2 + Phase 3 (`home_modalities`, `coaches`) in-repo. Next: resultados/e
 - Delete (✕): calls Worker `POST /media/delete` → Cloudinary destroy; clears matching draft URLs.
 - Site slots: `SITE_IMAGE_SLOTS` + `siteImages` map → published as `catalog.images`.
 - Hero: still **hardcoded** slides in `index.html` (Phase 2 will make it catalog-driven).
-- Homepage modalities: catalog-driven when `sections.home_modalities` non-empty; static HTML fallback otherwise. Coaches/resultados/eventos still static.
+- Homepage modalities: catalog-driven when `sections.home_modalities` non-empty; static HTML fallback otherwise. Coaches + resultados catalog-driven when non-empty; static HTML fallback otherwise. Eventos page removed.
 
 ### Cloudinary
 - Cloud name: `ogtzpc3v`
@@ -73,7 +73,7 @@ Phase 1–2 + Phase 3 (`home_modalities`, `coaches`) in-repo. Next: resultados/e
     coaches: [
       { id, name, role, image, bio?, order }
     ]
-    // resultados, eventos, …
+    // resultados, …
   },
   // optional published mirror of library (not required for Phase 1)
   media: [
@@ -195,7 +195,7 @@ Deploy: `cd worker && npx wrangler deploy` after change.
 
 ## Phase 3 — Dynamic sections / create new slots
 
-Priority: `home_modalities` → `coaches` → `resultados` → `eventos`.
+Priority: `home_modalities` → `coaches` → `resultados`. **Eventos page removed** (2026-11-21) — announcements via Instagram / social only; no public page, no `sections.eventos`.
 
 ### home_modalities — DONE (2026-11-20)
 - Catalog: `sections.home_modalities[]` = `{ id, title, subtitle, image, href, order }`
@@ -208,14 +208,28 @@ Priority: `home_modalities` → `coaches` → `resultados` → `eventos`.
 - Admin: same **Secções** panel — second list
 - Public (Sobre Nós): `#coaches-dynamic` / `#coaches-static` fallback
 
-### Remaining (not started)
-`resultados` · `eventos` — same pattern.
+### resultados — DONE (2026-11-21)
+- Catalog: `sections.resultados[]` = `{ id, image, alt?, order }`
+- Admin: same **Secções** panel — third list (galeria)
+- Public (`pages/resultados.html`): `#resultados-dynamic` / `#resultados-static` fallback
+- Empty array → static gallery HTML remains
+
+### Remaining
+Phase 3–4 complete (Eventos page removed). Ops verification next.
 
 ---
 
 ## Phase 4 — Remaining fixed image slots
 
-Expand `SITE_IMAGE_SLOTS` / `images{}` for any leftover single hardcoded backgrounds still not covered.
+**DONE (2026-11-21) — scope A only**
+
+Wired existing slots (no new keys):
+- `contacto-1/2/3` → `pages/contacto.html` gallery
+- `modalidades-hero` → page heroes + CTA bands on Sobre, Modalidades, Horários, Preçário, Contacto, Inscrição, Projetos, Resultados, Home CTA
+- `gordus` → `pages/projetos.html` main project image
+
+Static `src` / `background-image` kept as fallback when catalog has no value.
+Not in scope A: sobre espaço, inscrição aside, resultados secondary cards (optional later).
 
 ---
 

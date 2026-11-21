@@ -16,7 +16,6 @@
     'nav.schedule': { pt: 'Horários', en: 'Schedule' },
     'nav.pricing': { pt: 'Preçário', en: 'Pricing' },
     'nav.shop': { pt: 'Loja', en: 'Shop' },
-    'nav.events': { pt: 'Eventos', en: 'Events' },
     'nav.results': { pt: 'Resultados', en: 'Results' },
     'nav.enroll': { pt: 'Inscrição', en: 'Join' },
     'nav.contact': { pt: 'Contacto', en: 'Contact' },
@@ -181,13 +180,6 @@
     'shop.checkout': { pt: 'Enviar pedido no WhatsApp', en: 'Send order on WhatsApp' },
     'shop.empty': { pt: 'O carrinho está vazio.', en: 'Your cart is empty.' },
     'shop.total': { pt: 'Total', en: 'Total' },
-
-    /* ---------- Events ---------- */
-    'ev.h1': { pt: 'Eventos', en: 'Events' },
-    'ev.lead': {
-      pt: 'A comunidade não para. Desafios, festas e momentos que marcam.',
-      en: 'The community never stops. Challenges, parties and moments that matter.'
-    },
 
     /* ---------- Results ---------- */
     'res.h1': { pt: 'Resultados & Transformações', en: 'Results & Transformations' },
@@ -826,13 +818,10 @@
     'cta.book': { pt: 'Reservar vaga', en: 'Book a spot' },
     'cta.trial': { pt: 'Aula experimental grátis', en: 'Free trial class' },
 
-    /* ---------- Projects / events / results short ---------- */
+    /* ---------- Projects / results short ---------- */
     'proj.included': { pt: 'O que está incluído', en: "What's included" },
     'proj.invest': { pt: 'Investimento', en: 'Investment' },
     'proj.payment': { pt: 'Pagamento único • Vagas limitadas', en: 'One-time payment • Limited spots' },
-    'ev.upcoming': { pt: 'Próximos e recentes', en: 'Upcoming & recent' },
-    'ev.ask.h2': { pt: 'Pergunta ou reserva', en: 'Ask or book' },
-    'ev.miss.h2': { pt: 'Não percas nada', en: "Don't miss out" },
     'res.share.h2': { pt: 'Partilha a tua evolução', en: 'Share your progress' },
     'res.next.h2': { pt: 'A tua história pode ser a próxima', en: 'Your story could be next' },
 
@@ -846,30 +835,6 @@
       en: 'Corpos Malhados Prestação de Serviços, Lda · send the receipt on WhatsApp'
     },
     'contact.quick.trial': { pt: 'Aula Experimental', en: 'Trial class' },
-    'ev.hero.note': {
-      pt: 'Atualizamos constantemente. Segue o Instagram ou pergunta no WhatsApp para a agenda mais recente.',
-      en: 'We update often. Follow Instagram or ask on WhatsApp for the latest schedule.'
-    },
-    'ev.gordus.p': {
-      pt: 'Operação Dezembro. 90 dias de transformação com acompanhamento completo + bónus das quadras festivas.',
-      en: 'Operation December. 90 days of transformation with full support + holiday-season bonus.'
-    },
-    'ev.zumba.p': {
-      pt: 'Vem zumbar com a energia da Wakanda. Música, convívio e movimento. Vagas limitadas.',
-      en: 'Come dance with Wakanda energy. Music, community and movement. Limited spots.'
-    },
-    'ev.notify': { pt: 'Quero ser avisado', en: 'Notify me' },
-    'ev.form.lead': {
-      pt: 'Datas, vagas, reservas ou o que levar: envia no WhatsApp com o contexto certo.',
-      en: 'Dates, spots, bookings or what to bring: send on WhatsApp with the right context.'
-    },
-    'ev.form.subject': { pt: 'O que queres fazer? *', en: 'What do you want to do? *' },
-    'ev.form.send': { pt: 'Enviar no WhatsApp', en: 'Send on WhatsApp' },
-    'ev.miss.p': {
-      pt: 'Segue o Instagram ou formaliza a inscrição quando estiveres pronto.',
-      en: 'Follow Instagram or complete enrollment when you are ready.'
-    },
-    'ev.miss.cta': { pt: 'Quero inscrever-me', en: 'I want to join' },
     'sch.th.time': { pt: 'Horário', en: 'Time' },
     'sch.th.duration': { pt: 'Duração', en: 'Duration' },
     'sch.cta.enroll': { pt: 'Inscrever-me', en: 'Join' },
@@ -929,22 +894,6 @@
     'form.message': { pt: 'Mensagem (opcional)', en: 'Message (optional)' },
     'form.select': { pt: 'Selecciona...', en: 'Select...' },
 
-
-    'ev.desafios.p': {
-      pt: 'Workouts “For Time”, desafios de consistência e competições amigáveis dentro da box. Mantém a evolução e a motivação em alta.',
-      en: '“For Time” workouts, consistency challenges and friendly box competitions. Keep progress and motivation high.'
-    },
-    'ev.workshops.p': {
-      pt: 'Dias temáticos, workshops de técnica, celebrações da comunidade e momentos de superação. Fica atento às redes e ao WhatsApp.',
-      en: 'Theme days, technique workshops, community celebrations and breakthrough moments. Watch social media and WhatsApp.'
-    },
-    'ev.desafios.h3': { pt: 'Desafios internos', en: 'Internal challenges' },
-    'ev.workshops.h3': { pt: 'Workshops & eventos especiais', en: 'Workshops & special events' },
-    'ev.details': { pt: 'Ver detalhes', en: 'View details' },
-    'ev.form.event': { pt: 'Evento *', en: 'Event *' },
-    'ev.form.note': { pt: 'Para te inscreveres, usa a página', en: 'To enroll, use the' },
-    'ev.ph.name': { pt: 'O teu nome', en: 'Your name' },
-    'ev.ph.msg': { pt: 'A tua dúvida ou pedido de reserva...', en: 'Your question or booking request...' },
     'res.community.h2': { pt: 'O que a comunidade conquista', en: 'What the community achieves' },
     'res.real.lead': {
       pt: 'Antes e depois de membros da tribo. Disciplina, acompanhamento e comunidade.',
