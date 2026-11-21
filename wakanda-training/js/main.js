@@ -98,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ---------- Preçário sticky jump: active section on scroll ----------
+  initPriceJumpNav();
+
   // ---------- Cart ----------
   initCart();
 
@@ -352,6 +355,51 @@ function submitCheckout(e) {
   const note = document.getElementById('co-note')?.value.trim() || '';
   if (!name || !phone) return;
   openWhatsApp(buildOrderMessage(name, phone, note));
+}
+
+function initPriceJumpNav() {
+  const nav = document.querySelector('.price-jump');
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('.price-jump-link[href^="#"]')];
+  if (!links.length) return;
+
+  const sections = links
+    .map((a) => {
+      const id = (a.getAttribute('href') || '').slice(1);
+      const el = id ? document.getElementById(id) : null;
+      return el ? { link: a, el } : null;
+    })
+    .filter(Boolean);
+
+  function setActive(activeLink) {
+    links.forEach((a) => a.classList.toggle('is-active', a === activeLink));
+    // Keep active pill visible in horizontal scroll on mobile
+    if (activeLink && activeLink.scrollIntoView) {
+      try {
+        activeLink.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      } catch (_) {}
+    }
+  }
+
+  function onScroll() {
+    const offset = 120; // header + sticky jump
+    let current = sections[0];
+    for (const s of sections) {
+      const top = s.el.getBoundingClientRect().top;
+      if (top - offset <= 0) current = s;
+    }
+    if (current) setActive(current.link);
+  }
+
+  links.forEach((a) => {
+    a.addEventListener('click', () => {
+      // Mark immediately for feedback; scroll handler refines
+      setActive(a);
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 
 function initCart() {
@@ -1442,8 +1490,8 @@ function applySiteImages(images) {
     el.classList.add('has-site-img');
   });
 
-  // Collapse contact / grid galleries when only one image remains visible
-  document.querySelectorAll('.contacto-espaco-grid, .grid-2').forEach((grid) => {
+  // Collapse contact gallery only (do not touch other .grid-2 layouts)
+  document.querySelectorAll('.contacto-espaco-grid').forEach((grid) => {
     const imgs = [...grid.querySelectorAll('[data-site-img], img')].filter(
       (img) => !img.classList.contains('site-img-hidden') && !img.hasAttribute('hidden')
     );
