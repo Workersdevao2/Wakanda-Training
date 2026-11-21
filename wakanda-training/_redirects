@@ -1,0 +1,15 @@
+# Permanent redirects from old /pages/* structure to clean URLs
+/pages/sobre.html          /sobre          301
+/pages/modalidades.html    /modalidades    301
+/pages/projetos.html       /projetos       301
+/pages/empresas.html       /empresas       301
+/pages/horarios.html       /horarios       301
+/pages/precario.html       /precario       301
+/pages/loja.html           /loja           301
+/pages/resultados.html     /resultados     301
+/pages/inscricao.html      /inscricao      301
+/pages/contacto.html       /contacto       301
+/pages/checkout.html       /checkout       301
+
+# Catch-all for any other old /pages/ paths
+/pages/*                   /:splat         301

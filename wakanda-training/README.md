@@ -30,7 +30,7 @@ Wakanda-Training/
   wakanda-training/
     index.html
     admin.html              # Staff panel (password-gated)
-    pages/
+    # (pages/ removed — all HTML at site root)
     css/
       styles.css            # Public site
       admin.css             # Admin UI
@@ -60,17 +60,17 @@ Wakanda-Training/
 |------|------|
 | Home | `index.html` |
 | Admin (staff) | `admin.html` |
-| Sobre Nós | `pages/sobre.html` |
-| Modalidades | `pages/modalidades.html` |
-| Projetos (Gordus) | `pages/projetos.html` |
-| Empresas (Corporate) | `pages/empresas.html` |
-| Horários | `pages/horarios.html` |
-| Preçário | `pages/precario.html` |
-| Loja | `pages/loja.html` |
-| Resultados | `pages/resultados.html` |
-| Inscrição | `pages/inscricao.html` |
-| Contacto | `pages/contacto.html` |
-| Checkout | `pages/checkout.html` |
+| Sobre Nós | `/sobre` |
+| Modalidades | `/modalidades` |
+| Projetos (Gordus) | `/projetos` |
+| Empresas (Corporate) | `/empresas` |
+| Horários | `/horarios` |
+| Preçário | `/precario` |
+| Loja | `/loja` |
+| Resultados | `/resultados` |
+| Inscrição | `/inscricao` |
+| Contacto | `/contacto` |
+| Checkout | `/checkout` |
 
 ## Admin panel + live catalog
 
@@ -187,13 +187,13 @@ Notable:
 | Goal | Files |
 |------|--------|
 | Home hero slides | `index.html` + `images/hero-*.jpg/mp4` |
-| About text/images | `pages/sobre.html` + `images/sobre-*.jpg` / `coach-*.jpg` |
-| Class list + times | `pages/modalidades.html` + `pages/horarios.html` |
-| Prices / packs | `pages/precario.html` |
-| Enrollment form | `pages/inscricao.html` + `js/main.js` |
-| Resultados gallery | `pages/resultados.html` + `images/resultado-*.jpg` |
+| About text/images | `/sobre` + `images/sobre-*.jpg` / `coach-*.jpg` |
+| Class list + times | `/modalidades` + `/horarios` |
+| Prices / packs | `/precario` |
+| Enrollment form | `/inscricao` + `js/main.js` |
+| Resultados gallery | `/resultados` + `images/resultado-*.jpg` |
 | **Store products / prices** | **Admin → Publicar** (or seed `js/products.js`) |
-| Team / coaches | `pages/sobre.html` + `images/coach-*.jpg` |
+| Team / coaches | `/sobre` + `images/coach-*.jpg` |
 | PT/EN text | `js/i18n.js` |
 | Public styles | `css/styles.css` |
 | Admin styles | `css/admin.css` |

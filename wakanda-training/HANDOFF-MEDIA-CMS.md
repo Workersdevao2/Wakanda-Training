@@ -211,7 +211,7 @@ Priority: `home_modalities` → `coaches` → `resultados`. **Eventos page remov
 ### resultados — DONE (2026-11-21)
 - Catalog: `sections.resultados[]` = `{ id, image, alt?, order }`
 - Admin: same **Secções** panel — third list (galeria)
-- Public (`pages/resultados.html`): `#resultados-dynamic` / `#resultados-static` fallback
+- Public (`/resultados`): `#resultados-dynamic` / `#resultados-static` fallback
 - Empty array → static gallery HTML remains
 
 ### Remaining
@@ -224,9 +224,9 @@ Phase 3–4 complete (Eventos page removed). Ops verification next.
 **DONE (2026-11-21) — scope A only**
 
 Wired existing slots (no new keys):
-- `contacto-1/2/3` → `pages/contacto.html` gallery
+- `contacto-1/2/3` → `/contacto` gallery
 - `modalidades-hero` → page heroes + CTA bands on Sobre, Modalidades, Horários, Preçário, Contacto, Inscrição, Projetos, Resultados, Home CTA
-- `gordus` → `pages/projetos.html` main project image
+- `gordus` → `/projetos` main project image
 
 Static `src` / `background-image` kept as fallback when catalog has no value.
 Not in scope A: sobre espaço, inscrição aside, resultados secondary cards (optional later).

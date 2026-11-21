@@ -1271,7 +1271,7 @@ function applyHomeModalities(sections) {
   }
 
   dynamic.innerHTML = items.map((m) => {
-    const href = (m.href || 'pages/modalidades.html').replace(/"/g, '');
+    const href = (m.href || '/modalidades').replace(/"/g, '');
     const title = (m.title || '').replace(/</g, '&lt;');
     const sub = (m.subtitle || '').replace(/</g, '&lt;');
     const img = (m.image || '').replace(/"/g, '');
@@ -1557,7 +1557,7 @@ function renderShopFromCatalog(products) {
 function resolveProductImage(src) {
   if (!src) return '';
   if (src.startsWith('http') || src.startsWith('data:') || src.startsWith('/')) return src;
-  // loja.html is under pages/
+  // loja.html is at site root
   if (src.startsWith('images/')) return '../' + src;
   return src;
 }

@@ -1046,7 +1046,7 @@
         <div class="hero-admin-meta">
           <input type="text" data-mod-title="${i}" value="${esc(m.title || '')}" placeholder="Título" />
           <input type="text" data-mod-sub="${i}" value="${esc(m.subtitle || '')}" placeholder="Subtítulo" />
-          <input type="text" data-mod-href="${i}" value="${esc(m.href || '')}" placeholder="Link (ex: pages/modalidades.html#crossfit)" />
+          <input type="text" data-mod-href="${i}" value="${esc(m.href || '')}" placeholder="Link (ex: /modalidades#crossfit)" />
         </div>
         <div class="hero-admin-actions">
           <button type="button" class="btn btn-sm btn-ghost" data-mod-up="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
@@ -2210,7 +2210,7 @@
         title: 'Nova modalidade',
         subtitle: '',
         image: '',
-        href: 'pages/modalidades.html',
+        href: '/modalidades',
         order: ensureMods().length
       });
       renderSections();

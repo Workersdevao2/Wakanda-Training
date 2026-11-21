@@ -86,8 +86,8 @@ Layout: left sidebar (desktop), bottom icons (mobile).
 | `js/products.js` | Seed products + zones |
 | `js/main.js` | Cart + catalog fetch + shop + inscrição forms |
 | `worker/` | Publish + forms + members API |
-| `pages/loja.html` | Dynamic product grids `#shop-apparel` / `#shop-accessories` |
-| `pages/inscricao.html` | Enrollment / trial form |
+| `/loja (loja.html)` | Dynamic product grids `#shop-apparel` / `#shop-accessories` |
+| `/inscricao (inscricao.html)` | Enrollment / trial form |
 
 ## Security notes
 
