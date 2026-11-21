@@ -404,8 +404,31 @@ body.admin-body {
 }
 .media-item button:hover { background: var(--admin-gold); color: #0A0A0A; }
 
-/* ---- Site image slots ---- */
+/* ---- Site image slots (grouped by page) ---- */
 .slot-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.slot-page-group {
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 0.85rem 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+.slot-page-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--admin-gold);
+  margin: 0 0 0.2rem;
+  letter-spacing: 0.02em;
+}
+.slot-page-hint {
+  font-size: 0.72rem;
+  color: var(--admin-muted);
+  margin: 0 0 0.75rem;
+}
+.slot-page-grid {
   display: grid;
   gap: 0.85rem;
 }

@@ -140,7 +140,7 @@ window.WT_DEFAULTS = {
     // keys match data-site-img / data-site-img-bg attributes
     'hero-loja': 'images/modalidades-hero.jpg',
     'modalidades-hero': 'images/modalidades-hero.jpg'
-    // corp-hero, corp-1 … corp-12 stay empty until Admin → Imagens do site → Publicar
+    // corp-* and coach-wilson stay empty until Admin → Imagens do site → Publicar
   }
 };
 

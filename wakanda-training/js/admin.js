@@ -29,36 +29,62 @@
   // For first login before Worker is set, this local gate is used.
   const LOCAL_FALLBACK_PASSWORD = 'wakanda2026';
 
-  // Site image slots (match data-site-img / data-site-img-bg on public pages)
+  // Site image slots — grouped by page in admin (match data-site-img / data-site-img-bg)
+  // page: section heading in “Imagens do site”; label: short slot name under that page
   const SITE_IMAGE_SLOTS = [
-    { key: 'hero-loja', label: 'Hero Loja', hint: 'Fundo da página Loja' },
-    { key: 'modalidades-hero', label: 'Hero Modalidades', hint: 'Banner das modalidades' },
-    { key: 'gordus', label: 'Gordus Project', hint: 'Imagem do projeto Gordus' },
-    { key: 'contacto-1', label: 'Contacto espaço 1', hint: 'Galeria contacto' },
-    { key: 'contacto-2', label: 'Contacto espaço 2', hint: 'Galeria contacto' },
-    { key: 'contacto-3', label: 'Contacto espaço 3', hint: 'Galeria contacto' },
-    { key: 'footer-bg', label: 'Footer · Fundo', hint: 'Imagem de fundo do rodapé (site inteiro)' },
+    /* Global (shared across pages) */
+    { page: 'Global (partilhado)', key: 'footer-bg', label: 'Footer · Fundo', hint: 'Rodapé em todas as páginas' },
+    { page: 'Global (partilhado)', key: 'modalidades-hero', label: 'Hero / CTA partilhado', hint: 'Banner usado em Modalidades, Preçário, Sobre, Horários, Inscrição, etc.' },
+
+    /* Loja */
+    { page: 'Loja', key: 'hero-loja', label: 'Hero', hint: 'Fundo do banner da Loja' },
+
+    /* Contacto */
+    { page: 'Contacto', key: 'contacto-1', label: 'Espaço 1', hint: 'Galeria do ginásio' },
+    { page: 'Contacto', key: 'contacto-2', label: 'Espaço 2', hint: 'Galeria do ginásio' },
+    { page: 'Contacto', key: 'contacto-3', label: 'Espaço 3', hint: 'Galeria do ginásio (larga)' },
+
+    /* Projetos */
+    { page: 'Projetos', key: 'gordus', label: 'Gordus Project', hint: 'Imagem principal do projecto Gordus' },
+
+    /* Preçário */
+    { page: 'Preçário', key: 'precario-wilson', label: 'Aulas personalizadas · foto', hint: 'Foto da secção Coach Wilson / aulas personalizadas presenciais' },
+
+    /* Inscrição */
+    { page: 'Inscrição', key: 'inscricao-aside-1', label: 'Aside · foto 1', hint: 'Coluna lateral do formulário' },
+    { page: 'Inscrição', key: 'inscricao-aside-2', label: 'Aside · foto 2', hint: 'Coluna lateral do formulário' },
+
+    /* Sobre Nós · equipa (static fallback cards) */
+    { page: 'Sobre Nós', key: 'sobre-coach-1', label: 'Equipa · foto 1', hint: 'Romário N\'gama (ou substituto)' },
+    { page: 'Sobre Nós', key: 'sobre-coach-2', label: 'Equipa · foto 2', hint: 'Coach' },
+    { page: 'Sobre Nós', key: 'sobre-coach-3', label: 'Equipa · foto 3', hint: 'Coach' },
+    { page: 'Sobre Nós', key: 'sobre-coach-4', label: 'Equipa · foto 4', hint: 'Wilson Benjamim — Head Coach' },
+    { page: 'Sobre Nós', key: 'sobre-coach-5', label: 'Equipa · foto 5', hint: 'Sérgio Monteiro' },
+    { page: 'Sobre Nós', key: 'sobre-coach-6', label: 'Equipa · foto 6', hint: 'Coach' },
+    { page: 'Sobre Nós', key: 'sobre-espaco-1', label: 'Espaço · foto 1', hint: 'Secção do espaço' },
+    { page: 'Sobre Nós', key: 'sobre-espaco-2', label: 'Espaço · foto 2', hint: 'Secção do espaço' },
+
     /* Empresas / Corporate */
-    { key: 'corp-hero', label: 'Empresas · Hero', hint: 'Banner da página Empresas' },
-    { key: 'corp-cta', label: 'Empresas · CTA', hint: 'Fundo da faixa CTA final' },
-    { key: 'corp-block-1', label: 'Empresas · Bloco 1', hint: 'Team Building (card com overlay)' },
-    { key: 'corp-block-2', label: 'Empresas · Bloco 2', hint: 'Eventos corporativos (card com overlay)' },
-    { key: 'corp-block-3', label: 'Empresas · Bloco 3', hint: 'Ginástica laboral (card com overlay)' },
-    { key: 'corp-block-4', label: 'Empresas · Bloco 4', hint: 'Palestras (card com overlay)' },
-    { key: 'corp-block-5', label: 'Empresas · Bloco 5', hint: 'Coaching (card com overlay)' },
-    { key: 'corp-block-6', label: 'Empresas · Bloco 6', hint: 'Formação SST (card com overlay)' },
-    { key: 'corp-1', label: 'Empresas · Foto 1', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-2', label: 'Empresas · Foto 2', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-3', label: 'Empresas · Foto 3', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-4', label: 'Empresas · Foto 4', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-5', label: 'Empresas · Foto 5', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-6', label: 'Empresas · Foto 6', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-7', label: 'Empresas · Foto 7', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-8', label: 'Empresas · Foto 8', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-9', label: 'Empresas · Foto 9', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-10', label: 'Empresas · Foto 10', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-11', label: 'Empresas · Foto 11', hint: 'Galeria G-Corporate / team building' },
-    { key: 'corp-12', label: 'Empresas · Foto 12', hint: 'Galeria G-Corporate / team building' }
+    { page: 'Empresas', key: 'corp-hero', label: 'Hero', hint: 'Banner da página' },
+    { page: 'Empresas', key: 'corp-cta', label: 'CTA · fundo', hint: 'Faixa CTA final' },
+    { page: 'Empresas', key: 'corp-block-1', label: 'Bloco 1', hint: 'Team Building' },
+    { page: 'Empresas', key: 'corp-block-2', label: 'Bloco 2', hint: 'Eventos corporativos' },
+    { page: 'Empresas', key: 'corp-block-3', label: 'Bloco 3', hint: 'Ginástica laboral' },
+    { page: 'Empresas', key: 'corp-block-4', label: 'Bloco 4', hint: 'Palestras' },
+    { page: 'Empresas', key: 'corp-block-5', label: 'Bloco 5', hint: 'Coaching' },
+    { page: 'Empresas', key: 'corp-block-6', label: 'Bloco 6', hint: 'Formação SST' },
+    { page: 'Empresas', key: 'corp-1', label: 'Galeria · 1', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-2', label: 'Galeria · 2', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-3', label: 'Galeria · 3', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-4', label: 'Galeria · 4', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-5', label: 'Galeria · 5', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-6', label: 'Galeria · 6', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-7', label: 'Galeria · 7', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-8', label: 'Galeria · 8', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-9', label: 'Galeria · 9', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-10', label: 'Galeria · 10', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-11', label: 'Galeria · 11', hint: 'G-Corporate' },
+    { page: 'Empresas', key: 'corp-12', label: 'Galeria · 12', hint: 'G-Corporate' }
   ];
 
   // ---------- State ----------
@@ -1206,28 +1232,47 @@
     });
   }
 
-  // ---------- Site image slots ----------
+  // ---------- Site image slots (grouped by page) ----------
   function renderSlots() {
     const grid = $('#slot-grid');
     if (!grid) return;
-    grid.innerHTML = SITE_IMAGE_SLOTS.map((slot) => {
-      const url = siteImages[slot.key] || '';
-      return `
-        <div class="slot-card" data-slot="${slot.key}">
-          ${url
-            ? `<img src="${resolveImg(url)}" alt="" />`
-            : `<div class="slot-placeholder">Sem imagem</div>`}
-          <div class="slot-info">
-            <h3>${esc(slot.label)}</h3>
-            <p>${esc(slot.hint)}${url ? '<br>' + esc(url.slice(0, 48)) + '…' : ''}</p>
-            <div class="slot-actions">
-              <button type="button" class="btn btn-sm btn-ghost" data-slot-upload="${slot.key}">Carregar</button>
-              <button type="button" class="btn btn-sm btn-ghost" data-slot-pick="${slot.key}">Da média</button>
-              <button type="button" class="btn btn-sm btn-danger" data-slot-clear="${slot.key}">Original</button>
+
+    const groups = [];
+    SITE_IMAGE_SLOTS.forEach((slot) => {
+      const page = slot.page || 'Outros';
+      let g = groups.find((x) => x.page === page);
+      if (!g) {
+        g = { page, slots: [] };
+        groups.push(g);
+      }
+      g.slots.push(slot);
+    });
+
+    grid.innerHTML = groups.map((g) => {
+      const cards = g.slots.map((slot) => {
+        const url = siteImages[slot.key] || '';
+        return `
+          <div class="slot-card" data-slot="${slot.key}">
+            ${url
+              ? `<img src="${resolveImg(url)}" alt="" />`
+              : `<div class="slot-placeholder">Sem imagem</div>`}
+            <div class="slot-info">
+              <h3>${esc(slot.label)}</h3>
+              <p>${esc(slot.hint)}${url ? '<br>' + esc(url.slice(0, 48)) + '…' : ''}</p>
+              <div class="slot-actions">
+                <button type="button" class="btn btn-sm btn-ghost" data-slot-upload="${slot.key}">Carregar</button>
+                <button type="button" class="btn btn-sm btn-ghost" data-slot-pick="${slot.key}">Da média</button>
+                <button type="button" class="btn btn-sm btn-danger" data-slot-clear="${slot.key}">Original</button>
+              </div>
             </div>
-          </div>
-        </div>
-      `;
+          </div>`;
+      }).join('');
+      return `
+        <div class="slot-page-group" data-page="${esc(g.page)}">
+          <h3 class="slot-page-title">${esc(g.page)}</h3>
+          <p class="slot-page-hint">Imagens desta página — carregar, escolher da média ou repor original.</p>
+          <div class="slot-page-grid">${cards}</div>
+        </div>`;
     }).join('');
 
     $$('[data-slot-upload]').forEach((btn) => {
