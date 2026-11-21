@@ -257,10 +257,18 @@
     'enroll.plan.label': { pt: 'Tipo de plano *', en: 'Plan type *' },
     'enroll.plan.group': { pt: 'Aulas de grupo', en: 'Group classes' },
     'enroll.plan.pt': { pt: 'Treino personalizado (PT)', en: 'Personal training (PT)' },
+    'enroll.plan.wilson': {
+      pt: 'Aulas personalizadas · Coach Wilson',
+      en: 'Personal sessions · Coach Wilson'
+    },
     'enroll.plan.drop': { pt: 'Aula ou sessão avulsa', en: 'Drop-in class or session' },
     'enroll.plan.unsure': { pt: 'Ainda não sei — quero aconselhar-me', en: 'Not sure — I want advice' },
     'enroll.pack.group': { pt: 'Pack de grupo (frequência) *', en: 'Group pack (frequency) *' },
     'enroll.pack.pt': { pt: 'Pack de treino personalizado *', en: 'Personal training pack *' },
+    'enroll.pack.wilson': {
+      pt: 'Pack / sessão Coach Wilson *',
+      en: 'Coach Wilson pack / session *'
+    },
     'enroll.pack.drop': { pt: 'Aula ou sessão avulsa *', en: 'Drop-in class or session *' },
     'enroll.pack.pick': { pt: 'Selecciona o pack...', en: 'Select a pack...' },
     'enroll.pack.group.hint': {
@@ -270,6 +278,23 @@
     'enroll.pack.pt.hint': {
       pt: 'Sessões de 1 hora · validade 30 dias · inscrição à parte (20.000 AKZ)',
       en: '1-hour sessions · valid 30 days · enrollment fee separate (20.000 AKZ)'
+    },
+    'enroll.pack.wilson.hint': {
+      pt: 'Sessões de 1 hora · validade 30 dias · inscrição 40.000 AKZ à parte',
+      en: '1-hour sessions · valid 30 days · enrollment 40.000 AKZ separate'
+    },
+    'enroll.wilson.assess': {
+      pt: 'Incluir avaliação física (50.000 AKZ)',
+      en: 'Include physical assessment (50.000 AKZ)'
+    },
+    'enroll.wilson.assess.hint': {
+      pt: 'Opcional no início do acompanhamento com o Coach Wilson.',
+      en: 'Optional at the start of coaching with Coach Wilson.'
+    },
+    'enroll.wilson.local': { pt: 'Local das sessões *', en: 'Session location *' },
+    'enroll.wilson.local.hint': {
+      pt: 'A taxa de deslocação aplica-se quando o Coach se desloca até si.',
+      en: 'Travel fee applies when the Coach comes to you.'
     },
     'enroll.fee.check': {
       pt: 'Sou novo no ginásio — a taxa de inscrição é 20.000 AKZ (além do pack).',
@@ -541,6 +566,7 @@
     },
     'price.jump.group': { pt: 'Aulas de grupo', en: 'Group classes' },
     'price.jump.pt': { pt: 'Treino personalizado', en: 'Personal training' },
+    'price.jump.wilson': { pt: 'Coach Wilson', en: 'Coach Wilson' },
     'price.jump.pay': { pt: 'Pagamento', en: 'Payment' },
 
     'price.sub.enroll': { pt: 'Inscrição e aulas avulsas', en: 'Enrollment & drop-in classes' },
@@ -665,6 +691,76 @@
     'price.pt.rules.5': {
       pt: 'Pagamento por WhatsApp com comprovativo.',
       en: 'Payment via WhatsApp with receipt.'
+    },
+
+    'price.wilson.h2': {
+      pt: 'Aulas personalizadas presenciais · Coach Wilson',
+      en: 'In-person personal sessions · Coach Wilson'
+    },
+    'price.wilson.lead': {
+      pt: 'Sessões individuais de 1 hora com o Coach Wilson. Packs válidos 30 dias. Disponível no ginásio ou com deslocação.',
+      en: '1-hour individual sessions with Coach Wilson. Packs valid 30 days. Available at the gym or with travel.'
+    },
+    'price.wilson.sub.fees': {
+      pt: 'Inscrição, avaliação e deslocação',
+      en: 'Enrollment, assessment & travel'
+    },
+    'price.wilson.enroll.note': {
+      pt: 'Membership · renovável após 90 dias',
+      en: 'Membership · renewable after 90 days'
+    },
+    'price.wilson.assess': { pt: 'Avaliação física', en: 'Physical assessment' },
+    'price.wilson.assess.note': {
+      pt: 'Assessment · opcional no início',
+      en: 'Assessment · optional at the start'
+    },
+    'price.wilson.travel': { pt: 'Taxa de deslocação', en: 'Travel fee' },
+    'price.wilson.travel.note': {
+      pt: 'Talatona & Patriotas 50.000 · Cidade 100.000',
+      en: 'Talatona & Patriotas 50.000 · City 100.000'
+    },
+    'price.wilson.sub.packs': {
+      pt: 'Packs mensais · sessões individuais',
+      en: 'Monthly packs · individual sessions'
+    },
+    'price.wilson.packs.hint': {
+      pt: 'Frequência semanal · validade 30 dias. Quanto mais sessões, melhor o valor por sessão.',
+      en: 'Weekly frequency · 30-day validity. More sessions = better price per session.'
+    },
+    'price.wilson.sub.drop': {
+      pt: 'Sessão avulsa · 1 hora',
+      en: 'Single session · 1 hour'
+    },
+    'price.wilson.drop.int': { pt: 'Sessão — Interno', en: 'Session — Member' },
+    'price.wilson.drop.int.note': {
+      pt: 'Atleta inscrito · 1 hora',
+      en: 'Enrolled athlete · 1 hour'
+    },
+    'price.wilson.drop.ext': { pt: 'Sessão — Externo', en: 'Session — Visitor' },
+    'price.wilson.drop.ext.note': {
+      pt: 'Atleta visitante · 1 hora',
+      en: 'Visitor athlete · 1 hour'
+    },
+    'price.wilson.rules.h3': { pt: 'Regras · Coach Wilson', en: 'Rules · Coach Wilson' },
+    'price.wilson.rules.1': {
+      pt: 'Os packs continuam com validade de <strong>30 dias</strong> e, caso a mensalidade seja carregada, as aulas serão acrescentadas.',
+      en: 'Packs remain valid for <strong>30 days</strong>; if membership is topped up, sessions are added.'
+    },
+    'price.wilson.rules.2': {
+      pt: 'As actualizações dos pagamentos levam até <strong>48 horas</strong> — faça o pagamento com bastante antecedência.',
+      en: 'Payment updates take up to <strong>48 hours</strong> — pay well in advance.'
+    },
+    'price.wilson.rules.3': {
+      pt: 'O atleta que estiver <strong>90 dias</strong> ausente terá de renovar a sua taxa de membro (inscrição).',
+      en: 'Athletes absent for <strong>90 days</strong> must renew their membership fee (enrollment).'
+    },
+    'price.wilson.rules.4': {
+      pt: 'Quem tiver a mensalidade expirada ou dívida no aplicativo <strong>não poderá fazer a aula</strong>.',
+      en: 'Anyone with expired membership or outstanding balance in the app <strong>cannot take the session</strong>.'
+    },
+    'price.wilson.rules.5': {
+      pt: 'Os pagamentos devem ser sempre enviados por WhatsApp ao ginásio, em anexo com o comprovativo/PDF.',
+      en: 'Payments must always be sent by WhatsApp to the gym, with the receipt/PDF attached.'
     },
 
     'price.pay.h2': { pt: 'Pagamento', en: 'Payment' },

@@ -186,6 +186,7 @@
                 <option value="" data-i18n="form.select">Selecciona...</option>
                 <option value="Aulas de grupo" data-i18n="enroll.plan.group">Aulas de grupo</option>
                 <option value="Treino personalizado" data-i18n="enroll.plan.pt">Treino personalizado (PT)</option>
+                <option value="Aulas personalizadas · Coach Wilson" data-i18n="enroll.plan.wilson">Aulas personalizadas · Coach Wilson</option>
                 <option value="Aula / sessão avulsa" data-i18n="enroll.plan.drop">Aula ou sessão avulsa</option>
                 <option value="Ainda não sei" data-i18n="enroll.plan.unsure">Ainda não sei — quero aconselhar-me</option>
               </select>
@@ -227,6 +228,40 @@
               </select>
             </div>
 
+            <div class="form-row" id="row-pack-wilson" hidden>
+              <label for="ins-pack-wilson" data-i18n="enroll.pack.wilson">Pack / sessão Coach Wilson *</label>
+              <select id="ins-pack-wilson" name="pack_wilson">
+                <option value="" data-i18n="enroll.pack.pick">Selecciona o pack...</option>
+                <option value="1× / semana (4 sessões) — 80.000 AKZ">1× / semana (4 sessões) — 80.000 AKZ</option>
+                <option value="2× / semana (8 sessões) — 160.000 AKZ">2× / semana (8 sessões) — 160.000 AKZ</option>
+                <option value="3× / semana (12 sessões) — 240.000 AKZ (Mais popular)">3× / semana (12 sessões) — 240.000 AKZ (Mais popular)</option>
+                <option value="4× / semana (16 sessões) — 320.000 AKZ">4× / semana (16 sessões) — 320.000 AKZ</option>
+                <option value="5× / semana (20 sessões) — 400.000 AKZ">5× / semana (20 sessões) — 400.000 AKZ</option>
+                <option value="6× / semana (24 sessões) — 480.000 AKZ (Melhor valor)">6× / semana (24 sessões) — 480.000 AKZ (Melhor valor)</option>
+                <option value="Sessão avulsa — Interno — 30.000 AKZ">Sessão avulsa — Interno — 30.000 AKZ</option>
+                <option value="Sessão avulsa — Externo — 40.000 AKZ">Sessão avulsa — Externo — 40.000 AKZ</option>
+              </select>
+              <p class="form-hint" data-i18n="enroll.pack.wilson.hint">Sessões de 1 hora · validade 30 dias · inscrição 40.000 AKZ à parte</p>
+            </div>
+
+            <div class="form-row" id="row-avaliacao-wilson" hidden>
+              <label class="fee-check-label">
+                <input type="checkbox" id="ins-avaliacao" name="avaliacao_fisica" value="Sim — avaliação física 50.000 AKZ" />
+                <span data-i18n="enroll.wilson.assess">Incluir avaliação física (50.000 AKZ)</span>
+              </label>
+              <p class="form-hint" data-i18n="enroll.wilson.assess.hint">Opcional no início do acompanhamento com o Coach Wilson.</p>
+            </div>
+
+            <div class="form-row" id="row-local-wilson" hidden>
+              <label for="ins-local-wilson" data-i18n="enroll.wilson.local">Local das sessões *</label>
+              <select id="ins-local-wilson" name="local_wilson">
+                <option value="" data-i18n="form.select">Selecciona...</option>
+                <option value="Ginásio Wakanda (sem deslocação)">Ginásio Wakanda (sem deslocação)</option>
+                <option value="Talatona / Patriotas — taxa 50.000 AKZ">Talatona / Patriotas — taxa 50.000 AKZ</option>
+                <option value="Cidade (outras zonas) — taxa 100.000 AKZ">Cidade (outras zonas) — taxa 100.000 AKZ</option>
+              </select>
+              <p class="form-hint" data-i18n="enroll.wilson.local.hint">A taxa de deslocação aplica-se quando o Coach se desloca até si.</p>
+            </div>
 
             <div class="form-row" id="row-taxa-inscricao" hidden>
               <label class="fee-check-label">

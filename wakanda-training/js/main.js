@@ -718,6 +718,9 @@ function initWaForms() {
             (data.plano ? '*Plan:* ' + data.plano + '\n' : '') +
             (data.pack_grupo ? '*Group pack:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*PT pack:* ' + data.pack_pt + '\n' : '') +
+            (data.pack_wilson ? '*Coach Wilson pack:* ' + data.pack_wilson + '\n' : '') +
+            (data.avaliacao_fisica ? '*Physical assessment:* ' + data.avaliacao_fisica + '\n' : '') +
+            (data.local_wilson ? '*Session location:* ' + data.local_wilson + '\n' : '') +
             (data.pack_avulsa ? '*Drop-in:* ' + data.pack_avulsa + '\n' : '') +
             (!isTrial && data.taxa_nova ? '*Enrollment fee:* ' + data.taxa_nova + '\n' : '') +
             (!isTrial && data.pagamento ? '*Preferred payment:* ' + data.pagamento + '\n' : '') +
@@ -729,6 +732,8 @@ function initWaForms() {
               ? '\n_I want to *re-enroll* (fee 10.000 AKZ). I will send proof of payment next._'
               : data.tipo === 'Gordus Project'
               ? '\n_I will also send:_\n• ID document\n• Half-body photo (before)\n• A relative\'s contact'
+              : data.plano === 'Aulas personalizadas · Coach Wilson'
+              ? '\n_Coach Wilson · in-person personal training._\n_I will also send in this chat:_\n• ID document (PDF or photo)\n• Half-body photo\n• A relative\'s contact'
               : '\n_I will also send in this chat:_\n• ID document (PDF or photo)\n• Half-body photo\n• A relative\'s contact');
         } else {
           const isTrial = data.tipo === 'Aula experimental';
@@ -747,6 +752,9 @@ function initWaForms() {
             (data.plano ? '*Plano:* ' + data.plano + '\n' : '') +
             (data.pack_grupo ? '*Pack grupo:* ' + data.pack_grupo + '\n' : '') +
             (data.pack_pt ? '*Pack PT:* ' + data.pack_pt + '\n' : '') +
+            (data.pack_wilson ? '*Pack Coach Wilson:* ' + data.pack_wilson + '\n' : '') +
+            (data.avaliacao_fisica ? '*Avaliação física:* ' + data.avaliacao_fisica + '\n' : '') +
+            (data.local_wilson ? '*Local das sessões:* ' + data.local_wilson + '\n' : '') +
             (data.pack_avulsa ? '*Avulsa:* ' + data.pack_avulsa + '\n' : '') +
             (!isTrial && data.taxa_nova ? '*Taxa inscrição:* ' + data.taxa_nova + '\n' : '') +
             (!isTrial && data.pagamento ? '*Pagamento preferido:* ' + data.pagamento + '\n' : '') +
@@ -758,6 +766,8 @@ function initWaForms() {
               ? '\n_Quero *reinscrever-me* (taxa 10.000 AKZ). Envio comprovativo em seguida._'
               : data.tipo === 'Gordus Project'
               ? '\n_Vou enviar em seguida:_\n• Bilhete de identidade\n• Foto meio corpo (antes)\n• Contacto de um parente'
+              : data.plano === 'Aulas personalizadas · Coach Wilson'
+              ? '\n_Coach Wilson · aulas personalizadas presenciais._\n_Vou enviar em seguida na conversa:_\n• Bilhete de identidade (PDF ou foto)\n• Foto meio corpo\n• Contacto de um parente'
               : '\n_Vou enviar em seguida na conversa:_\n• Bilhete de identidade (PDF ou foto)\n• Foto meio corpo\n• Contacto de um parente');
         }
       } else if (type === 'pergunta-modalidade') {
@@ -842,6 +852,9 @@ function initWaForms() {
     const rowGrupo = document.getElementById('row-pack-grupo');
     const rowPt = document.getElementById('row-pack-pt');
     const rowAv = document.getElementById('row-pack-avulsa');
+    const rowWilson = document.getElementById('row-pack-wilson');
+    const rowAvaliacao = document.getElementById('row-avaliacao-wilson');
+    const rowLocalWilson = document.getElementById('row-local-wilson');
 
     const selMod = document.getElementById('ins-detalhe-mod');
     const selTrial = document.getElementById('ins-detalhe-trial');
@@ -849,6 +862,9 @@ function initWaForms() {
     const selGrupo = document.getElementById('ins-pack-grupo');
     const selPt = document.getElementById('ins-pack-pt');
     const selAv = document.getElementById('ins-pack-avulsa');
+    const selWilson = document.getElementById('ins-pack-wilson');
+    const selLocalWilson = document.getElementById('ins-local-wilson');
+    const chkAvaliacao = document.getElementById('ins-avaliacao');
 
     function setReq(el, on) {
       if (!el) return;
@@ -867,12 +883,18 @@ function initWaForms() {
     function syncPacks() {
       const plano = selPlano ? selPlano.value : '';
       const isMod = tipo.value === 'Modalidade';
+      const isWilson = plano === 'Aulas personalizadas · Coach Wilson';
       show(rowGrupo, isMod && plano === 'Aulas de grupo');
       show(rowPt, isMod && plano === 'Treino personalizado');
       show(rowAv, isMod && plano === 'Aula / sessão avulsa');
+      show(rowWilson, isMod && isWilson);
+      show(rowAvaliacao, isMod && isWilson);
+      show(rowLocalWilson, isMod && isWilson);
       setReq(selGrupo, isMod && plano === 'Aulas de grupo');
       setReq(selPt, isMod && plano === 'Treino personalizado');
       setReq(selAv, isMod && plano === 'Aula / sessão avulsa');
+      setReq(selWilson, isMod && isWilson);
+      setReq(selLocalWilson, isMod && isWilson);
       setReq(selMod, isMod && plano === 'Aula / sessão avulsa');
       const labelMod2 = document.getElementById('label-detalhe-mod');
       if (labelMod2) {
@@ -887,6 +909,20 @@ function initWaForms() {
       if (!(isMod && plano === 'Aulas de grupo') && selGrupo) selGrupo.value = '';
       if (!(isMod && plano === 'Treino personalizado') && selPt) selPt.value = '';
       if (!(isMod && plano === 'Aula / sessão avulsa') && selAv) selAv.value = '';
+      if (!(isMod && isWilson) && selWilson) selWilson.value = '';
+      if (!(isMod && isWilson) && selLocalWilson) selLocalWilson.value = '';
+      if (!(isMod && isWilson) && chkAvaliacao) chkAvaliacao.checked = false;
+
+      // Hide 20k taxa checkbox for Wilson (uses 40k membership instead)
+      const rowTaxa = document.getElementById('row-taxa-inscricao');
+      const chkTaxa = document.getElementById('ins-taxa');
+      if (rowTaxa && isMod) {
+        rowTaxa.hidden = isWilson;
+        if (isWilson && chkTaxa) chkTaxa.checked = false;
+      } else if (rowTaxa && !isMod) {
+        rowTaxa.hidden = true;
+        if (chkTaxa) chkTaxa.checked = false;
+      }
     }
 
     function syncTipo() {
@@ -974,6 +1010,8 @@ function initWaForms() {
         'Aulas de grupo': 'Aulas de grupo',
         'pt': 'Treino personalizado',
         'Treino personalizado': 'Treino personalizado',
+        'wilson': 'Aulas personalizadas · Coach Wilson',
+        'Aulas personalizadas · Coach Wilson': 'Aulas personalizadas · Coach Wilson',
         'avulsa': 'Aula / sessão avulsa',
         'Aula / sessão avulsa': 'Aula / sessão avulsa'
       };
@@ -1007,6 +1045,16 @@ function initWaForms() {
         'pt-membro': 'Sessão PT (membro) — 15.000 AKZ',
         'pt-visitante': 'Sessão PT (visitante) — 20.000 AKZ'
       };
+      const packWilsonMap = {
+        'wilson-1x': '1× / semana (4 sessões) — 80.000 AKZ',
+        'wilson-2x': '2× / semana (8 sessões) — 160.000 AKZ',
+        'wilson-3x': '3× / semana (12 sessões) — 240.000 AKZ (Mais popular)',
+        'wilson-4x': '4× / semana (16 sessões) — 320.000 AKZ',
+        'wilson-5x': '5× / semana (20 sessões) — 400.000 AKZ',
+        'wilson-6x': '6× / semana (24 sessões) — 480.000 AKZ (Melhor valor)',
+        'wilson-interno': 'Sessão avulsa — Interno — 30.000 AKZ',
+        'wilson-externo': 'Sessão avulsa — Externo — 40.000 AKZ'
+      };
 
       if (qPack && selGrupo && packGrupoMap[qPack]) {
         selGrupo.value = packGrupoMap[qPack];
@@ -1016,6 +1064,9 @@ function initWaForms() {
       }
       if (qPack && selAv && packAvMap[qPack]) {
         selAv.value = packAvMap[qPack];
+      }
+      if (qPack && selWilson && packWilsonMap[qPack]) {
+        selWilson.value = packWilsonMap[qPack];
       }
 
       const qMod = params.get('mod');
